@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Why Stall Detection is the Hidden Cost of Enterprise HR — VKatOS</title>
+<meta name="description" content="Every day a candidate sits at the same pipeline stage, your hiring velocity drops. Most ATS systems don't notice."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #080F1E;
+  --navy2: #0D1829;
+  --blue: #1B4FD8;
+  --accent: #00C2D4;
+  --accent2: #00E5F5;
+  --green: #00D68F;
+  --white: #F0F4FF;
+  --muted: #4A5878;
+  --border: rgba(255,255,255,0.07);
+  --card: rgba(255,255,255,0.03);
+  --card-hover: rgba(255,255,255,0.06);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.8;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,194,212,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
+}
+a, button { cursor: none; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,15,30,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.btn-login {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.btn-login:hover { color: var(--white); }
+.btn-demo {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-demo:hover { background: var(--accent2); }
+
+/* ── ARTICLE LAYOUT ── */
+article { max-width: 800px; margin: 0 auto; padding: 10rem 2rem 8rem; }
+.article-header { margin-bottom: 4rem; text-align: center; }
+.tag { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.5rem; display: block; }
+h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+.subtitle { font-size: 1.25rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.5; }
+.article-meta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1rem 0; display: flex; justify-content: center; gap: 2rem; }
+
+.article-content h2 { font-family: var(--font-display); font-size: 1.8rem; margin: 3rem 0 1.5rem; color: var(--white); }
+.article-content p { font-size: 1.1rem; color: rgba(240,244,255,0.7); margin-bottom: 1.5rem; }
+.article-content ul { margin-bottom: 1.5rem; padding-left: 1.5rem; color: rgba(240,244,255,0.7); }
+.article-content li { margin-bottom: 0.5rem; }
+
+/* Code snippet */
+pre {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 3rem 0;
+}
+code { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent2); line-height: 1.5; }
+
+/* CTA */
+.article-cta {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4rem;
+  text-align: center;
+  margin-top: 6rem;
+  border-radius: 4px;
+}
+.article-cta h3 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 1rem; }
+.article-cta p { color: var(--muted); margin-bottom: 2rem; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 5rem 4rem 2rem;
+  background: var(--navy);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  display: block;
+}
+.footer-logo span { color: var(--accent); }
+.footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--white);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.75rem; }
+.footer-col ul li a {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links, .btn-login { display: none; }
+  article { padding-top: 8rem; }
+  h1 { font-size: 2rem; }
+  .article-meta { flex-direction: column; gap: 0.5rem; align-items: center; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">⚡ VK<span>at</span>OS</a>
+  <ul class="nav-links">
+    <li><a href="/#products">Products</a></li>
+    <li><a href="/#solutions">Solutions</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="/login" class="btn-login">Client Login</a>
+    <a href="/contact" class="btn-demo">Request Demo</a>
+  </div>
+</nav>
+
+<article>
+  <header class="article-header reveal">
+    <span class="tag">Pipeline Automation</span>
+    <h1>Why Stall Detection is the Hidden Cost of Enterprise HR</h1>
+    <p class="subtitle">Every day a candidate sits at the same pipeline stage, your hiring velocity drops. Most ATS systems don't notice.</p>
+    <div class="article-meta">
+      <span>Thulasi Velan</span>
+      <span>March 10, 2026</span>
+      <span>8 min read</span>
+    </div>
+  </header>
+
+  <div class="article-content reveal">
+    <h2>The Silent Failure</h2>
+    <p>
+      In the world of enterprise HR, we talk a lot about "time-to-hire" and "candidate experience." But there is a metric that is almost never tracked, and it’s costing companies millions: **The Stall Rate.**
+    </p>
+    <p>
+      Hiring pipelines stall silently. A candidate submits their CAF documents, and then... nothing happens. They sit in the "Documents Received" stage for four days. Then six. By day eight, they’ve accepted a competing offer. No alert was triggered. No recruiter was notified. The pipeline simply sat idle.
+    </p>
+    <p>
+      Manual tracking is inconsistent. Even the most diligent HR teams can't watch every entity across dozens of parallel pipelines. The real cost isn't just a missed hire; it's the cost of re-sourcing, which is often 3x the original acquisition cost.
+    </p>
+
+    <h2>What a Stall Actually Looks Like</h2>
+    <p>
+      At VKatOS, we define a stall technically: **An entity idle beyond a defined threshold for its specific stage.** 
+    </p>
+    <p>
+      One size does not fit all. Different stages have vastly different acceptable idle times:
+    </p>
+    <ul>
+      <li><strong>Interview Scheduled:</strong> 48 hours max. If the interview isn't completed or rescheduled within this window, it's a WARNING.</li>
+      <li><strong>Offer Sent:</strong> 24 hours max. High-priority entities require immediate follow-up.</li>
+      <li><strong>Background Check:</strong> 72 hours. Stalls here usually indicate a missing document that the candidate hasn't been asked for.</li>
+    </ul>
+
+    <h2>The DCSP Approach</h2>
+    <p>
+      This is why we built DCSP (Distributed Control & Stall Prevention). It’s not just a dashboard; it’s a watchdog. DCSP begins by learning the baseline duration for every stage in your specific pipeline. It doesn't use hard-coded guesses; it uses your historical data.
+    </p>
+    <p>
+      Our engine uses statistical anomaly scoring (Z-scores). If a candidate has been in "Technical Review" for 14 hours, but the statistical average for that recruiter and that department is 4 hours, DCSP flags it immediately.
+    </p>
+    <p>
+      We categorize these into three severity levels:
+    </p>
+    <ul>
+      <li><strong>WARNING:</strong> Slack/Email notification to the owner.</li>
+      <li><strong>CRITICAL:</strong> Escalation to the department head.</li>
+      <li><strong>EMERGENCY:</strong> Pipeline pause and mandatory human review.</li>
+    </ul>
+
+    <pre><code># DCSP stall check example
+detector.check_pipeline(
+  entity_id="candidate_4821",
+  stage="interview_scheduled",
+  threshold_hours=48
+)
+
+# Output: 
+# {
+#   "status": "WARNING", 
+#   "idle_hours": 31.4, 
+#   "predicted_stall_in": "16.6h", 
+#   "action": "notify_hr"
+# }</code></pre>
+
+    <h2>The Predictive Layer</h2>
+    <p>
+      Reactive detection is better than nothing, but it’s still too late. The holy grail of pipeline management is acting *before* the stall happens. 
+    </p>
+    <p>
+      By recognizing patterns across thousands of historical entities, DCSP can identify the early warning signs of a stall. "This candidate has a 73% probability of stalling in the next 4 hours based on current recruiter load and document complexity." 
+    </p>
+    <p>
+      This allows HR teams to move from being firefighters to being orchestrators.
+    </p>
+
+    <h2>Results in the Field</h2>
+    <p>
+      The numbers from our latest enterprise deployments speak for themselves. After implementing DCSP stall detection:
+    </p>
+    <ul>
+      <li><strong>Pipeline stall rate reduced by 84%</strong> in the first month.</li>
+      <li><strong>Average time-to-offer reduced from 19 days to 11 days.</strong></li>
+      <li><strong>Zero missed SLA breaches</strong> since the watchdog went live.</li>
+    </ul>
+    <p>
+      Enterprise pipelines don't have to be black boxes. With the right stall detection architecture, they become self-healing assets.
+    </p>
+  </div>
+
+  <div class="article-cta reveal">
+    <h3>Ready to see DCSP in action?</h3>
+    <p>We'll show you how to detect and prevent stalls in your own hiring pipeline.</p>
+    <a href="/contact" class="btn-demo" style="display:inline-block; padding: 1rem 3rem;">Request a live demo →</a>
+  </div>
+</article>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="/" class="footer-logo">⚡ VK<span>at</span>OS</a>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-top: 1rem;">Autonomous operating systems for the enterprise. Zero-PII, offline-first, production-ready.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="/products/dcsp">DCSP</a></li>
+        <li><a href="/products/aether2">Aether2</a></li>
+        <li><a href="/products/velaris">Velaris</a></li>
+        <li><a href="/#products">VKatOS Platform</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="/solutions/hr">Enterprise HR</a></li>
+        <li><a href="/solutions/recruitment">Recruitment</a></li>
+        <li><a href="/solutions/education">Study Abroad</a></li>
+        <li><a href="/solutions/custom">Custom</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/careers">Careers</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://github.com/Vk-AtOS">GitHub</a></li>
+        <li><a href="mailto:velan317@gmail.com">Email</a></li>
+        <li><a href="tel:+918056238628">+91 80562 38628</a></li>
+        <li><a href="#">Chennai, Tamil Nadu</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 VKatOS. All rights reserved. | <a href="/privacy" style="color:var(--muted); text-decoration:none;">Privacy</a> | <a href="/terms" style="color:var(--muted); text-decoration:none;">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px, ${my-5}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(1.8)';
+    ring.style.width = '50px'; ring.style.height = '50px';
+    ring.style.borderColor = 'rgba(0,194,212,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px'; ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(0,194,212,0.4)';
+  });
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
