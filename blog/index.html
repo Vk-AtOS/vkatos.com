@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Blog — VKatOS | Engineering & Insights</title>
+<meta name="description" content="Deep dives into pipeline automation, stall detection, and enterprise AI."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #080F1E;
+  --navy2: #0D1829;
+  --blue: #1B4FD8;
+  --accent: #00C2D4;
+  --accent2: #00E5F5;
+  --green: #00D68F;
+  --white: #F0F4FF;
+  --muted: #4A5878;
+  --border: rgba(255,255,255,0.07);
+  --card: rgba(255,255,255,0.03);
+  --card-hover: rgba(255,255,255,0.06);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,194,212,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
+}
+a, button { cursor: none; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,15,30,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.btn-login {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.btn-login:hover { color: var(--white); }
+.btn-demo {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-demo:hover { background: var(--accent2); }
+
+/* ── HERO ── */
+.blog-hero {
+  padding: 10rem 4rem 4rem;
+  text-align: center;
+}
+.blog-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+.blog-hero p {
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+/* ── ARTICLES ── */
+.blog-container { max-width: 1200px; margin: 0 auto; padding: 0 4rem 8rem; }
+
+/* Featured Card */
+.featured-card {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 4rem;
+  overflow: hidden;
+  transition: border-color 0.3s;
+  text-decoration: none;
+  color: inherit;
+}
+.featured-card:hover { border-color: rgba(0,194,212,0.3); }
+.featured-img { background: var(--navy2); border-right: 1px solid var(--border); height: 350px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); color: var(--accent); font-size: 2rem; opacity: 0.5; }
+.featured-content { padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
+.tag { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; display: block; }
+.featured-content h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 1rem; line-height: 1.2; }
+.featured-content p { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+.meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); display: flex; gap: 1.5rem; }
+
+/* Grid Cards */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+.article-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  transition: all 0.3s;
+  text-decoration: none;
+  color: inherit;
+}
+.article-card:hover { border-color: rgba(0,194,212,0.3); transform: translateY(-4px); }
+.article-card h3 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1rem; line-height: 1.3; }
+.article-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+
+/* ── NEWSLETTER ── */
+.newsletter-section {
+  background: var(--navy2);
+  padding: 6rem 4rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.newsletter-container { max-width: 500px; margin: 0 auto; }
+.newsletter-container h2 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 1rem; }
+.newsletter-container p { color: var(--muted); margin-bottom: 2.5rem; }
+.newsletter-form { display: flex; gap: 0.5rem; }
+.newsletter-form input {
+  flex-grow: 1;
+  background: var(--navy);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  color: var(--white);
+  font-family: var(--font-body);
+  border-radius: 2px;
+}
+.newsletter-form input:focus { outline: none; border-color: var(--accent); }
+.btn-subscribe {
+  background: var(--accent);
+  color: var(--navy);
+  border: none;
+  padding: 0 2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.btn-subscribe:hover { background: var(--accent2); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 5rem 4rem 2rem;
+  background: var(--navy);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  display: block;
+}
+.footer-logo span { color: var(--accent); }
+.footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--white);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.75rem; }
+.footer-col ul li a {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 1024px) {
+  .featured-card { grid-template-columns: 1fr; }
+  .featured-img { height: 200px; border-right: none; border-bottom: 1px solid var(--border); }
+  .blog-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links, .btn-login { display: none; }
+  .blog-hero, .blog-container, .newsletter-section, footer { padding: 4rem 1.5rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .newsletter-form { flex-direction: column; }
+  .btn-subscribe { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">⚡ VK<span>at</span>OS</a>
+  <ul class="nav-links">
+    <li><a href="/#products">Products</a></li>
+    <li><a href="/#solutions">Solutions</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="/login" class="btn-login">Client Login</a>
+    <a href="/contact" class="btn-demo">Request Demo</a>
+  </div>
+</nav>
+
+<section class="blog-hero reveal">
+  <h1>The VKatOS Engineering Blog</h1>
+  <p>Deep dives into pipeline automation, stall detection, and enterprise AI.</p>
+</section>
+
+<div class="blog-container">
+  <!-- Featured Article -->
+  <a href="/blog/stall-detection" class="featured-card reveal">
+    <div class="featured-img">DCSP // 01</div>
+    <div class="featured-content">
+      <span class="tag">Pipeline Automation</span>
+      <h2>Why stall detection is the hidden cost of enterprise HR</h2>
+      <p>Every day a candidate sits at the same pipeline stage, your hiring velocity drops. Most ATS systems don't notice. We're changing that.</p>
+      <div class="meta">
+        <span>March 10, 2026</span>
+        <span>8 min read</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Grid -->
+  <div class="blog-grid">
+    <a href="/blog/offline-ai" class="article-card reveal">
+      <span class="tag">Enterprise AI</span>
+      <h3>Offline AI vs Cloud AI: what enterprise IT actually wants</h3>
+      <p>We asked 20 enterprise IT managers what they feared most about AI deployments. The answer was unanimous: data sovereignty.</p>
+      <div class="meta">
+        <span>March 5, 2026</span>
+        <span>6 min read</span>
+      </div>
+    </a>
+
+    <a href="/blog/recruitment-automation" class="article-card reveal">
+      <span class="tag">Case Study</span>
+      <h3>How pipeline automation cut recruitment cycle time by 60%</h3>
+      <p>A recruitment agency was losing placements to slow follow-up. Here's what changed when the pipeline started managing itself.</p>
+      <div class="meta">
+        <span>February 28, 2026</span>
+        <span>7 min read</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<section class="newsletter-section reveal">
+  <div class="newsletter-container">
+    <h2>Get notified when we publish.</h2>
+    <p>No spam. Only deep technical dives into enterprise autonomy.</p>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!');">
+      <input type="email" placeholder="email@company.com" required/>
+      <button type="submit" class="btn-subscribe">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="/" class="footer-logo">⚡ VK<span>at</span>OS</a>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-top: 1rem;">Autonomous operating systems for the enterprise. Zero-PII, offline-first, production-ready.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="/products/dcsp">DCSP</a></li>
+        <li><a href="/products/aether2">Aether2</a></li>
+        <li><a href="/products/velaris">Velaris</a></li>
+        <li><a href="/#products">VKatOS Platform</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="/solutions/hr">Enterprise HR</a></li>
+        <li><a href="/solutions/recruitment">Recruitment</a></li>
+        <li><a href="/solutions/education">Study Abroad</a></li>
+        <li><a href="/solutions/custom">Custom</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/careers">Careers</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://github.com/Vk-AtOS">GitHub</a></li>
+        <li><a href="mailto:velan317@gmail.com">Email</a></li>
+        <li><a href="tel:+918056238628">+91 80562 38628</a></li>
+        <li><a href="#">Chennai, Tamil Nadu</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 VKatOS. All rights reserved. | <a href="/privacy" style="color:var(--muted); text-decoration:none;">Privacy</a> | <a href="/terms" style="color:var(--muted); text-decoration:none;">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px, ${my-5}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(1.8)';
+    ring.style.width = '50px'; ring.style.height = '50px';
+    ring.style.borderColor = 'rgba(0,194,212,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px'; ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(0,194,212,0.4)';
+  });
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
