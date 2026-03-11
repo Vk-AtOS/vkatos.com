@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Study Abroad Consultancy Automation — VKatOS | Autonomous Pipelines</title>
+<meta name="description" content="Never miss a university deadline again. Autonomous document tracking and visa pipeline management for study abroad consultancies."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #080F1E;
+  --navy2: #0D1829;
+  --blue: #1B4FD8;
+  --accent: #00C2D4;
+  --accent2: #00E5F5;
+  --green: #00D68F;
+  --white: #F0F4FF;
+  --muted: #4A5878;
+  --border: rgba(255,255,255,0.07);
+  --card: rgba(255,255,255,0.03);
+  --card-hover: rgba(255,255,255,0.06);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,194,212,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
+}
+a, button { cursor: none; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,15,30,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.btn-login {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.btn-login:hover { color: var(--white); }
+.btn-demo {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-demo:hover { background: var(--accent2); }
+
+/* ── SOLUTIONS HERO ── */
+.solutions-hero { padding: 12rem 4rem 6rem; position: relative; }
+h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+.hero-sub { font-size: 1.25rem; color: var(--muted); max-width: 700px; line-height: 1.6; }
+
+/* ── PROBLEM / SOLUTION ── */
+.grid-section { padding: 8rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+.section-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 2rem; display: block; }
+.pain-point { margin-bottom: 3rem; }
+.pain-point h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; color: var(--white); }
+.pain-point p { color: var(--muted); }
+
+/* ── PIPELINE VISUAL ── */
+.pipeline-section { padding: 8rem 4rem; background: var(--navy2); overflow-x: auto; }
+.pipeline-track { display: flex; gap: 1rem; min-width: 1200px; margin-top: 4rem; }
+.pipeline-stage {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+}
+.pipeline-stage::after {
+  content: '→';
+  position: absolute;
+  right: -15px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--border);
+  font-size: 1.2rem;
+}
+.pipeline-stage:last-child::after { display: none; }
+.stage-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 1rem; display: block; }
+.stage-name { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: var(--white); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 5rem 4rem 2rem;
+  background: var(--navy);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  display: block;
+}
+.footer-logo span { color: var(--accent); }
+.footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--white);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.75rem; }
+.footer-col ul li a {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 1024px) {
+  .grid-section { grid-template-columns: 1fr; gap: 4rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links, .btn-login { display: none; }
+  .solutions-hero, .grid-section, .pipeline-section, footer { padding: 4rem 1.5rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">⚡ VK<span>at</span>OS</a>
+  <ul class="nav-links">
+    <li><a href="/#products">Products</a></li>
+    <li><a href="/#solutions">Solutions</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="/login" class="btn-login">Client Login</a>
+    <a href="/contact" class="btn-demo">Request Demo</a>
+  </div>
+</nav>
+
+<section class="solutions-hero reveal">
+  <span class="section-label">// solutions</span>
+  <h1>Study Abroad Consultancy Automation</h1>
+  <p class="hero-sub">Never miss a university intake deadline again. Our autonomous pipelines manage document tracking, deadline intelligence, and visa processing for global consultancies.</p>
+</section>
+
+<section class="grid-section reveal">
+  <div>
+    <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 2rem;">Consultancy Pain Points</h2>
+    <div class="pain-point">
+      <h3>Missed Intake Deadlines</h3>
+      <p>A single missing document can delay a student's application by 6 months. Manual tracking across hundreds of universities is prone to human error.</p>
+    </div>
+    <div class="pain-point">
+      <h3>Document Follow-up Chaos</h3>
+      <p>Counsellors spend 60% of their day asking students for transcripts, SOPs, and financial records via WhatsApp and Email.</p>
+    </div>
+    <div class="pain-point">
+      <h3>Visa Pipeline Blindness</h3>
+      <p>No real-time visibility into the status of visa applications, leading to last-minute panics and missed travel dates.</p>
+    </div>
+  </div>
+  <div style="background: var(--card); border: 1px solid var(--border); padding: 4rem; border-radius: 4px;">
+    <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 2rem;">The VKatOS Fix</h2>
+    <div class="pain-point">
+      <h3 style="color: var(--accent);">Deadline Intelligence</h3>
+      <p>DCSP tracks university deadlines and sets autonomous triggers based on document completion status, ensuring submissions happen weeks in advance.</p>
+    </div>
+    <div class="pain-point">
+      <h3 style="color: var(--accent);">Autonomous Doc Tracking</h3>
+      <p>Aether2 identifies missing documents and automatically nudges students via their preferred channel, validating uploads in real time using AI.</p>
+    </div>
+    <div class="pain-point">
+      <h3 style="color: var(--accent);">Visa Watchdog</h3>
+      <p>Velaris provides a dedicated visa tracker that identifies stalls in the consulate pipeline, allowing for immediate administrative intervention.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pipeline-section reveal">
+  <span class="section-label" style="text-align: center; display: block;">// the autonomous student pipeline</span>
+  <div class="pipeline-track">
+    <div class="pipeline-stage"><span class="stage-num">01</span><span class="stage-name">ENQUIRY LOG</span></div>
+    <div class="pipeline-stage"><span class="stage-num">02</span><span class="stage-name">COURSE SHORTLIST</span></div>
+    <div class="pipeline-stage"><span class="stage-num">03</span><span class="stage-name">DOC COLLECTION</span></div>
+    <div class="pipeline-stage"><span class="stage-num">04</span><span class="stage-name">DEADLINE WATCH</span></div>
+    <div class="pipeline-stage"><span class="stage-num">05</span><span class="stage-name">APP SUBMITTED</span></div>
+    <div class="pipeline-stage"><span class="stage-num">06</span><span class="stage-name">OFFER RECEIVED</span></div>
+    <div class="pipeline-stage"><span class="stage-num">07</span><span class="stage-name">VISA PIPELINE</span></div>
+    <div class="pipeline-stage"><span class="stage-num">08</span><span class="stage-name">DEPARTED</span></div>
+  </div>
+</section>
+
+<section class="grid-section reveal">
+  <div style="display: flex; flex-direction: column; justify-content: center;">
+    <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 1.5rem;">Zero Missed Deadlines</h2>
+    <p style="color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem;">Education consultancies using VKatOS have eliminated the "deadline panic" and increased student satisfaction scores.</p>
+    <div style="display: flex; gap: 3rem;">
+      <div>
+        <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--accent);">100%</div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">On-time Submissions</div>
+      </div>
+      <div>
+        <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--accent);">40h</div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Saved Per Counsellor/Mo</div>
+      </div>
+    </div>
+  </div>
+  <div style="background: var(--navy2); border: 1px solid var(--border); padding: 4rem;">
+    <p style="font-style: italic; font-size: 1.25rem; color: var(--white); margin-bottom: 2rem;">"We used to live in fear of missing a university deadline. Now the system manages the documents while we focus on counselling students."</p>
+    <p style="color: var(--muted); font-family: var(--font-mono); font-size: 0.8rem;">— CEO, International Education Group</p>
+  </div>
+</section>
+
+<section class="bottom-cta reveal" style="text-align: center; padding: 8rem 4rem;">
+  <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 1rem;">Secure your students' future.</h2>
+  <p style="color: var(--muted); margin-bottom: 3rem;">Scale your consultancy without adding manual overhead.</p>
+  <a href="/contact" class="btn-demo" style="display:inline-block; padding: 1rem 3.5rem;">Talk to us →</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="/" class="footer-logo">⚡ VK<span>at</span>OS</a>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-top: 1rem;">Autonomous operating systems for the enterprise. Zero-PII, offline-first, production-ready.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="/products/dcsp">DCSP</a></li>
+        <li><a href="/products/aether2">Aether2</a></li>
+        <li><a href="/products/velaris">Velaris</a></li>
+        <li><a href="/#products">VKatOS Platform</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="/solutions/hr">Enterprise HR</a></li>
+        <li><a href="/solutions/recruitment">Recruitment</a></li>
+        <li><a href="/solutions/education">Study Abroad</a></li>
+        <li><a href="/solutions/custom">Custom</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/careers">Careers</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://github.com/Vk-AtOS">GitHub</a></li>
+        <li><a href="mailto:velan317@gmail.com">Email</a></li>
+        <li><a href="tel:+918056238628">+91 80562 38628</a></li>
+        <li><a href="#">Chennai, Tamil Nadu</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 VKatOS. All rights reserved. | <a href="/privacy" style="color:var(--muted); text-decoration:none;">Privacy</a> | <a href="/terms" style="color:var(--muted); text-decoration:none;">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px, ${my-5}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(1.8)';
+    ring.style.width = '50px'; ring.style.height = '50px';
+    ring.style.borderColor = 'rgba(0,194,212,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px'; ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(0,194,212,0.4)';
+  });
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
