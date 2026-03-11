@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VKatOS — Autonomous Enterprise Systems</title>
+<meta name="description" content="VKatOS builds autonomous operating systems for enterprise — self-healing pipelines that eliminate broken processes, detect failures in real time, and deploy in weeks."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #080F1E;
+  --navy2: #0D1829;
+  --blue: #1B4FD8;
+  --blue2: #2563EB;
+  --accent: #00C2D4;
+  --accent2: #00E5F5;
+  --green: #00D68F;
+  --amber: #F5A623;
+  --red: #FF4D6D;
+  --white: #F0F4FF;
+  --muted: #4A5878;
+  --border: rgba(255,255,255,0.07);
+  --card: rgba(255,255,255,0.03);
+  --card-hover: rgba(255,255,255,0.06);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,194,212,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
+}
+a, button { cursor: none; }
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,15,30,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: padding 0.3s;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--accent);
+  color: var(--navy) !important;
+  padding: 0.5rem 1.25rem;
+  border-radius: 2px;
+  font-weight: 500 !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.08em !important;
+  transition: background 0.2s, transform 0.2s !important;
+}
+.nav-cta:hover { background: var(--accent2) !important; transform: translateY(-1px); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 8rem 4rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,194,212,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,194,212,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(27,79,216,0.18) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(0,194,212,0.1) 0%, transparent 70%);
+  bottom: 50px; left: -50px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 2; max-width: 820px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(0,194,212,0.08);
+  border: 1px solid rgba(0,194,212,0.2);
+  padding: 0.35rem 0.9rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 2rem;
+  opacity: 0; animation: fadeUp 0.6s ease 0.2s forwards;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards;
+}
+h1 .line2 { color: var(--accent); }
+.hero-sub {
+  font-size: 1.15rem;
+  color: rgba(240,244,255,0.55);
+  max-width: 560px;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards;
+}
+.hero-actions {
+  display: flex; gap: 1rem; align-items: center;
+  opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 0.85rem 2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  border: none; border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,194,212,0.25); }
+.btn-ghost {
+  color: rgba(240,244,255,0.7);
+  padding: 0.85rem 1.5rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--white); background: var(--card); }
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards;
+}
+.stat-item { }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+}
+.stat-num span { color: var(--accent); }
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+
+/* ── TERMINAL WINDOW ── */
+.hero-terminal {
+  position: absolute;
+  right: 4rem; top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+  background: rgba(13,24,41,0.9);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,194,212,0.1);
+  opacity: 0; animation: fadeLeft 0.8s ease 0.9s forwards;
+  z-index: 2;
+}
+.terminal-bar {
+  background: rgba(255,255,255,0.04);
+  padding: 0.65rem 1rem;
+  display: flex; align-items: center; gap: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.r { background: #FF5F57; }
+.dot.y { background: #FEBC2E; }
+.dot.g { background: #28C840; }
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-left: auto; margin-right: auto;
+}
+.terminal-body { padding: 1.25rem; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.8; }
+.t-muted { color: var(--muted); }
+.t-accent { color: var(--accent); }
+.t-green { color: var(--green); }
+.t-amber { color: var(--amber); }
+.t-red { color: var(--red); }
+.t-white { color: var(--white); }
+.t-blue { color: #60A5FA; }
+.cursor-blink {
+  display: inline-block;
+  width: 7px; height: 13px;
+  background: var(--accent);
+  animation: blink 1s infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── SECTIONS SHARED ── */
+section { padding: 6rem 4rem; position: relative; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.section-sub {
+  font-size: 1rem;
+  color: rgba(240,244,255,0.5);
+  max-width: 540px;
+  font-weight: 300;
+}
+
+/* ── PROBLEM SECTION ── */
+#problem { background: var(--navy2); }
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 4rem;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.problem-card {
+  background: var(--navy2);
+  padding: 2.5rem;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.problem-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.problem-card:hover { background: var(--card-hover); }
+.problem-card:hover::before { transform: scaleX(1); }
+.problem-industry {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.problem-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+.problem-card p {
+  font-size: 0.88rem;
+  color: rgba(240,244,255,0.5);
+  line-height: 1.7;
+}
+.problem-stat {
+  margin-top: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+.problem-stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+/* ── SERVICES ── */
+#services { }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+.service-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,194,212,0.05) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.service-card:hover { border-color: rgba(0,194,212,0.2); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.service-card:hover::after { opacity: 1; }
+.service-icon {
+  width: 48px; height: 48px;
+  background: rgba(0,194,212,0.1);
+  border: 1px solid rgba(0,194,212,0.15);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+.service-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+.service-card p {
+  font-size: 0.88rem;
+  color: rgba(240,244,255,0.5);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.service-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  background: rgba(0,194,212,0.08);
+  border: 1px solid rgba(0,194,212,0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  margin-right: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+/* ── PRODUCTS ── */
+#products { background: var(--navy2); }
+.products-list { margin-top: 4rem; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.product-row {
+  background: var(--navy2);
+  padding: 2.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  gap: 3rem;
+  transition: background 0.2s;
+  border-left: 3px solid transparent;
+}
+.product-row:hover { background: var(--card-hover); border-left-color: var(--accent); }
+.product-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.product-name span { color: var(--accent); }
+.product-version {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+.product-desc {
+  font-size: 0.9rem;
+  color: rgba(240,244,255,0.55);
+  line-height: 1.6;
+}
+.product-meta { text-align: right; }
+.product-tests {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--green);
+}
+.product-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: gap 0.2s;
+}
+.product-link:hover { gap: 0.7rem; }
+
+/* ── HOW IT WORKS ── */
+#how {  }
+.how-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  align-items: center;
+}
+.how-steps { display: flex; flex-direction: column; gap: 0; }
+.how-step {
+  display: flex; gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.how-step:last-child { border-bottom: none; }
+.step-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: rgba(0,194,212,0.15);
+  line-height: 1;
+  min-width: 3rem;
+  transition: color 0.3s;
+}
+.how-step:hover .step-num { color: var(--accent); }
+.step-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+.step-content p { font-size: 0.88rem; color: rgba(240,244,255,0.5); }
+.how-visual {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 2;
+}
+.arch-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-radius: 3px; margin-bottom: 0.5rem; }
+.arch-row:hover { background: rgba(255,255,255,0.03); }
+.arch-label { color: var(--muted); min-width: 160px; }
+.arch-arrow { color: rgba(0,194,212,0.4); }
+.arch-val { color: var(--green); }
+.arch-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+/* ── ABOUT ── */
+#about { background: var(--navy2); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  align-items: start;
+}
+.founder-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.founder-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--blue2));
+}
+.founder-avatar {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, var(--blue2), var(--accent));
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 1.5rem;
+}
+.founder-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.2rem;
+}
+.founder-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+.founder-bio {
+  font-size: 0.88rem;
+  color: rgba(240,244,255,0.55);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.founder-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.founder-link {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(0,194,212,0.2);
+  padding: 0.3rem 0.75rem;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.founder-link:hover { background: rgba(0,194,212,0.1); border-color: var(--accent); }
+.about-content h2 { margin-bottom: 1.5rem; }
+.about-content p {
+  font-size: 0.95rem;
+  color: rgba(240,244,255,0.6);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+.about-content p strong { color: var(--white); font-weight: 500; }
+.values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.value-item {
+  padding: 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 0.85rem;
+}
+.value-item strong { display: block; font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--white); }
+.value-item span { color: rgba(240,244,255,0.45); font-size: 0.82rem; }
+
+/* ── CONTACT ── */
+#contact { }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  align-items: start;
+}
+.contact-info h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.contact-info p { font-size: 0.9rem; color: rgba(240,244,255,0.5); margin-bottom: 2rem; line-height: 1.7; }
+.contact-detail {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.contact-detail:last-of-type { border-bottom: none; }
+.contact-icon { font-size: 1.1rem; margin-top: 0.1rem; }
+.contact-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.2rem; }
+.contact-value { font-size: 0.9rem; color: var(--white); }
+.contact-value a { color: var(--accent); text-decoration: none; }
+.contact-value a:hover { text-decoration: underline; }
+
+/* ── FORM ── */
+.contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.85rem 1rem;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  transition: border-color 0.2s;
+  outline: none;
+  width: 100%;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: rgba(0,194,212,0.4); background: rgba(0,194,212,0.03); }
+.form-group select option { background: var(--navy2); }
+.form-group textarea { min-height: 130px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.btn-submit {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 3px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+.btn-submit:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,194,212,0.25); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: rgba(240,244,255,0.4);
+  text-decoration: none;
+}
+.footer-logo span { color: var(--accent); }
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 0.78rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(30px) translateY(-50%); }
+  to { opacity: 1; transform: translateX(0) translateY(-50%); }
+}
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .hero-terminal { display: none; }
+  h1 { font-size: 3.5rem; }
+}
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 4rem 1.5rem; }
+  #hero { padding: 7rem 1.5rem 4rem; }
+  .problem-grid, .services-grid { grid-template-columns: 1fr; }
+  .how-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+  .product-row { grid-template-columns: 1fr; gap: 1rem; }
+  .product-meta { text-align: left; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">VK<span>at</span>OS</a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problems</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Get In Touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Chennai, India — Enterprise Systems</div>
+    <h1>Autonomous systems<br>for enterprises that<br><span class="line2">can't afford downtime.</span></h1>
+    <p class="hero-sub">We build self-healing pipeline automation that eliminates broken processes, detects failures before they cost you, and deploys in weeks — not months.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start a conversation →</a>
+      <a href="#products" class="btn-ghost">View our systems</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">33<span>/33</span></div>
+        <div class="stat-label">Tests passing — Aether2</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">469<span>/469</span></div>
+        <div class="stat-label">Tests passing — DCSP</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2<span>wk</span></div>
+        <div class="stat-label">Average deployment time</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">₹0</div>
+        <div class="stat-label">Data leaves your network</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-terminal">
+    <div class="terminal-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <span class="terminal-title">axium-monitor — pipeline.watch</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-muted">$</span> <span class="t-accent">vkatos</span> <span class="t-white">monitor --live</span></div>
+      <div class="t-muted">─────────────────────────────</div>
+      <div><span class="t-green">✓</span> <span class="t-white">Pipeline connected</span></div>
+      <div><span class="t-green">✓</span> <span class="t-white">33 stages monitored</span></div>
+      <div><span class="t-green">✓</span> <span class="t-white">DCSP watchdog active</span></div>
+      <div class="t-muted">─────────────────────────────</div>
+      <div><span class="t-amber">⚠</span> <span class="t-white">STALL DETECTED</span></div>
+      <div><span class="t-muted">  stage:</span> <span class="t-blue">caf_submitted</span></div>
+      <div><span class="t-muted">  idle:</span> <span class="t-amber">72h 14m</span></div>
+      <div><span class="t-muted">  action:</span> <span class="t-green">auto-alerting...</span></div>
+      <div class="t-muted">─────────────────────────────</div>
+      <div><span class="t-green">→</span> <span class="t-white">Recruiter notified</span></div>
+      <div><span class="t-green">→</span> <span class="t-white">Candidate reassured</span></div>
+      <div><span class="t-green">→</span> <span class="t-white">Escalation queued</span></div>
+      <div><span class="t-green">→</span> <span class="t-white">Audit log: AUD-0042</span></div>
+      <div class="t-muted">─────────────────────────────</div>
+      <div><span class="t-muted">$</span> <span class="cursor-blink"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="reveal">
+    <div class="section-label">// the problem</div>
+    <h2>Enterprise pipelines<br>break silently.</h2>
+    <p class="section-sub">Every industry has processes that stall without warning, consume manual effort, and cost money nobody can see clearly on a balance sheet — until it's too late.</p>
+  </div>
+  <div class="problem-grid reveal">
+    <div class="problem-card">
+      <div class="problem-industry">Enterprise HR / ATS</div>
+      <h3>Candidates selected. Then silence.</h3>
+      <p>Post-selection CAF documents submitted — then nothing. No status update. No follow-up. Candidates accept competing offers. Hiring cycles extend 32–68 days. Nobody built the watchdog.</p>
+      <div class="problem-stat">40%</div>
+      <div class="problem-stat-label">recruiter time lost to manual follow-up</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-industry">Recruitment Agencies</div>
+      <h3>Placements falling through cracks.</h3>
+      <p>Candidate at offer stage for 4 days — nobody noticed they received a competing offer. Placement fee lost. Client relationship strained. No system was watching the pipeline.</p>
+      <div class="problem-stat">₹1.5L</div>
+      <div class="problem-stat-label">average placement fee at risk per stall</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-industry">Study Abroad Consultancies</div>
+      <h3>Deadlines missed. Intakes lost.</h3>
+      <p>Student missing 2 documents. University deadline in 11 days. Counsellor following up manually via WhatsApp. One slip and the student waits 6 months for the next intake.</p>
+      <div class="problem-stat">6 mo</div>
+      <div class="problem-stat-label">lost per missed university intake deadline</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="section-label">// services</div>
+    <h2>Three products.<br>Any industry.</h2>
+    <p class="section-sub">We start with HR, recruitment, and education — and expand into any vertical where broken processes cost enterprises money.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <h3>Axium Recruit</h3>
+      <p>End-to-end ATS pipeline automation. Resume parsing with RAG, candidate scoring with MoE agents, CAF tracking, offer generation. Built for enterprise hiring at scale.</p>
+      <div>
+        <span class="service-tag">RAG parsing</span>
+        <span class="service-tag">MoE scoring</span>
+        <span class="service-tag">CAF tracking</span>
+        <span class="service-tag">Offer gen</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎓</div>
+      <h3>Axium Study</h3>
+      <p>Autonomous student pipeline for study abroad consultancies. Document automation, deadline intelligence, counsellor handover, visa tracking — from inquiry to departure.</p>
+      <div>
+        <span class="service-tag">650+ universities</span>
+        <span class="service-tag">Deadline AI</span>
+        <span class="service-tag">Doc tracking</span>
+        <span class="service-tag">Visa pipeline</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Axium Enterprise</h3>
+      <p>Custom autonomous operating systems for any enterprise domain. If your process has stages, documents, approvals, and humans losing time to follow-up — we automate it.</p>
+      <div>
+        <span class="service-tag">Any domain</span>
+        <span class="service-tag">2-week deploy</span>
+        <span class="service-tag">Self-healing</span>
+        <span class="service-tag">Zero PII risk</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="reveal">
+    <div class="section-label">// open systems</div>
+    <h2>Production-grade.<br>Tested. Deployed.</h2>
+    <p class="section-sub">Real systems with real test suites. Not prototypes. Not proof-of-concepts. Production-ready autonomous systems built to enterprise standards.</p>
+  </div>
+  <div class="products-list reveal">
+    <div class="product-row">
+      <div>
+        <div class="product-name">Aether<span>2</span></div>
+        <div class="product-version">v2.0 — stable</div>
+      </div>
+      <div class="product-desc">AI-powered pipeline builder. Multi-step autonomous workflow engine with RAG indexing, MoE agent routing, and self-repair capability. The engine underneath every VKatOS deployment.</div>
+      <div class="product-meta">
+        <div class="product-tests">✓ 33/33 tests passing</div>
+        <a href="https://github.com/Vk-AtOS/aether2" target="_blank" class="product-link">github.com/Vk-AtOS/aether2 →</a>
+      </div>
+    </div>
+    <div class="product-row">
+      <div>
+        <div class="product-name">DC<span>SP</span></div>
+        <div class="product-version">v1.0 — stable</div>
+      </div>
+      <div class="product-desc">Distributed Control and Self-healing Platform. Watchdog system that monitors every pipeline stage, detects stalls in real time, fires auto-alerts, escalates to humans, and logs a tamper-proof audit trail.</div>
+      <div class="product-meta">
+        <div class="product-tests">✓ 469/469 tests passing</div>
+        <a href="https://github.com/Vk-AtOS/DSCP" target="_blank" class="product-link">github.com/Vk-AtOS/DSCP →</a>
+      </div>
+    </div>
+    <div class="product-row">
+      <div>
+        <div class="product-name">Vel<span>aris</span></div>
+        <div class="product-version">v1.0 — in development</div>
+      </div>
+      <div class="product-desc">Enterprise intelligence dashboard. Real-time visibility across all pipeline stages, candidates, documents, and deadlines. Single screen showing everything your team needs — without opening a spreadsheet.</div>
+      <div class="product-meta">
+        <div class="product-tests" style="color: var(--amber);">⚡ Active development</div>
+        <a href="https://github.com/Vk-AtOS" target="_blank" class="product-link">github.com/Vk-AtOS →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="reveal">
+    <div class="section-label">// architecture</div>
+    <h2>Your data stays<br>in your network.</h2>
+    <p class="section-sub">Connector-based architecture. We never touch your data. Your IT team installs a lightweight connector — that's the only access we need.</p>
+  </div>
+  <div class="how-grid reveal">
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Connector installed on your server</h3>
+          <p>Lightweight Python package. Your IT team installs it inside your network. Source code available for security review. Takes 30 minutes.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Connector strips all PII locally</h3>
+          <p>Before any signal leaves your network, PII is removed. Only structured data — stage, score, action-needed — is transmitted. Nothing sensitive ever leaves.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Axium platform processes and acts</h3>
+          <p>Our platform receives the signal, runs the AI scoring and routing, detects stalls, generates actions, and sends them back to your connector.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Actions execute inside your network</h3>
+          <p>Notifications, alerts, document requests, offer generation — all execute within your infrastructure. Full audit trail. Tamper-proof log. Zero external data exposure.</p>
+        </div>
+      </div>
+    </div>
+    <div class="how-visual">
+      <div style="color:var(--muted);margin-bottom:1rem;font-size:0.68rem;letter-spacing:0.15em;">ARCHITECTURE OVERVIEW</div>
+      <div class="arch-row">
+        <span class="arch-label">Your database</span>
+        <span class="arch-arrow">──┐</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">Your email / SMS</span>
+        <span class="arch-arrow">──┤ Connector</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">Your calendar</span>
+        <span class="arch-arrow">──┤ (your server)</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">Your CRM / ATS</span>
+        <span class="arch-arrow">──┘</span>
+      </div>
+      <hr class="arch-divider"/>
+      <div class="arch-row">
+        <span class="arch-label" style="color:var(--accent);">PII stripped locally</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-val">signals only</span>
+      </div>
+      <hr class="arch-divider"/>
+      <div class="arch-row">
+        <span class="arch-label">RAG engine</span>
+        <span class="arch-arrow">←→</span>
+        <span class="arch-val">VKatOS platform</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">MoE scoring</span>
+        <span class="arch-arrow">←→</span>
+        <span class="arch-val">VKatOS platform</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">DCSP watchdog</span>
+        <span class="arch-arrow">←→</span>
+        <span class="arch-val">VKatOS platform</span>
+      </div>
+      <hr class="arch-divider"/>
+      <div class="arch-row">
+        <span class="arch-label" style="color:var(--green);">Zero PII transmitted</span>
+        <span class="arch-arrow">✓</span>
+        <span class="arch-val">DPDP Act compliant</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid reveal">
+    <div class="founder-card">
+      <div class="founder-avatar">TV</div>
+      <div class="founder-name">Thulasi Velan Rajamanickam</div>
+      <div class="founder-title">Founder & Technical Architect</div>
+      <p class="founder-bio">Technical Product Architect based in Chennai. Built two production-grade autonomous systems — DCSP (469 tests) and Aether2 (33 tests) — from scratch. Specialises in enterprise pipeline automation, self-healing systems, and AI-powered workflow engines.</p>
+      <p class="founder-bio">Previously: enterprise system design, distributed architecture, and AI pipeline engineering across multiple domains.</p>
+      <div class="founder-links">
+        <a href="https://github.com/Vk-AtOS" target="_blank" class="founder-link">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" class="founder-link">LinkedIn</a>
+        <a href="mailto:Velan317@gmail.com" class="founder-link">Email</a>
+      </div>
+    </div>
+    <div class="about-content">
+      <div class="section-label">// about vkatos</div>
+      <h2>Built by someone who solves the problem, not describes it.</h2>
+      <p>VKatOS is an enterprise automation company founded in Chennai. We build autonomous operating systems — production-grade, battle-tested, deployed in two weeks — for industries where broken processes cost real money every day.</p>
+      <p><strong>We are not a consulting firm.</strong> We don't produce reports or recommendations. We build systems that run. Every engagement ends with working software in your infrastructure, not a slide deck on your desk.</p>
+      <p><strong>We start with three markets</strong> — enterprise HR, recruitment agencies, and study abroad consultancies — because we've documented the exact problems and built the exact solutions. We expand into any domain where the same pattern exists: a pipeline, documents, humans losing time, money leaking silently.</p>
+      <div class="values-grid">
+        <div class="value-item">
+          <strong>Ship first</strong>
+          <span>Working systems over perfect plans. We deploy, measure, and improve.</span>
+        </div>
+        <div class="value-item">
+          <strong>Zero trust required</strong>
+          <span>Your data stays in your network. Always. By architecture, not by promise.</span>
+        </div>
+        <div class="value-item">
+          <strong>Fixed price</strong>
+          <span>No surprise invoices. Scope agreed upfront. Price locked. Delivered.</span>
+        </div>
+        <div class="value-item">
+          <strong>Self-healing default</strong>
+          <span>Systems that fix themselves are better than systems that need fixing.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="section-label">// get in touch</div>
+    <h2>Ready to eliminate<br>a broken process?</h2>
+    <p class="section-sub">Tell us what's breaking. We'll tell you if we can fix it — and exactly how long it will take.</p>
+  </div>
+  <div class="contact-grid reveal">
+    <div class="contact-info">
+      <h3>Let's talk about your pipeline.</h3>
+      <p>Whether you're in HR, recruitment, education, or any other enterprise domain — if you have a process that stalls, we want to hear about it.</p>
+      <div class="contact-detail">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:Velan317@gmail.com">Velan317@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-label">Phone / WhatsApp</div>
+          <div class="contact-value"><a href="tel:+918056238628">+91 80562 38628</a></div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Location</div>
+          <div class="contact-value">Chennai, Tamil Nadu, India</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">⏱</div>
+        <div>
+          <div class="contact-label">Response time</div>
+          <div class="contact-value">Within 4 hours on business days</div>
+        </div>
+      </div>
+    </div>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Rajesh Kumar" required/>
+        </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" placeholder="Acme Corp" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="rajesh@acmecorp.com" required/>
+      </div>
+      <div class="form-group">
+        <label>Industry</label>
+        <select>
+          <option value="">Select your industry</option>
+          <option>Enterprise HR / Talent Acquisition</option>
+          <option>Recruitment Agency</option>
+          <option>Study Abroad Consultancy</option>
+          <option>Banking / Financial Services</option>
+          <option>Healthcare</option>
+          <option>Manufacturing</option>
+          <option>Other Enterprise</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Describe the broken process</label>
+        <textarea placeholder="Tell us what's taking too long, what your team is doing manually, what's costing you money or time..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Send message →</button>
+      <div id="form-success" style="display:none;color:var(--green);font-size:0.85rem;font-family:var(--font-mono);">✓ Message sent. We'll respond within 4 hours.</div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">VK<span>at</span>OS</a>
+  <div class="footer-copy">© 2026 VKatOS. Chennai, India. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="https://github.com/Vk-AtOS" target="_blank">GitHub</a>
+    <a href="mailto:Velan317@gmail.com">Email</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px, ${my-5}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(1.8)';
+    ring.style.width = '50px'; ring.style.height = '50px';
+    ring.style.borderColor = 'rgba(0,194,212,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px'; ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(0,194,212,0.4)';
+  });
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Form
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('form-success').style.display = 'block';
+  e.target.reset();
+  setTimeout(() => document.getElementById('form-success').style.display = 'none', 5000);
+}
+
+// Smooth nav shrink
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  nav.style.padding = window.scrollY > 50 ? '0.75rem 4rem' : '1.25rem 4rem';
+});
+</script>
+</body>
+</html>
