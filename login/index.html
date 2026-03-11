@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Client Portal Login — VKatOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #080F1E;
+  --navy2: #0D1829;
+  --blue: #1B4FD8;
+  --accent: #00C2D4;
+  --accent2: #00E5F5;
+  --white: #F0F4FF;
+  --muted: #4A5878;
+  --border: rgba(255,255,255,0.07);
+  --card: rgba(255,255,255,0.03);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,194,212,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease;
+}
+
+.login-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 3rem;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 4px;
+  text-align: center;
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  display: block;
+  text-decoration: none;
+  color: var(--white);
+}
+.logo span { color: var(--accent); }
+
+h1 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 2rem; }
+
+.form-group { text-align: left; margin-bottom: 1.5rem; }
+label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+input {
+  width: 100%;
+  background: var(--navy);
+  border: 1px solid var(--border);
+  padding: 0.85rem;
+  color: var(--white);
+  font-family: var(--font-body);
+  border-radius: 2px;
+}
+input:focus { outline: none; border-color: var(--accent); }
+
+.btn-signin {
+  width: 100%;
+  background: var(--accent);
+  color: var(--navy);
+  border: none;
+  padding: 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  border-radius: 2px;
+  cursor: none;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+.btn-signin:hover { background: var(--accent2); }
+
+.links { margin-top: 2rem; font-size: 0.85rem; }
+.links a { color: var(--accent); text-decoration: none; display: block; margin-bottom: 0.5rem; }
+.links a:hover { text-decoration: underline; }
+
+.note { font-size: 0.75rem; color: var(--muted); margin-top: 3rem; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="login-card">
+  <a href="/" class="logo">⚡ VK<span>at</span>OS</a>
+  <h1>Client Portal</h1>
+  
+  <form onsubmit="event.preventDefault(); document.getElementById('status').innerText = 'Access request pending...';">
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" placeholder="name@company.com" required/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" placeholder="••••••••" required/>
+    </div>
+    <button type="submit" class="btn-signin">Sign In</button>
+    <div id="status" style="margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);"></div>
+  </form>
+
+  <div class="links">
+    <a href="mailto:velan317@gmail.com">Request Access</a>
+    <a href="mailto:velan317@gmail.com?subject=Forgot%20Password">Forgot password? Contact support</a>
+  </div>
+
+  <div class="note">
+    Portal access is provisioned per contract.<br>
+    Contact velan317@gmail.com to request access for your organization.
+  </div>
+</div>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px, ${my-5}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+</script>
+</body>
+</html>
