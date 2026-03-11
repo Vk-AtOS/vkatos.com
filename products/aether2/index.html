@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aether2 — Autonomous Pipeline Orchestration | VKatOS</title>
+<meta name="description" content="Multi-step AI pipelines that survive failure, adapt to load, and never need babysitting. MoE Architecture. Ollama Native."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #080F1E;
+  --navy2: #0D1829;
+  --blue: #1B4FD8;
+  --accent: #00C2D4;
+  --accent2: #00E5F5;
+  --green: #00D68F;
+  --white: #F0F4FF;
+  --muted: #4A5878;
+  --border: rgba(255,255,255,0.07);
+  --card: rgba(255,255,255,0.03);
+  --card-hover: rgba(255,255,255,0.06);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,194,212,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
+}
+a, button { cursor: none; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,15,30,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.btn-login {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: rgba(240,244,255,0.55);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.btn-login:hover { color: var(--white); }
+.btn-demo {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-demo:hover { background: var(--accent2); }
+
+/* ── PRODUCT HERO ── */
+.product-hero {
+  padding: 10rem 4rem 4rem;
+  text-align: center;
+  position: relative;
+}
+.hero-badge-row { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.badge {
+  background: rgba(0,194,212,0.08);
+  border: 1px solid rgba(0,194,212,0.2);
+  padding: 0.35rem 0.9rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+.badge.green { color: var(--green); border-color: rgba(0,214,143,0.2); background: rgba(0,214,143,0.08); }
+h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 1rem; }
+.hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 600px; margin: 0 auto 3rem; }
+
+/* ── FEATURES ── */
+.features-section { padding: 6rem 4rem; }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 3rem;
+  border-radius: 4px;
+}
+.feature-card h3 { font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 1rem; }
+.feature-card p { font-size: 0.9rem; color: var(--muted); }
+
+/* ── ARCHITECTURE ── */
+.arch-section { padding: 8rem 4rem; background: var(--navy2); text-align: center; }
+.arch-visual {
+  max-width: 1000px;
+  margin: 4rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 4rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  position: relative;
+  border-radius: 4px;
+}
+.arch-box {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--navy);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 2;
+}
+.arch-box.accent { border-color: var(--accent); color: var(--accent); }
+.arch-arrow {
+  flex-grow: 1;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+}
+.arch-arrow::after {
+  content: '→';
+  position: absolute;
+  right: -5px; top: -10px;
+  color: var(--muted);
+}
+.arch-moe {
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.moe-box {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  font-size: 0.7rem;
+  background: rgba(255,255,255,0.02);
+}
+
+/* ── TECH SPECS ── */
+.specs-section { padding: 8rem 4rem; }
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.specs-list { list-style: none; }
+.specs-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.spec-label { color: var(--muted); font-family: var(--font-mono); }
+.spec-value { color: var(--white); font-weight: 500; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 5rem 4rem 2rem;
+  background: var(--navy);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  display: block;
+}
+.footer-logo span { color: var(--accent); }
+.footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--white);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.75rem; }
+.footer-col ul li a {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 1024px) {
+  .features-grid, .specs-grid { grid-template-columns: 1fr; }
+  .arch-visual { flex-direction: column; padding: 2rem; }
+  .arch-arrow { width: 1px; height: 30px; flex-grow: 0; margin: 10px 0; }
+  .arch-arrow::after { transform: rotate(90deg); bottom: -15px; top: auto; right: -5px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links, .btn-login { display: none; }
+  .product-hero, .features-section, .arch-section, .specs-section, footer { padding: 4rem 1.5rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">⚡ VK<span>at</span>OS</a>
+  <ul class="nav-links">
+    <li><a href="/#products">Products</a></li>
+    <li><a href="/#solutions">Solutions</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="/login" class="btn-login">Client Login</a>
+    <a href="/contact" class="btn-demo">Request Demo</a>
+  </div>
+</nav>
+
+<section class="product-hero reveal">
+  <div class="hero-badge-row">
+    <span class="badge green">33 TESTS PASSING</span>
+    <span class="badge">MOE ARCHITECTURE</span>
+    <span class="badge">OLLAMA NATIVE</span>
+    <span class="badge">SELF-RECOVERING</span>
+  </div>
+  <h1>Aether2 — Autonomous<br>Pipeline Orchestration</h1>
+  <p class="hero-sub">Multi-step AI pipelines that survive failure, adapt to load, and never need babysitting. Offline first, production hardened.</p>
+  <a href="/contact" class="btn-demo" style="display:inline-block; padding: 1rem 3.5rem;">Request Live Demo</a>
+</section>
+
+<section class="features-section reveal">
+  <div class="features-grid">
+    <div class="feature-card">
+      <h3>Multi-step Orchestration</h3>
+      <p>Orchestrate complex AI workflows with automatic retry and recovery. If a stage fails, Aether2 adapts and resumes.</p>
+    </div>
+    <div class="feature-card">
+      <h3>MoE Agent Routing</h3>
+      <p>Mixture of Experts (MoE) routing ensures the right model handles the right task, optimizing for both speed and accuracy.</p>
+    </div>
+    <div class="feature-card">
+      <h3>DCSP Native Health</h3>
+      <p>Deeply integrated with DCSP for real-time health monitoring of every AI-powered pipeline stage.</p>
+    </div>
+  </div>
+</section>
+
+<section class="arch-section reveal">
+  <span class="section-label">// architecture</span>
+  <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-top: 1rem;">Mixture of Experts Pipeline</h2>
+  
+  <div class="arch-visual">
+    <div class="arch-box">INPUT</div>
+    <div class="arch-arrow"></div>
+    <div class="arch-box accent">STAGE ROUTER</div>
+    <div class="arch-arrow"></div>
+    <div class="arch-moe">
+      <div class="moe-box">Expert 1: Llama3.2</div>
+      <div class="moe-box">Expert 2: Mistral</div>
+      <div class="moe-box">Expert 3: DeepSeek</div>
+    </div>
+    <div class="arch-arrow"></div>
+    <div class="arch-box">AGGREGATOR</div>
+    <div class="arch-arrow"></div>
+    <div class="arch-box accent">DCSP MONITOR</div>
+    <div class="arch-arrow"></div>
+    <div class="arch-box">OUTPUT</div>
+  </div>
+</section>
+
+<section class="specs-section reveal">
+  <div class="specs-grid">
+    <div>
+      <h3 font-family="var(--font-display)" style="font-size: 2rem; margin-bottom: 2rem;">Technical Specs</h3>
+      <ul class="specs-list">
+        <li><span class="spec-label">Language</span> <span class="spec-value">Python 3.10+</span></li>
+        <li><span class="spec-label">Tests Passing</span> <span class="spec-value">33 / 33</span></li>
+        <li><span class="spec-label">AI Backend</span> <span class="spec-value">Ollama (Offline) / OpenAI</span></li>
+        <li><span class="spec-label">Models Supported</span> <span class="spec-value">Llama3.2, Qwen2.5, Mistral</span></li>
+        <li><span class="spec-label">Routing</span> <span class="spec-value">Mixture of Experts (MoE)</span></li>
+        <li><span class="spec-label">Recovery</span> <span class="spec-value">Exponential Backoff Retry</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3 font-family="var(--font-display)" style="font-size: 2rem; margin-bottom: 2rem;">Common Use Cases</h3>
+      <ul class="specs-list">
+        <li><span class="spec-label">HR</span> <span class="spec-value">Automated Resume Scoring</span></li>
+        <li><span class="spec-label">Recruitment</span> <span class="spec-value">Candidate-Job Matching</span></li>
+        <li><span class="spec-label">Legal</span> <span class="spec-value">Document Classification</span></li>
+        <li><span class="spec-label">Operations</span> <span class="spec-value">Multi-step Data Extraction</span></li>
+      </ul>
+      <p style="margin-top: 2rem; color: var(--muted); font-size: 0.9rem;">
+        Aether2 is designed to run in air-gapped environments without any external internet dependency.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="bottom-cta reveal" style="text-align: center; padding: 8rem 4rem;">
+  <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 1rem;">Orchestrate with confidence.</h2>
+  <p style="color: var(--muted); margin-bottom: 3rem;">See how Aether2 can transform your multi-step AI workflows.</p>
+  <a href="/contact" class="btn-demo" style="display:inline-block; padding: 1rem 3.5rem;">Request Demo</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="/" class="footer-logo">⚡ VK<span>at</span>OS</a>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-top: 1rem;">Autonomous operating systems for the enterprise. Zero-PII, offline-first, production-ready.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="/products/dcsp">DCSP</a></li>
+        <li><a href="/products/aether2">Aether2</a></li>
+        <li><a href="/products/velaris">Velaris</a></li>
+        <li><a href="/#products">VKatOS Platform</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="/solutions/hr">Enterprise HR</a></li>
+        <li><a href="/solutions/recruitment">Recruitment</a></li>
+        <li><a href="/solutions/education">Study Abroad</a></li>
+        <li><a href="/solutions/custom">Custom</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/careers">Careers</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://github.com/Vk-AtOS">GitHub</a></li>
+        <li><a href="mailto:velan317@gmail.com">Email</a></li>
+        <li><a href="tel:+918056238628">+91 80562 38628</a></li>
+        <li><a href="#">Chennai, Tamil Nadu</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 VKatOS. All rights reserved. | <a href="/privacy" style="color:var(--muted); text-decoration:none;">Privacy</a> | <a href="/terms" style="color:var(--muted); text-decoration:none;">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px, ${my-5}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(1.8)';
+    ring.style.width = '50px'; ring.style.height = '50px';
+    ring.style.borderColor = 'rgba(0,194,212,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px'; ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(0,194,212,0.4)';
+  });
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
