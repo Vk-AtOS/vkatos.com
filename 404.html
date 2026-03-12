@@ -83,6 +83,12 @@ p { color: var(--muted); font-size: 1.1rem; margin-bottom: 3rem; }
 }
 .links a:hover { background: rgba(0,194,212,0.05); border-color: var(--accent); }
 
+@media (max-width: 768px) {
+  body { padding: 20px; }
+  .glow-404 { font-size: 8rem; }
+  .links { flex-direction: column; gap: 1rem; width: 100%; }
+}
+
 /* GRID */
 .grid {
   position: absolute; inset: 0;
