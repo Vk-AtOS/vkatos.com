@@ -1,1221 +1,814 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>VKatOS — Autonomous Enterprise Systems</title>
-<meta name="description" content="VKatOS builds autonomous operating systems for enterprise — self-healing pipelines that eliminate broken processes, detect failures in real time, and deploy in weeks."/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VKatOS — Autonomous Enterprise Infrastructure</title>
+<meta name="description" content="Any enterprise process that runs in stages can stall, fail, and cost you millions. VKatOS makes it self-healing. Manufacturing. Logistics. Banking. Healthcare. Any pipeline.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy: #080F1E;
-  --navy2: #0D1829;
-  --blue: #1B4FD8;
-  --blue2: #2563EB;
-  --accent: #00C2D4;
-  --accent2: #00E5F5;
-  --green: #00D68F;
-  --amber: #F5A623;
-  --red: #FF4D6D;
-  --white: #F0F4FF;
-  --muted: #4A5878;
-  --border: rgba(255,255,255,0.07);
-  --card: rgba(255,255,255,0.03);
-  --card-hover: rgba(255,255,255,0.06);
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --font-mono: 'DM Mono', monospace;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--navy);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-weight: 300;
-  line-height: 1.7;
-  overflow-x: hidden;
-  cursor: none;
-}
+  :root {
+    --bg: #04080F;
+    --bg2: #070D17;
+    --surface: #0A1220;
+    --border: rgba(0,194,212,0.12);
+    --cyan: #00C2D4;
+    --cyan2: #00E5FF;
+    --white: #F0F4FF;
+    --muted: #6B7A99;
+    --red: #FF4D6D;
+    --green: #00E87A;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--cyan);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(0,194,212,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transition: width 0.2s, height 0.2s, border-color 0.2s;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1; opacity: 0.5;
+  }
+  .mesh {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(0,194,212,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 80%, rgba(0,194,212,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,229,255,0.02) 0%, transparent 70%);
+  }
 
-/* ── CUSTOM CURSOR ── */
-.cursor {
-  width: 10px; height: 10px;
-  background: var(--accent);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.15s ease;
-  mix-blend-mode: screen;
-}
-.cursor-ring {
-  width: 36px; height: 36px;
-  border: 1px solid rgba(0,194,212,0.4);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9998;
-  transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
-}
-a, button { cursor: none; }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 22px 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(4,8,15,0.88);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    padding: 16px 56px;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 800; letter-spacing: -0.5px;
+    color: var(--white); text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo span { color: var(--cyan); }
+  .logo-dot { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; }
+  .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta { padding: 10px 24px !important; background: transparent !important; border: 1px solid var(--border) !important; color: var(--cyan) !important; border-radius: 4px !important; transition: all 0.2s !important; }
+  .nav-cta:hover { background: rgba(0,194,212,0.08) !important; border-color: var(--cyan) !important; color: var(--white) !important; }
 
-/* ── NOISE OVERLAY ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 1; opacity: 0.4;
-}
+  section { position: relative; z-index: 10; }
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 1.25rem 4rem;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(8,15,30,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  transition: padding 0.3s;
-}
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--white);
-  text-decoration: none;
-}
-.nav-logo span { color: var(--accent); }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; }
-.nav-links a {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: rgba(240,244,255,0.55);
-  text-decoration: none;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--white); }
-.nav-cta {
-  background: var(--accent);
-  color: var(--navy) !important;
-  padding: 0.5rem 1.25rem;
-  border-radius: 2px;
-  font-weight: 500 !important;
-  font-size: 0.8rem !important;
-  letter-spacing: 0.08em !important;
-  transition: background 0.2s, transform 0.2s !important;
-}
-.nav-cta:hover { background: var(--accent2) !important; transform: translateY(-1px); }
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 140px 48px 100px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 18px;
+    background: rgba(0,194,212,0.06);
+    border: 1px solid rgba(0,194,212,0.2);
+    border-radius: 100px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--cyan);
+    letter-spacing: 0.08em; margin-bottom: 44px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .badge-dot { width: 5px; height: 5px; background: var(--cyan); border-radius: 50%; animation: pulse 1.5s infinite; }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(52px, 9vw, 104px);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 960px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--cyan2) 40%, #7B8FFF 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px); color: var(--muted);
+    max-width: 560px; margin: 32px auto 0;
+    font-weight: 300; line-height: 1.8;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-tags {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;
+    margin: 28px auto 0; max-width: 640px;
+    animation: fadeUp 0.8s 0.25s ease both;
+  }
+  .ind-tag {
+    font-family: var(--font-mono); font-size: 10px;
+    color: rgba(0,194,212,0.55); letter-spacing: 0.1em;
+    padding: 4px 12px; border: 1px solid rgba(0,194,212,0.1); border-radius: 3px;
+  }
+  .hero-actions {
+    display: flex; align-items: center; gap: 16px; margin-top: 52px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .btn-primary {
+    padding: 16px 40px;
+    background: var(--cyan); color: #04080F;
+    font-family: var(--font-display); font-weight: 700; font-size: 14px;
+    letter-spacing: 0.02em; border: none; border-radius: 4px;
+    cursor: none; text-decoration: none; transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 48px rgba(0,194,212,0.35); background: var(--cyan2); }
+  .btn-ghost {
+    padding: 16px 40px; background: transparent; color: var(--white);
+    font-family: var(--font-display); font-weight: 600; font-size: 14px;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+    cursor: none; text-decoration: none; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+  .stats-row {
+    display: flex; align-items: stretch;
+    border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    margin-top: 80px; max-width: 720px; width: 100%;
+    animation: fadeUp 0.8s 0.4s ease both;
+    background: rgba(10,18,32,0.7); backdrop-filter: blur(12px);
+  }
+  .stat { flex: 1; padding: 24px 28px; text-align: center; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+  .stat-n {
+    font-family: var(--font-display); font-size: 34px; font-weight: 800;
+    color: var(--cyan); letter-spacing: -0.03em; line-height: 1;
+  }
+  .stat-l { font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .scroll-cue {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: fadeUp 1s 1.2s ease both;
+  }
+  .scroll-cue span { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.14em; }
+  .scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--cyan), transparent); animation: scrollFade 2s ease-in-out infinite; }
 
-/* ── HERO ── */
-#hero {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  padding: 8rem 4rem 4rem;
-  position: relative;
-  overflow: hidden;
-}
-.hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,194,212,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,194,212,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-}
-.hero-glow {
-  position: absolute;
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(27,79,216,0.18) 0%, transparent 70%);
-  top: -100px; right: -100px;
-  border-radius: 50%;
-  pointer-events: none;
-}
-.hero-glow2 {
-  position: absolute;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(0,194,212,0.1) 0%, transparent 70%);
-  bottom: 50px; left: -50px;
-  border-radius: 50%;
-  pointer-events: none;
-}
-.hero-content { position: relative; z-index: 2; max-width: 820px; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: rgba(0,194,212,0.08);
-  border: 1px solid rgba(0,194,212,0.2);
-  padding: 0.35rem 0.9rem;
-  border-radius: 2px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--accent);
-  letter-spacing: 0.12em;
-  margin-bottom: 2rem;
-  opacity: 0; animation: fadeUp 0.6s ease 0.2s forwards;
-}
-.hero-badge::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.8); }
-}
-h1 {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 7vw, 5.5rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  margin-bottom: 1.5rem;
-  opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards;
-}
-h1 .line2 { color: var(--accent); }
-.hero-sub {
-  font-size: 1.15rem;
-  color: rgba(240,244,255,0.55);
-  max-width: 560px;
-  margin-bottom: 2.5rem;
-  font-weight: 300;
-  opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards;
-}
-.hero-actions {
-  display: flex; gap: 1rem; align-items: center;
-  opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards;
-}
-.btn-primary {
-  background: var(--accent);
-  color: var(--navy);
-  padding: 0.85rem 2rem;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  border: none; border-radius: 2px;
-  text-decoration: none;
-  transition: all 0.2s;
-  display: inline-flex; align-items: center; gap: 0.5rem;
-}
-.btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,194,212,0.25); }
-.btn-ghost {
-  color: rgba(240,244,255,0.7);
-  padding: 0.85rem 1.5rem;
-  font-size: 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  text-decoration: none;
-  transition: all 0.2s;
-  display: inline-flex; align-items: center; gap: 0.5rem;
-}
-.btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--white); background: var(--card); }
-.hero-stats {
-  display: flex; gap: 3rem; margin-top: 4rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border);
-  opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards;
-}
-.stat-item { }
-.stat-num {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--white);
-  letter-spacing: -0.03em;
-}
-.stat-num span { color: var(--accent); }
-.stat-label {
-  font-size: 0.78rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-top: 0.2rem;
-}
+  /* TERMINAL */
+  .terminal-wrap { padding: 60px 48px 100px; display: flex; justify-content: center; }
+  .terminal {
+    width: 100%; max-width: 840px;
+    background: #060C16; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 48px 96px rgba(0,0,0,0.65), 0 0 80px rgba(0,194,212,0.05);
+    font-family: var(--font-mono); font-size: 13px;
+  }
+  .t-bar {
+    padding: 14px 20px; background: rgba(10,18,32,0.9);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .t-dot.r { background: #FF5F57; } .t-dot.y { background: #FEBC2E; } .t-dot.g { background: #28C840; }
+  .t-ttl { flex: 1; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+  .t-body { padding: 28px; line-height: 2.1; }
+  .tl { display: flex; gap: 14px; opacity: 0; animation: tLine 0.25s ease forwards; }
+  .tl:nth-child(1){animation-delay:0.6s} .tl:nth-child(2){animation-delay:1.1s}
+  .tl:nth-child(3){animation-delay:1.6s} .tl:nth-child(4){animation-delay:2.1s}
+  .tl:nth-child(5){animation-delay:2.6s} .tl:nth-child(6){animation-delay:3.0s}
+  .tl:nth-child(7){animation-delay:3.5s} .tl:nth-child(8){animation-delay:4.0s}
+  .tl:nth-child(9){animation-delay:4.5s} .tl:nth-child(10){animation-delay:5.0s}
+  .tl:nth-child(11){animation-delay:5.5s}
+  .tp{color:var(--cyan)} .tc{color:var(--white)} .tok{color:var(--green)}
+  .tw{color:#FFB800} .tm{color:var(--muted)} .ta{color:var(--red);font-weight:500}
+  .tact{color:var(--cyan2)} .tblank{height:10px}
 
-/* ── TERMINAL WINDOW ── */
-.hero-terminal {
-  position: absolute;
-  right: 4rem; top: 50%;
-  transform: translateY(-50%);
-  width: 420px;
-  background: rgba(13,24,41,0.9);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,194,212,0.1);
-  opacity: 0; animation: fadeLeft 0.8s ease 0.9s forwards;
-  z-index: 2;
-}
-.terminal-bar {
-  background: rgba(255,255,255,0.04);
-  padding: 0.65rem 1rem;
-  display: flex; align-items: center; gap: 0.4rem;
-  border-bottom: 1px solid var(--border);
-}
-.dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot.r { background: #FF5F57; }
-.dot.y { background: #FEBC2E; }
-.dot.g { background: #28C840; }
-.terminal-title {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--muted);
-  margin-left: auto; margin-right: auto;
-}
-.terminal-body { padding: 1.25rem; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.8; }
-.t-muted { color: var(--muted); }
-.t-accent { color: var(--accent); }
-.t-green { color: var(--green); }
-.t-amber { color: var(--amber); }
-.t-red { color: var(--red); }
-.t-white { color: var(--white); }
-.t-blue { color: #60A5FA; }
-.cursor-blink {
-  display: inline-block;
-  width: 7px; height: 13px;
-  background: var(--accent);
-  animation: blink 1s infinite;
-  vertical-align: middle;
-  margin-left: 2px;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  /* PROBLEM */
+  .problem { padding: 120px 48px; max-width: 1200px; margin: 0 auto; }
+  .slabel {
+    font-family: var(--font-mono); font-size: 11px; color: var(--cyan);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 14px;
+  }
+  .slabel::before { content:''; width:28px; height:1px; background:var(--cyan); }
+  .stitle {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px); font-weight: 800;
+    line-height: 1.02; letter-spacing: -0.03em; max-width: 760px;
+  }
+  .stitle em { font-style: normal; color: var(--cyan); }
+  .pgrid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    margin-top: 64px;
+  }
+  .pcard {
+    background: var(--bg2); padding: 48px 36px;
+    transition: background 0.3s; position: relative; overflow: hidden;
+  }
+  .pcard::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .pcard:hover { background: #0A1220; }
+  .pcard:hover::before { opacity: 1; }
+  .pind { font-family: var(--font-mono); font-size: 10px; color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+  .pcard h3 { font-family: var(--font-display); font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .pcard p { font-size: 14px; color: var(--muted); line-height: 1.75; }
+  .pstat { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: baseline; gap: 8px; }
+  .pnum { font-family: var(--font-display); font-size: 30px; font-weight: 800; color: var(--red); }
+  .pdesc { font-size: 12px; color: var(--muted); }
 
-/* ── SECTIONS SHARED ── */
-section { padding: 6rem 4rem; position: relative; }
-.section-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-h2 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-}
-.section-sub {
-  font-size: 1rem;
-  color: rgba(240,244,255,0.5);
-  max-width: 540px;
-  font-weight: 300;
-}
+  /* INDUSTRIES */
+  .industries { padding: 120px 48px; }
+  .inds-inner { max-width: 1200px; margin: 0 auto; }
+  .igrid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-top: 64px;
+  }
+  .icard {
+    padding: 32px 28px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 8px;
+    transition: all 0.3s; cursor: none; position: relative; overflow: hidden;
+  }
+  .icard::after {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(0,194,212,0.07) 0%, transparent 70%);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .icard:hover { border-color: rgba(0,194,212,0.3); transform: translateY(-5px); box-shadow: 0 20px 48px rgba(0,0,0,0.4); }
+  .icard:hover::after { opacity: 1; }
+  .iicon { font-size: 30px; margin-bottom: 16px; }
+  .iname { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .idesc { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-/* ── PROBLEM SECTION ── */
-#problem { background: var(--navy2); }
-.problem-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  margin-top: 4rem;
-  background: var(--border);
-  border: 1px solid var(--border);
-}
-.problem-card {
-  background: var(--navy2);
-  padding: 2.5rem;
-  transition: background 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.problem-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
-}
-.problem-card:hover { background: var(--card-hover); }
-.problem-card:hover::before { transform: scaleX(1); }
-.problem-industry {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-.problem-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  letter-spacing: -0.02em;
-}
-.problem-card p {
-  font-size: 0.88rem;
-  color: rgba(240,244,255,0.5);
-  line-height: 1.7;
-}
-.problem-stat {
-  margin-top: 1.5rem;
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: -0.04em;
-}
-.problem-stat-label {
-  font-size: 0.78rem;
-  color: var(--muted);
-  margin-top: 0.2rem;
-}
+  /* HOW */
+  .how { padding: 120px 48px; max-width: 1200px; margin: 0 auto; }
+  .hsteps {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 48px; margin-top: 64px; position: relative;
+  }
+  .hsteps::before {
+    content:''; position:absolute; top:27px;
+    left:calc(16.67% + 20px); right:calc(16.67% + 20px);
+    height:1px; background:linear-gradient(90deg,var(--cyan),rgba(0,194,212,0.15),var(--cyan));
+  }
+  .hstep { text-align: center; }
+  .snum {
+    width: 56px; height: 56px;
+    border: 1px solid var(--cyan); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 14px; color: var(--cyan);
+    margin: 0 auto 24px; background: var(--bg); position: relative; z-index: 1;
+    transition: all 0.3s;
+  }
+  .hstep:hover .snum { background: rgba(0,194,212,0.1); box-shadow: 0 0 24px rgba(0,194,212,0.2); }
+  .stept { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .stepd { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
-/* ── SERVICES ── */
-#services { }
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 4rem;
-}
-.service-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2.5rem;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.service-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0,194,212,0.05) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.service-card:hover { border-color: rgba(0,194,212,0.2); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.service-card:hover::after { opacity: 1; }
-.service-icon {
-  width: 48px; height: 48px;
-  background: rgba(0,194,212,0.1);
-  border: 1px solid rgba(0,194,212,0.15);
-  border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem;
-  margin-bottom: 1.5rem;
-}
-.service-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.75rem;
-}
-.service-card p {
-  font-size: 0.88rem;
-  color: rgba(240,244,255,0.5);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-.service-tag {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--accent);
-  background: rgba(0,194,212,0.08);
-  border: 1px solid rgba(0,194,212,0.15);
-  padding: 0.2rem 0.6rem;
-  border-radius: 2px;
-  margin-right: 0.4rem;
-  margin-bottom: 0.4rem;
-}
+  /* PRODUCTS */
+  .products { padding: 120px 48px; background: var(--bg2); }
+  .prods-inner { max-width: 1200px; margin: 0 auto; }
+  .prodgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
+  .prodcard {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; transition: all 0.3s;
+  }
+  .prodcard:hover { border-color: rgba(0,194,212,0.3); transform: translateY(-6px); box-shadow: 0 28px 64px rgba(0,0,0,0.45); }
+  .prodhead {
+    padding: 32px 32px 24px; border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(0,194,212,0.04) 0%, transparent 60%);
+  }
+  .ptag {
+    font-family: var(--font-mono); font-size: 10px; color: var(--cyan);
+    letter-spacing: 0.12em; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tdot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  .pname { font-family: var(--font-display); font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .ptag2 { font-size: 14px; color: var(--muted); line-height: 1.65; }
+  .prodbody { padding: 28px 32px 32px; }
+  .pfeats { list-style: none; }
+  .pfeats li {
+    font-size: 13px; color: var(--muted); padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .pfeats li::before { content:'→'; color:var(--cyan); font-size:11px; }
+  .pfeats li:last-child { border-bottom: none; }
+  .tbadge {
+    margin-top: 24px; padding: 12px 16px;
+    background: rgba(0,232,122,0.06); border: 1px solid rgba(0,232,122,0.15);
+    border-radius: 6px; display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--green);
+  }
 
-/* ── PRODUCTS ── */
-#products { background: var(--navy2); }
-.products-list { margin-top: 4rem; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-.product-row {
-  background: var(--navy2);
-  padding: 2.5rem 3rem;
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  align-items: center;
-  gap: 3rem;
-  transition: background 0.2s;
-  border-left: 3px solid transparent;
-}
-.product-row:hover { background: var(--card-hover); border-left-color: var(--accent); }
-.product-name {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-.product-name span { color: var(--accent); }
-.product-version {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--muted);
-  margin-top: 0.2rem;
-}
-.product-desc {
-  font-size: 0.9rem;
-  color: rgba(240,244,255,0.55);
-  line-height: 1.6;
-}
-.product-meta { text-align: right; }
-.product-tests {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--green);
-}
-.product-link {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--accent);
-  text-decoration: none;
-  margin-top: 0.5rem;
-  transition: gap 0.2s;
-}
-.product-link:hover { gap: 0.7rem; }
+  /* VIDEO */
+  .vidwrap { padding: 100px 48px; max-width: 900px; margin: 0 auto; text-align: center; }
+  .vidbox {
+    margin-top: 56px; border: 1px solid var(--border); border-radius: 16px;
+    background: #060C16; aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 48px 96px rgba(0,0,0,0.55), 0 0 80px rgba(0,194,212,0.06);
+    position: relative; overflow: hidden;
+  }
+  .vidbox::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,194,212,0.04) 0%, transparent 70%);
+  }
+  .vph { display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 1; }
+  .playbtn {
+    width: 76px; height: 76px;
+    background: rgba(0,194,212,0.08); border: 1px solid rgba(0,194,212,0.3);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s; cursor: none;
+  }
+  .playbtn:hover { background: rgba(0,194,212,0.18); transform: scale(1.1); box-shadow: 0 0 40px rgba(0,194,212,0.2); }
+  .vlabel { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
 
-/* ── HOW IT WORKS ── */
-#how {  }
-.how-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  margin-top: 4rem;
-  align-items: center;
-}
-.how-steps { display: flex; flex-direction: column; gap: 0; }
-.how-step {
-  display: flex; gap: 1.5rem;
-  padding: 2rem 0;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.how-step:last-child { border-bottom: none; }
-.step-num {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: rgba(0,194,212,0.15);
-  line-height: 1;
-  min-width: 3rem;
-  transition: color 0.3s;
-}
-.how-step:hover .step-num { color: var(--accent); }
-.step-content h3 {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.02em;
-}
-.step-content p { font-size: 0.88rem; color: rgba(240,244,255,0.5); }
-.how-visual {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  line-height: 2;
-}
-.arch-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-radius: 3px; margin-bottom: 0.5rem; }
-.arch-row:hover { background: rgba(255,255,255,0.03); }
-.arch-label { color: var(--muted); min-width: 160px; }
-.arch-arrow { color: rgba(0,194,212,0.4); }
-.arch-val { color: var(--green); }
-.arch-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+  /* PRICING */
+  .pricing { padding: 120px 48px; }
+  .price-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .pgrid2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; text-align: left; }
+  .pricecard {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 40px 36px; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .pricecard.hot {
+    border-color: var(--cyan);
+    background: linear-gradient(135deg, rgba(0,194,212,0.06) 0%, var(--surface) 60%);
+  }
+  .pricecard.hot::before {
+    content:'MOST POPULAR'; position:absolute; top:20px; right:20px;
+    font-family:var(--font-mono); font-size:9px; color:var(--cyan);
+    letter-spacing:0.12em; padding:4px 10px;
+    border:1px solid rgba(0,194,212,0.3); border-radius:100px;
+  }
+  .pricecard:hover { transform: translateY(-5px); }
+  .planname { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+  .planprice { font-family: var(--font-display); font-size: 46px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+  .planperiod { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+  .plandiv { height: 1px; background: var(--border); margin-bottom: 28px; }
+  .planfeat { list-style: none; }
+  .planfeat li {
+    font-size: 14px; color: var(--muted); padding: 9px 0;
+    display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
+  }
+  .planfeat li::before { content:'✓'; color:var(--cyan); flex-shrink:0; margin-top:2px; }
+  .plancta {
+    display: block; margin-top: 32px; padding: 14px 24px; text-align: center;
+    border: 1px solid var(--border); border-radius: 4px; color: var(--white);
+    text-decoration: none; font-weight: 700; font-size: 14px;
+    font-family: var(--font-display); transition: all 0.2s;
+  }
+  .plancta:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.3); }
+  .pricecard.hot .plancta { background: var(--cyan); color: #04080F; border-color: var(--cyan); }
+  .pricecard.hot .plancta:hover { background: var(--cyan2); }
 
-/* ── ABOUT ── */
-#about { background: var(--navy2); }
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 5rem;
-  margin-top: 4rem;
-  align-items: start;
-}
-.founder-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2.5rem;
-  position: relative;
-  overflow: hidden;
-}
-.founder-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--blue2));
-}
-.founder-avatar {
-  width: 80px; height: 80px;
-  background: linear-gradient(135deg, var(--blue2), var(--accent));
-  border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--navy);
-  margin-bottom: 1.5rem;
-}
-.founder-name {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.2rem;
-}
-.founder-title {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-  margin-bottom: 1.5rem;
-}
-.founder-bio {
-  font-size: 0.88rem;
-  color: rgba(240,244,255,0.55);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-.founder-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.founder-link {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--accent);
-  text-decoration: none;
-  border: 1px solid rgba(0,194,212,0.2);
-  padding: 0.3rem 0.75rem;
-  border-radius: 2px;
-  transition: all 0.2s;
-}
-.founder-link:hover { background: rgba(0,194,212,0.1); border-color: var(--accent); }
-.about-content h2 { margin-bottom: 1.5rem; }
-.about-content p {
-  font-size: 0.95rem;
-  color: rgba(240,244,255,0.6);
-  line-height: 1.8;
-  margin-bottom: 1.25rem;
-}
-.about-content p strong { color: var(--white); font-weight: 500; }
-.values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-.value-item {
-  padding: 1.25rem;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  font-size: 0.85rem;
-}
-.value-item strong { display: block; font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--white); }
-.value-item span { color: rgba(240,244,255,0.45); font-size: 0.82rem; }
+  /* CONTACT */
+  .contact { padding: 100px 48px 80px; max-width: 820px; margin: 0 auto; text-align: center; }
+  .cbox {
+    margin-top: 56px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 16px; padding: 56px 64px;
+  }
+  .cform { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
+  .crow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .finput {
+    padding: 14px 18px; background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border); border-radius: 6px;
+    color: var(--white); font-family: var(--font-body); font-size: 14px;
+    outline: none; transition: border 0.2s; width: 100%;
+  }
+  .finput:focus { border-color: rgba(0,194,212,0.4); }
+  .finput::placeholder { color: var(--muted); }
+  select.finput { color: var(--muted); appearance: none; }
+  select.finput option { background: #0A1220; color: var(--white); }
+  textarea.finput { min-height: 120px; resize: vertical; }
+  .fsub {
+    padding: 16px; background: var(--cyan); color: #04080F;
+    border: none; border-radius: 6px;
+    font-family: var(--font-display); font-weight: 700; font-size: 15px;
+    cursor: none; transition: all 0.25s; letter-spacing: 0.02em;
+  }
+  .fsub:hover { background: var(--cyan2); transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,194,212,0.28); }
+  .calt { display: flex; justify-content: center; gap: 40px; margin-top: 32px; flex-wrap: wrap; }
+  .ci { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .ci a { color: var(--cyan); text-decoration: none; }
+  .ci a:hover { color: var(--white); }
 
-/* ── CONTACT ── */
-#contact { }
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 5rem;
-  margin-top: 4rem;
-  align-items: start;
-}
-.contact-info h3 {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  letter-spacing: -0.02em;
-}
-.contact-info p { font-size: 0.9rem; color: rgba(240,244,255,0.5); margin-bottom: 2rem; line-height: 1.7; }
-.contact-detail {
-  display: flex; align-items: flex-start; gap: 1rem;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--border);
-}
-.contact-detail:last-of-type { border-bottom: none; }
-.contact-icon { font-size: 1.1rem; margin-top: 0.1rem; }
-.contact-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.2rem; }
-.contact-value { font-size: 0.9rem; color: var(--white); }
-.contact-value a { color: var(--accent); text-decoration: none; }
-.contact-value a:hover { text-decoration: underline; }
+  /* FOOTER */
+  footer {
+    padding: 40px 56px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; z-index: 10; flex-wrap: wrap; gap: 20px;
+  }
+  .flogo { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--white); text-decoration: none; }
+  .flogo span { color: var(--cyan); }
+  .flinks { display: flex; gap: 28px; }
+  .flinks a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .flinks a:hover { color: var(--white); }
+  .fcopy { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
 
-/* ── FORM ── */
-.contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
-.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-.form-group label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-.form-group input,
-.form-group select,
-.form-group textarea {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 0.85rem 1rem;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 300;
-  transition: border-color 0.2s;
-  outline: none;
-  width: 100%;
-}
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus { border-color: rgba(0,194,212,0.4); background: rgba(0,194,212,0.03); }
-.form-group select option { background: var(--navy2); }
-.form-group textarea { min-height: 130px; resize: vertical; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.btn-submit {
-  background: var(--accent);
-  color: var(--navy);
-  padding: 0.9rem 2rem;
-  border: none;
-  border-radius: 3px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  transition: all 0.2s;
-  align-self: flex-start;
-}
-.btn-submit:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,194,212,0.25); }
-
-/* ── FOOTER ── */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 2rem 4rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.footer-logo {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 800;
-  color: rgba(240,244,255,0.4);
-  text-decoration: none;
-}
-.footer-logo span { color: var(--accent); }
-.footer-copy { font-size: 0.78rem; color: var(--muted); }
-.footer-links { display: flex; gap: 1.5rem; }
-.footer-links a { font-size: 0.78rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--white); }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeLeft {
-  from { opacity: 0; transform: translateX(30px) translateY(-50%); }
-  to { opacity: 1; transform: translateX(0) translateY(-50%); }
-}
-.reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 1100px) {
-  .hero-terminal { display: none; }
-  h1 { font-size: 3.5rem; }
-}
-@media (max-width: 768px) {
-  nav { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
-  section { padding: 4rem 1.5rem; }
-  #hero { padding: 7rem 1.5rem 4rem; }
-  .problem-grid, .services-grid { grid-template-columns: 1fr; }
-  .how-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
-  .product-row { grid-template-columns: 1fr; gap: 1rem; }
-  .product-meta { text-align: left; }
-  footer { flex-direction: column; gap: 1rem; text-align: center; }
-  .form-row { grid-template-columns: 1fr; }
-}
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  @keyframes scrollFade { 0%{opacity:1;transform:scaleY(1)} 100%{opacity:0;transform:scaleY(0.2);transform-origin:top} }
+  @keyframes tLine { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+  .reveal { opacity:0; transform:translateY(36px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s} .d4{transition-delay:0.4s}
 </style>
 </head>
 <body>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+<div class="mesh"></div>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">VK<span>at</span>OS</a>
+<nav id="nav">
+  <a href="#" class="nav-logo"><div class="logo-dot"></div>VKat<span>OS</span></a>
   <ul class="nav-links">
-    <li><a href="#problem">Problems</a></li>
-    <li><a href="#services">Services</a></li>
+    <li><a href="#industries">Industries</a></li>
     <li><a href="#products">Products</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact" class="nav-cta">Get In Touch</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="nav-cta">Request Demo</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section id="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
-  <div class="hero-content">
-    <div class="hero-badge">Chennai, India — Enterprise Systems</div>
-    <h1>Autonomous systems<br>for enterprises that<br><span class="line2">can't afford downtime.</span></h1>
-    <p class="hero-sub">We build self-healing pipeline automation that eliminates broken processes, detects failures before they cost you, and deploys in weeks — not months.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Start a conversation →</a>
-      <a href="#products" class="btn-ghost">View our systems</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-num">33<span>/33</span></div>
-        <div class="stat-label">Tests passing — Aether2</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">469<span>/469</span></div>
-        <div class="stat-label">Tests passing — DCSP</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">2<span>wk</span></div>
-        <div class="stat-label">Average deployment time</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">₹0</div>
-        <div class="stat-label">Data leaves your network</div>
-      </div>
-    </div>
+<section class="hero">
+  <div class="hero-badge"><span class="badge-dot"></span>AUTONOMOUS ENTERPRISE INFRASTRUCTURE · CHENNAI, INDIA</div>
+  <h1>Your pipelines<br>break <em>silently.</em><br>Ours don't.</h1>
+  <p class="hero-sub">VKatOS watches every stage of every process, predicts failures before they happen, and heals itself — automatically. Any industry. Any pipeline.</p>
+  <div class="hero-tags">
+    <span class="ind-tag">MANUFACTURING</span>
+    <span class="ind-tag">LOGISTICS</span>
+    <span class="ind-tag">BANKING</span>
+    <span class="ind-tag">HEALTHCARE</span>
+    <span class="ind-tag">GOVERNMENT</span>
+    <span class="ind-tag">SAAS</span>
+    <span class="ind-tag">EDUCATION</span>
+    <span class="ind-tag">HR</span>
   </div>
-
-  <div class="hero-terminal">
-    <div class="terminal-bar">
-      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-      <span class="terminal-title">axium-monitor — pipeline.watch</span>
-    </div>
-    <div class="terminal-body">
-      <div><span class="t-muted">$</span> <span class="t-accent">vkatos</span> <span class="t-white">monitor --live</span></div>
-      <div class="t-muted">─────────────────────────────</div>
-      <div><span class="t-green">✓</span> <span class="t-white">Pipeline connected</span></div>
-      <div><span class="t-green">✓</span> <span class="t-white">33 stages monitored</span></div>
-      <div><span class="t-green">✓</span> <span class="t-white">DCSP watchdog active</span></div>
-      <div class="t-muted">─────────────────────────────</div>
-      <div><span class="t-amber">⚠</span> <span class="t-white">STALL DETECTED</span></div>
-      <div><span class="t-muted">  stage:</span> <span class="t-blue">caf_submitted</span></div>
-      <div><span class="t-muted">  idle:</span> <span class="t-amber">72h 14m</span></div>
-      <div><span class="t-muted">  action:</span> <span class="t-green">auto-alerting...</span></div>
-      <div class="t-muted">─────────────────────────────</div>
-      <div><span class="t-green">→</span> <span class="t-white">Recruiter notified</span></div>
-      <div><span class="t-green">→</span> <span class="t-white">Candidate reassured</span></div>
-      <div><span class="t-green">→</span> <span class="t-white">Escalation queued</span></div>
-      <div><span class="t-green">→</span> <span class="t-white">Audit log: AUD-0042</span></div>
-      <div class="t-muted">─────────────────────────────</div>
-      <div><span class="t-muted">$</span> <span class="cursor-blink"></span></div>
-    </div>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Request a Demo →</a>
+    <a href="#how" class="btn-ghost">See How It Works</a>
   </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n" data-count="500">0</div><div class="stat-l">Automated Tests</div></div>
+    <div class="stat"><div class="stat-n">2wk</div><div class="stat-l">Avg. Deployment</div></div>
+    <div class="stat"><div class="stat-n">84%</div><div class="stat-l">Stall Reduction</div></div>
+    <div class="stat"><div class="stat-n">0</div><div class="stat-l">Data Leaves Network</div></div>
+  </div>
+  <div class="scroll-cue"><span>SCROLL</span><div class="scroll-line"></div></div>
 </section>
+
+<!-- TERMINAL -->
+<div class="terminal-wrap">
+  <div class="terminal reveal">
+    <div class="t-bar">
+      <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
+      <div class="t-ttl">vkatos — pipeline.watch --live --predict</div>
+    </div>
+    <div class="t-body">
+      <div class="tl"><span class="tp">$</span><span class="tc">vkatos connect --env production --client enterprise</span></div>
+      <div class="tl"><span class="tok">✓</span><span class="tc">Connected — 47 pipeline stages now monitored</span></div>
+      <div class="tl"><span class="tok">✓</span><span class="tc">DCSP predictive engine active — baselines loaded</span></div>
+      <div class="tl"><span class="tok">✓</span><span class="tc">Aether2 orchestration layer online</span></div>
+      <div class="tblank"></div>
+      <div class="tl"><span class="tm">—</span><span class="tm">Watching: stage_14 / document_verification</span></div>
+      <div class="tl"><span class="tm">—</span><span class="tm">Baseline: 2.1h avg · σ = 0.4h · current idle: 4.8h</span></div>
+      <div class="tblank"></div>
+      <div class="tl"><span class="tw">⚠</span><span class="tw">STALL PREDICTED — Z-score: 6.75 · risk level: CRITICAL</span></div>
+      <div class="tl"><span class="ta">!</span><span class="ta">Threshold breached — auto-repair sequence initiated</span></div>
+      <div class="tl"><span class="tact">→</span><span class="tact">Stakeholder notified · escalation queued · SLA protected · pipeline healed</span></div>
+    </div>
+  </div>
+</div>
 
 <!-- PROBLEM -->
-<section id="problem">
-  <div class="reveal">
-    <div class="section-label">// the problem</div>
-    <h2>Enterprise pipelines<br>break silently.</h2>
-    <p class="section-sub">Every industry has processes that stall without warning, consume manual effort, and cost money nobody can see clearly on a balance sheet — until it's too late.</p>
-  </div>
-  <div class="problem-grid reveal">
-    <div class="problem-card">
-      <div class="problem-industry">Enterprise HR / ATS</div>
-      <h3>Candidates selected. Then silence.</h3>
-      <p>Post-selection CAF documents submitted — then nothing. No status update. No follow-up. Candidates accept competing offers. Hiring cycles extend 32–68 days. Nobody built the watchdog.</p>
-      <div class="problem-stat">40%</div>
-      <div class="problem-stat-label">recruiter time lost to manual follow-up</div>
+<section class="problem">
+  <div class="slabel reveal">The Problem</div>
+  <h2 class="stitle reveal d1">Every enterprise has processes <em>no one is watching.</em></h2>
+  <div class="pgrid reveal d2">
+    <div class="pcard">
+      <div class="pind">Manufacturing</div>
+      <h3>Production stalls nobody catches until the line stops.</h3>
+      <p>A component approval sits idle for 18 hours. Downstream production halts. By the time anyone notices, you've lost a full shift and a client's trust.</p>
+      <div class="pstat"><div class="pnum">₹12L</div><div class="pdesc">average cost per undetected production stall</div></div>
     </div>
-    <div class="problem-card">
-      <div class="problem-industry">Recruitment Agencies</div>
-      <h3>Placements falling through cracks.</h3>
-      <p>Candidate at offer stage for 4 days — nobody noticed they received a competing offer. Placement fee lost. Client relationship strained. No system was watching the pipeline.</p>
-      <div class="problem-stat">₹1.5L</div>
-      <div class="problem-stat-label">average placement fee at risk per stall</div>
+    <div class="pcard">
+      <div class="pind">Logistics & Supply Chain</div>
+      <h3>Shipments stall at customs. No alert fires.</h3>
+      <p>A clearance document expires. The shipment sits for 3 days. Your client calls you before your system does — and trust erodes permanently.</p>
+      <div class="pstat"><div class="pnum">72h</div><div class="pdesc">average detection lag for logistics pipeline failures</div></div>
     </div>
-    <div class="problem-card">
-      <div class="problem-industry">Study Abroad Consultancies</div>
-      <h3>Deadlines missed. Intakes lost.</h3>
-      <p>Student missing 2 documents. University deadline in 11 days. Counsellor following up manually via WhatsApp. One slip and the student waits 6 months for the next intake.</p>
-      <div class="problem-stat">6 mo</div>
-      <div class="problem-stat-label">lost per missed university intake deadline</div>
+    <div class="pcard">
+      <div class="pind">Banking & Finance</div>
+      <h3>Loan approvals die in queues. Applicants vanish.</h3>
+      <p>KYC verification stalls for 6 days. The applicant takes a competing offer. Your pipeline filled itself with ghosts — and nobody knew.</p>
+      <div class="pstat"><div class="pnum">40%</div><div class="pdesc">of pipeline failures go undetected for more than 48 hours</div></div>
     </div>
   </div>
 </section>
 
-<!-- SERVICES -->
-<section id="services">
-  <div class="reveal">
-    <div class="section-label">// services</div>
-    <h2>Three products.<br>Any industry.</h2>
-    <p class="section-sub">We start with HR, recruitment, and education — and expand into any vertical where broken processes cost enterprises money.</p>
+<!-- INDUSTRIES -->
+<section class="industries" id="industries">
+  <div class="inds-inner">
+    <div class="slabel reveal">Built For Any Enterprise</div>
+    <h2 class="stitle reveal d1">One engine.<br><em>Every industry.</em></h2>
+    <div class="igrid">
+      <div class="icard reveal"><div class="iicon">🏭</div><div class="iname">Manufacturing</div><div class="idesc">Production line monitoring, approval workflow automation, zero-downtime alerting.</div></div>
+      <div class="icard reveal d1"><div class="iicon">🚢</div><div class="iname">Logistics</div><div class="idesc">Shipment pipeline tracking, customs clearance automation, SLA deadline protection.</div></div>
+      <div class="icard reveal d2"><div class="iicon">🏦</div><div class="iname">Banking & Finance</div><div class="idesc">Loan pipeline automation, KYC workflow monitoring, compliance trail generation.</div></div>
+      <div class="icard reveal d3"><div class="iicon">🏥</div><div class="iname">Healthcare</div><div class="idesc">Patient onboarding automation, insurance approval tracking, zero-breach architecture.</div></div>
+      <div class="icard reveal"><div class="iicon">🏛️</div><div class="iname">Government</div><div class="idesc">Permit and approval pipeline monitoring, citizen service SLA enforcement.</div></div>
+      <div class="icard reveal d1"><div class="iicon">⚙️</div><div class="iname">SaaS & Technology</div><div class="idesc">Deployment pipeline self-healing, CI/CD stall detection, incident auto-resolution.</div></div>
+      <div class="icard reveal d2"><div class="iicon">🎓</div><div class="iname">Education</div><div class="idesc">Student enrollment pipeline, document deadline tracking, intake automation.</div></div>
+      <div class="icard reveal d3"><div class="iicon">👥</div><div class="iname">Human Resources</div><div class="idesc">End-to-end hiring pipeline, offer management, onboarding automation.</div></div>
+    </div>
   </div>
-  <div class="services-grid reveal">
-    <div class="service-card">
-      <div class="service-icon">⚡</div>
-      <h3>Axium Recruit</h3>
-      <p>End-to-end ATS pipeline automation. Resume parsing with RAG, candidate scoring with MoE agents, CAF tracking, offer generation. Built for enterprise hiring at scale.</p>
-      <div>
-        <span class="service-tag">RAG parsing</span>
-        <span class="service-tag">MoE scoring</span>
-        <span class="service-tag">CAF tracking</span>
-        <span class="service-tag">Offer gen</span>
-      </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="slabel reveal">How It Works</div>
+  <h2 class="stitle reveal d1">Deployed in 2 weeks.<br><em>Running forever.</em></h2>
+  <div class="hsteps">
+    <div class="hstep reveal">
+      <div class="snum">01</div>
+      <div class="stept">We map your pipeline</div>
+      <div class="stepd">In week one, our engineers map every stage of your process — what moves, what stalls, and where value leaks without anyone noticing.</div>
     </div>
-    <div class="service-card">
-      <div class="service-icon">🎓</div>
-      <h3>Axium Study</h3>
-      <p>Autonomous student pipeline for study abroad consultancies. Document automation, deadline intelligence, counsellor handover, visa tracking — from inquiry to departure.</p>
-      <div>
-        <span class="service-tag">650+ universities</span>
-        <span class="service-tag">Deadline AI</span>
-        <span class="service-tag">Doc tracking</span>
-        <span class="service-tag">Visa pipeline</span>
-      </div>
+    <div class="hstep reveal d1">
+      <div class="snum">02</div>
+      <div class="stept">DCSP learns your baselines</div>
+      <div class="stepd">Our predictive engine establishes statistical baselines for each stage using Z-score analysis. It knows what normal looks like — and what doesn't.</div>
     </div>
-    <div class="service-card">
-      <div class="service-icon">🔧</div>
-      <h3>Axium Enterprise</h3>
-      <p>Custom autonomous operating systems for any enterprise domain. If your process has stages, documents, approvals, and humans losing time to follow-up — we automate it.</p>
-      <div>
-        <span class="service-tag">Any domain</span>
-        <span class="service-tag">2-week deploy</span>
-        <span class="service-tag">Self-healing</span>
-        <span class="service-tag">Zero PII risk</span>
-      </div>
+    <div class="hstep reveal d2">
+      <div class="snum">03</div>
+      <div class="stept">Self-healing activates</div>
+      <div class="stepd">When a stall is predicted, VKatOS acts before you even notice. Alerts fire, escalations queue, and pipelines repair themselves — automatically.</div>
     </div>
   </div>
 </section>
 
 <!-- PRODUCTS -->
-<section id="products">
-  <div class="reveal">
-    <div class="section-label">// open systems</div>
-    <h2>Production-grade.<br>Tested. Deployed.</h2>
-    <p class="section-sub">Real systems with real test suites. Not prototypes. Not proof-of-concepts. Production-ready autonomous systems built to enterprise standards.</p>
-  </div>
-  <div class="products-list reveal">
-    <div class="product-row">
-      <div>
-        <div class="product-name">Aether<span>2</span></div>
-        <div class="product-version">v2.0 — stable</div>
-      </div>
-      <div class="product-desc">AI-powered pipeline builder. Multi-step autonomous workflow engine with RAG indexing, MoE agent routing, and self-repair capability. The engine underneath every VKatOS deployment.</div>
-      <div class="product-meta">
-        <div class="product-tests">✓ 33/33 tests passing</div>
-        <a href="https://github.com/Vk-AtOS/aether2" target="_blank" class="product-link">github.com/Vk-AtOS/aether2 →</a>
-      </div>
-    </div>
-    <div class="product-row">
-      <div>
-        <div class="product-name">DC<span>SP</span></div>
-        <div class="product-version">v1.0 — stable</div>
-      </div>
-      <div class="product-desc">Distributed Control and Self-healing Platform. Watchdog system that monitors every pipeline stage, detects stalls in real time, fires auto-alerts, escalates to humans, and logs a tamper-proof audit trail.</div>
-      <div class="product-meta">
-        <div class="product-tests">✓ 469/469 tests passing</div>
-        <a href="https://github.com/Vk-AtOS/DSCP" target="_blank" class="product-link">github.com/Vk-AtOS/DSCP →</a>
-      </div>
-    </div>
-    <div class="product-row">
-      <div>
-        <div class="product-name">Vel<span>aris</span></div>
-        <div class="product-version">v1.0 — in development</div>
-      </div>
-      <div class="product-desc">Enterprise intelligence dashboard. Real-time visibility across all pipeline stages, candidates, documents, and deadlines. Single screen showing everything your team needs — without opening a spreadsheet.</div>
-      <div class="product-meta">
-        <div class="product-tests" style="color: var(--amber);">⚡ Active development</div>
-        <a href="https://github.com/Vk-AtOS" target="_blank" class="product-link">github.com/Vk-AtOS →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="reveal">
-    <div class="section-label">// architecture</div>
-    <h2>Your data stays<br>in your network.</h2>
-    <p class="section-sub">Connector-based architecture. We never touch your data. Your IT team installs a lightweight connector — that's the only access we need.</p>
-  </div>
-  <div class="how-grid reveal">
-    <div class="how-steps">
-      <div class="how-step">
-        <div class="step-num">01</div>
-        <div class="step-content">
-          <h3>Connector installed on your server</h3>
-          <p>Lightweight Python package. Your IT team installs it inside your network. Source code available for security review. Takes 30 minutes.</p>
+<section class="products" id="products">
+  <div class="prods-inner">
+    <div class="slabel reveal">The Stack</div>
+    <h2 class="stitle reveal d1">Production-grade.<br><em>Obsessively tested.</em></h2>
+    <div class="prodgrid">
+      <div class="prodcard reveal">
+        <div class="prodhead">
+          <div class="ptag"><span class="tdot"></span>STABLE — v2.0</div>
+          <div class="pname">Aether2</div>
+          <div class="ptag2">Autonomous pipeline orchestration. Multi-step workflows with self-healing retry loops, multi-model AI routing, and persistent memory.</div>
+        </div>
+        <div class="prodbody">
+          <ul class="pfeats">
+            <li>Multi-model LLM routing (task-aware)</li>
+            <li>Self-healing retry loops (3-stage)</li>
+            <li>Persistent memory across restarts</li>
+            <li>JWT-secured enterprise API</li>
+            <li>Slack + Email webhook notifications</li>
+          </ul>
+          <div class="tbadge">✓ 43/43 tests passing — zero known failure modes</div>
         </div>
       </div>
-      <div class="how-step">
-        <div class="step-num">02</div>
-        <div class="step-content">
-          <h3>Connector strips all PII locally</h3>
-          <p>Before any signal leaves your network, PII is removed. Only structured data — stage, score, action-needed — is transmitted. Nothing sensitive ever leaves.</p>
+      <div class="prodcard reveal d1">
+        <div class="prodhead">
+          <div class="ptag"><span class="tdot"></span>STABLE — v1.0</div>
+          <div class="pname">DCSP</div>
+          <div class="ptag2">Distributed Control and Self-healing Platform. Watches every pipeline stage and predicts stalls before they become failures.</div>
+        </div>
+        <div class="prodbody">
+          <ul class="pfeats">
+            <li>Z-score predictive failure engine</li>
+            <li>Per-stage statistical baseline learning</li>
+            <li>Real-time stall risk scoring</li>
+            <li>Multi-tenant isolation architecture</li>
+            <li>REST API + live monitoring dashboard</li>
+          </ul>
+          <div class="tbadge">✓ 500/500 tests passing — zero known failure modes</div>
         </div>
       </div>
-      <div class="how-step">
-        <div class="step-num">03</div>
-        <div class="step-content">
-          <h3>Axium platform processes and acts</h3>
-          <p>Our platform receives the signal, runs the AI scoring and routing, detects stalls, generates actions, and sends them back to your connector.</p>
+      <div class="prodcard reveal d2">
+        <div class="prodhead">
+          <div class="ptag"><span class="tdot"></span>ACTIVE DEPLOYMENT</div>
+          <div class="pname">Velaris</div>
+          <div class="ptag2">Enterprise intelligence dashboard. Real-time visibility across all pipeline stages, health metrics, predictive scores, and system status.</div>
         </div>
-      </div>
-      <div class="how-step">
-        <div class="step-num">04</div>
-        <div class="step-content">
-          <h3>Actions execute inside your network</h3>
-          <p>Notifications, alerts, document requests, offer generation — all execute within your infrastructure. Full audit trail. Tamper-proof log. Zero external data exposure.</p>
+        <div class="prodbody">
+          <ul class="pfeats">
+            <li>Live pipeline stage tracking</li>
+            <li>Predictive risk visualization</li>
+            <li>Multi-client tenant isolation</li>
+            <li>Document and entity management</li>
+            <li>One-command deployment</li>
+          </ul>
+          <div class="tbadge">✓ Production deployed — active monitoring live</div>
         </div>
-      </div>
-    </div>
-    <div class="how-visual">
-      <div style="color:var(--muted);margin-bottom:1rem;font-size:0.68rem;letter-spacing:0.15em;">ARCHITECTURE OVERVIEW</div>
-      <div class="arch-row">
-        <span class="arch-label">Your database</span>
-        <span class="arch-arrow">──┐</span>
-      </div>
-      <div class="arch-row">
-        <span class="arch-label">Your email / SMS</span>
-        <span class="arch-arrow">──┤ Connector</span>
-      </div>
-      <div class="arch-row">
-        <span class="arch-label">Your calendar</span>
-        <span class="arch-arrow">──┤ (your server)</span>
-      </div>
-      <div class="arch-row">
-        <span class="arch-label">Your CRM / ATS</span>
-        <span class="arch-arrow">──┘</span>
-      </div>
-      <hr class="arch-divider"/>
-      <div class="arch-row">
-        <span class="arch-label" style="color:var(--accent);">PII stripped locally</span>
-        <span class="arch-arrow">→</span>
-        <span class="arch-val">signals only</span>
-      </div>
-      <hr class="arch-divider"/>
-      <div class="arch-row">
-        <span class="arch-label">RAG engine</span>
-        <span class="arch-arrow">←→</span>
-        <span class="arch-val">VKatOS platform</span>
-      </div>
-      <div class="arch-row">
-        <span class="arch-label">MoE scoring</span>
-        <span class="arch-arrow">←→</span>
-        <span class="arch-val">VKatOS platform</span>
-      </div>
-      <div class="arch-row">
-        <span class="arch-label">DCSP watchdog</span>
-        <span class="arch-arrow">←→</span>
-        <span class="arch-val">VKatOS platform</span>
-      </div>
-      <hr class="arch-divider"/>
-      <div class="arch-row">
-        <span class="arch-label" style="color:var(--green);">Zero PII transmitted</span>
-        <span class="arch-arrow">✓</span>
-        <span class="arch-val">DPDP Act compliant</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-grid reveal">
-    <div class="founder-card">
-      <div class="founder-avatar">TV</div>
-      <div class="founder-name">Thulasi Velan Rajamanickam</div>
-      <div class="founder-title">Founder & Technical Architect</div>
-      <p class="founder-bio">Technical Product Architect based in Chennai. Built two production-grade autonomous systems — DCSP (469 tests) and Aether2 (33 tests) — from scratch. Specialises in enterprise pipeline automation, self-healing systems, and AI-powered workflow engines.</p>
-      <p class="founder-bio">Previously: enterprise system design, distributed architecture, and AI pipeline engineering across multiple domains.</p>
-      <div class="founder-links">
-        <a href="https://github.com/Vk-AtOS" target="_blank" class="founder-link">GitHub</a>
-        <a href="https://linkedin.com" target="_blank" class="founder-link">LinkedIn</a>
-        <a href="mailto:Velan317@gmail.com" class="founder-link">Email</a>
+<!-- VIDEO -->
+<section class="vidwrap">
+  <div class="slabel reveal" style="justify-content:center">Getting Started</div>
+  <h2 class="stitle reveal d1" style="margin:0 auto;text-align:center">Up and running<br><em>in under 20 minutes.</em></h2>
+  <div class="vidbox reveal d2">
+    <div class="vph">
+      <div class="playbtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <polygon points="6,3 20,12 6,21" fill="#00C2D4"/>
+        </svg>
       </div>
+      <div class="vlabel">FULL INSTALLATION WALKTHROUGH — COMING SOON</div>
     </div>
-    <div class="about-content">
-      <div class="section-label">// about vkatos</div>
-      <h2>Built by someone who solves the problem, not describes it.</h2>
-      <p>VKatOS is an enterprise automation company founded in Chennai. We build autonomous operating systems — production-grade, battle-tested, deployed in two weeks — for industries where broken processes cost real money every day.</p>
-      <p><strong>We are not a consulting firm.</strong> We don't produce reports or recommendations. We build systems that run. Every engagement ends with working software in your infrastructure, not a slide deck on your desk.</p>
-      <p><strong>We start with three markets</strong> — enterprise HR, recruitment agencies, and study abroad consultancies — because we've documented the exact problems and built the exact solutions. We expand into any domain where the same pattern exists: a pipeline, documents, humans losing time, money leaking silently.</p>
-      <div class="values-grid">
-        <div class="value-item">
-          <strong>Ship first</strong>
-          <span>Working systems over perfect plans. We deploy, measure, and improve.</span>
-        </div>
-        <div class="value-item">
-          <strong>Zero trust required</strong>
-          <span>Your data stays in your network. Always. By architecture, not by promise.</span>
-        </div>
-        <div class="value-item">
-          <strong>Fixed price</strong>
-          <span>No surprise invoices. Scope agreed upfront. Price locked. Delivered.</span>
-        </div>
-        <div class="value-item">
-          <strong>Self-healing default</strong>
-          <span>Systems that fix themselves are better than systems that need fixing.</span>
-        </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="price-inner">
+    <div class="slabel reveal" style="justify-content:center">Pricing</div>
+    <h2 class="stitle reveal d1" style="margin:0 auto;text-align:center">Predictable costs.<br><em>Enterprise value.</em></h2>
+    <div class="pgrid2">
+      <div class="pricecard reveal">
+        <div class="planname">Starter</div>
+        <div class="planprice">₹49,999</div>
+        <div class="planperiod">per month · single pipeline</div>
+        <div class="plandiv"></div>
+        <ul class="planfeat">
+          <li>1 pipeline automated end-to-end</li>
+          <li>DCSP watchdog monitoring</li>
+          <li>Email + SMS stall alerts</li>
+          <li>Velaris dashboard access</li>
+          <li>99.9% uptime SLA</li>
+        </ul>
+        <a href="#contact" class="plancta">Get Started</a>
+      </div>
+      <div class="pricecard hot reveal d1">
+        <div class="planname">Professional</div>
+        <div class="planprice">₹1,49,999</div>
+        <div class="planperiod">per month · up to 5 pipelines</div>
+        <div class="plandiv"></div>
+        <ul class="planfeat">
+          <li>Up to 5 pipelines automated</li>
+          <li>Advanced predictive failure engine</li>
+          <li>Full Velaris enterprise dashboard</li>
+          <li>Priority escalation logic</li>
+          <li>2-week deployment guarantee</li>
+          <li>Dedicated onboarding engineer</li>
+        </ul>
+        <a href="#contact" class="plancta">Go Professional</a>
+      </div>
+      <div class="pricecard reveal d2">
+        <div class="planname">Enterprise</div>
+        <div class="planprice">Custom</div>
+        <div class="planperiod">bespoke · unlimited scale</div>
+        <div class="plandiv"></div>
+        <ul class="planfeat">
+          <li>Unlimited pipelines</li>
+          <li>Custom agent development</li>
+          <li>On-premise LLM deployment</li>
+          <li>Dedicated system architect</li>
+          <li>Custom audit trails</li>
+          <li>DPDP Act compliance built-in</li>
+        </ul>
+        <a href="#contact" class="plancta">Contact Sales</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
-  <div class="reveal">
-    <div class="section-label">// get in touch</div>
-    <h2>Ready to eliminate<br>a broken process?</h2>
-    <p class="section-sub">Tell us what's breaking. We'll tell you if we can fix it — and exactly how long it will take.</p>
-  </div>
-  <div class="contact-grid reveal">
-    <div class="contact-info">
-      <h3>Let's talk about your pipeline.</h3>
-      <p>Whether you're in HR, recruitment, education, or any other enterprise domain — if you have a process that stalls, we want to hear about it.</p>
-      <div class="contact-detail">
-        <div class="contact-icon">📧</div>
-        <div>
-          <div class="contact-label">Email</div>
-          <div class="contact-value"><a href="mailto:Velan317@gmail.com">Velan317@gmail.com</a></div>
-        </div>
+<section class="contact" id="contact">
+  <div class="slabel reveal" style="justify-content:center">Request a Demo</div>
+  <h2 class="stitle reveal d1" style="margin:0 auto;text-align:center">Tell us what's<br><em>breaking.</em></h2>
+  <div class="cbox reveal d2">
+    <p style="color:var(--muted);font-size:15px;line-height:1.75">Describe the pipeline. We'll tell you if we can make it self-healing — and exactly how long it will take to deploy.</p>
+    <form class="cform" onsubmit="handleSubmit(event)">
+      <div class="crow">
+        <input type="text" class="finput" placeholder="Your name" required>
+        <input type="text" class="finput" placeholder="Company" required>
       </div>
-      <div class="contact-detail">
-        <div class="contact-icon">📱</div>
-        <div>
-          <div class="contact-label">Phone / WhatsApp</div>
-          <div class="contact-value"><a href="tel:+918056238628">+91 80562 38628</a></div>
-        </div>
-      </div>
-      <div class="contact-detail">
-        <div class="contact-icon">📍</div>
-        <div>
-          <div class="contact-label">Location</div>
-          <div class="contact-value">Chennai, Tamil Nadu, India</div>
-        </div>
-      </div>
-      <div class="contact-detail">
-        <div class="contact-icon">⏱</div>
-        <div>
-          <div class="contact-label">Response time</div>
-          <div class="contact-value">Within 4 hours on business days</div>
-        </div>
-      </div>
-    </div>
-    <form class="contact-form" onsubmit="handleSubmit(event)">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Your Name</label>
-          <input type="text" placeholder="Rajesh Kumar" required/>
-        </div>
-        <div class="form-group">
-          <label>Company</label>
-          <input type="text" placeholder="Acme Corp" required/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="rajesh@acmecorp.com" required/>
-      </div>
-      <div class="form-group">
-        <label>Industry</label>
-        <select>
-          <option value="">Select your industry</option>
-          <option>Enterprise HR / Talent Acquisition</option>
-          <option>Recruitment Agency</option>
-          <option>Study Abroad Consultancy</option>
-          <option>Banking / Financial Services</option>
-          <option>Healthcare</option>
+      <div class="crow">
+        <input type="email" class="finput" placeholder="Email address" required>
+        <select class="finput">
+          <option value="" disabled selected>Industry</option>
           <option>Manufacturing</option>
+          <option>Logistics & Supply Chain</option>
+          <option>Banking & Finance</option>
+          <option>Healthcare</option>
+          <option>Government</option>
+          <option>SaaS & Technology</option>
+          <option>Education</option>
+          <option>Human Resources</option>
           <option>Other Enterprise</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Describe the broken process</label>
-        <textarea placeholder="Tell us what's taking too long, what your team is doing manually, what's costing you money or time..."></textarea>
-      </div>
-      <button type="submit" class="btn-submit">Send message →</button>
-      <div id="form-success" style="display:none;color:var(--green);font-size:0.85rem;font-family:var(--font-mono);">✓ Message sent. We'll respond within 4 hours.</div>
+      <textarea class="finput" placeholder="Describe the process that's breaking. What stalls? How often? What does it cost?"></textarea>
+      <button type="submit" class="fsub">Send — We respond within 4 hours →</button>
     </form>
+    <div class="calt">
+      <div class="ci">📧 <a href="mailto:velan@vkatos.com">velan@vkatos.com</a></div>
+      <div class="ci">📱 <a href="https://wa.me/918056238628">WhatsApp us</a></div>
+      <div class="ci">📍 Chennai, India · DPDP Compliant</div>
+    </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <a href="#" class="footer-logo">VK<span>at</span>OS</a>
-  <div class="footer-copy">© 2026 VKatOS. Chennai, India. All rights reserved.</div>
-  <div class="footer-links">
-    <a href="https://github.com/Vk-AtOS" target="_blank">GitHub</a>
-    <a href="mailto:Velan317@gmail.com">Email</a>
+  <a href="#" class="flogo">VKat<span>OS</span></a>
+  <div class="flinks">
+    <a href="#industries">Industries</a>
+    <a href="#products">Products</a>
+    <a href="#pricing">Pricing</a>
     <a href="#contact">Contact</a>
   </div>
+  <div class="fcopy">© 2026 VKATOS · CHENNAI · DPDP COMPLIANT</div>
 </footer>
 
 <script>
-// Custom cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.transform = `translate(${mx-5}px, ${my-5}px)`;
-});
-function animateRing() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`;
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.transform += ' scale(1.8)';
-    ring.style.width = '50px'; ring.style.height = '50px';
-    ring.style.borderColor = 'rgba(0,194,212,0.6)';
+  // Cursor
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    cur.style.transform=`translate(${mx-4}px,${my-4}px)`;
   });
-  el.addEventListener('mouseleave', () => {
-    ring.style.width = '36px'; ring.style.height = '36px';
-    ring.style.borderColor = 'rgba(0,194,212,0.4)';
+  (function anim(){
+    rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+    ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a,button,.icard,.prodcard,.pricecard').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(0,194,212,0.65)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(0,194,212,0.4)';});
   });
-});
 
-// Scroll reveal
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+  // Nav
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+  // Reveal
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Counter
+  const cobs=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting){
+      const t=parseInt(e.target.dataset.count);
+      if(t){let c=0;const s=t/50;const ti=setInterval(()=>{c+=s;if(c>=t){e.target.textContent=t;clearInterval(ti);}else{e.target.textContent=Math.floor(c);}},20);}
+      cobs.unobserve(e.target);
     }
-  });
-}, { threshold: 0.1 });
-reveals.forEach(el => observer.observe(el));
+  }),{threshold:0.5});
+  document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
 
-// Form
-function handleSubmit(e) {
-  e.preventDefault();
-  document.getElementById('form-success').style.display = 'block';
-  e.target.reset();
-  setTimeout(() => document.getElementById('form-success').style.display = 'none', 5000);
-}
-
-// Smooth nav shrink
-window.addEventListener('scroll', () => {
-  const nav = document.querySelector('nav');
-  nav.style.padding = window.scrollY > 50 ? '0.75rem 4rem' : '1.25rem 4rem';
-});
+  // Form
+  function handleSubmit(e){
+    e.preventDefault();
+    const btn=e.target.querySelector('.fsub');
+    btn.textContent='✓ Sent — we\'ll be in touch within 4 hours';
+    btn.style.background='var(--green)';
+    btn.style.color='#04080F';
+  }
 </script>
 </body>
 </html>
