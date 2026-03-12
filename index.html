@@ -5,43 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>VKatOS — Autonomous Enterprise Systems</title>
 <meta name="description" content="VKatOS builds autonomous operating systems for enterprise — self-healing pipelines that eliminate broken processes, detect failures in real time, and deploy in weeks."/>
-<link rel="canonical" href="https://vkatos.com/"/>
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://vkatos.com/"/>
-<meta property="og:title" content="VKatOS — Autonomous Enterprise Systems"/>
-<meta property="og:description" content="Self-healing pipeline automation that eliminates broken processes and detects failures in real time. Deployed in weeks."/>
-<meta property="og:image" content="https://vkatos.com/og-image.jpg"/>
-
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image"/>
-<meta property="twitter:url" content="https://vkatos.com/"/>
-<meta property="twitter:title" content="VKatOS — Autonomous Enterprise Systems"/>
-<meta property="twitter:description" content="Self-healing pipeline automation that eliminates broken processes and detects failures in real time."/>
-<meta property="twitter:image" content="https://vkatos.com/og-image.jpg"/>
-
-<!-- JSON-LD Schema -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "VKatOS",
-  "url": "https://vkatos.com",
-  "logo": "https://vkatos.com/logo.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+91-8056238628",
-    "contactType": "sales",
-    "areaServed": "IN",
-    "availableLanguage": "en"
-  },
-  "sameAs": [
-    "https://github.com/Vk-AtOS"
-  ]
-}
-</script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -127,7 +90,7 @@ nav {
   text-decoration: none;
 }
 .nav-logo span { color: var(--accent); }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
 .nav-links a {
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -151,24 +114,9 @@ nav {
 }
 .nav-cta:hover { background: var(--accent2) !important; transform: translateY(-1px); }
 
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  z-index: 101;
-}
-.hamburger span {
-  display: block;
-  width: 25px;
-  height: 2px;
-  background: var(--white);
-  transition: 0.3s;
-}
-
 /* ── HERO ── */
 #hero {
-  min-height: 90vh;
+  min-height: 100vh;
   display: flex; align-items: center;
   padding: 8rem 4rem 4rem;
   position: relative;
@@ -293,40 +241,6 @@ h1 .line2 { color: var(--accent); }
   margin-top: 0.2rem;
 }
 
-/* ── TRUSTED BY ── */
-.trusted-by {
-  padding: 2rem 4rem;
-  background: var(--navy2);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  overflow: hidden;
-}
-.trusted-label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--muted);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.logo-bar {
-  display: flex;
-  gap: 4rem;
-  align-items: center;
-  opacity: 0.4;
-  filter: grayscale(1);
-}
-.logo-item {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: -0.02em;
-}
-
 /* ── TERMINAL WINDOW ── */
 .hero-terminal {
   position: absolute;
@@ -401,7 +315,7 @@ h2 {
 }
 
 /* ── PROBLEM SECTION ── */
-#problem { background: var(--navy); }
+#problem { background: var(--navy2); }
 .problem-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -411,7 +325,7 @@ h2 {
   border: 1px solid var(--border);
 }
 .problem-card {
-  background: var(--navy);
+  background: var(--navy2);
   padding: 2.5rem;
   transition: background 0.3s;
   position: relative;
@@ -463,11 +377,11 @@ h2 {
   margin-top: 0.2rem;
 }
 
-/* ── SOLUTIONS (WAS SERVICES) ── */
-#solutions { background: var(--navy2); }
+/* ── SERVICES ── */
+#services { }
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-top: 4rem;
 }
@@ -525,99 +439,11 @@ h2 {
   margin-bottom: 0.4rem;
 }
 
-/* ── PRICING ── */
-#pricing { background: var(--navy); }
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 4rem;
-}
-.price-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s;
-}
-.price-card.popular {
-  border-color: var(--accent);
-  background: rgba(0,194,212,0.02);
-  transform: scale(1.05);
-  z-index: 2;
-}
-.price-tier {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-.price-amount {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-.price-amount span { font-size: 1rem; color: var(--muted); font-weight: 400; }
-.price-desc { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; }
-.price-features {
-  list-style: none;
-  margin-bottom: 2.5rem;
-  flex-grow: 1;
-}
-.price-features li {
-  font-size: 0.88rem;
-  color: rgba(240,244,255,0.6);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.price-features li::before { content: '✓'; color: var(--accent); font-weight: 800; }
-.btn-price {
-  width: 100%;
-  text-align: center;
-  padding: 1rem;
-  font-family: var(--font-display);
-  font-weight: 700;
-  text-decoration: none;
-  border-radius: 2px;
-  transition: all 0.2s;
-}
-.btn-price-primary { background: var(--accent); color: var(--navy); }
-.btn-price-ghost { border: 1px solid var(--border); color: var(--white); }
-.btn-price:hover { transform: translateY(-2px); }
-
-/* ── TESTIMONIALS ── */
-#testimonials { background: var(--navy2); }
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 4rem;
-}
-.testimonial-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 2.5rem;
-  border-radius: 4px;
-}
-.quote-icon { font-size: 2rem; color: var(--accent); opacity: 0.2; margin-bottom: 1rem; font-family: var(--font-display); }
-.testimonial-text { font-size: 0.95rem; color: rgba(240,244,255,0.7); margin-bottom: 2rem; font-style: italic; }
-.testimonial-author { display: flex; align-items: center; gap: 1rem; }
-.author-avatar { width: 40px; height: 40px; background: var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; color: var(--accent); }
-.author-info h4 { font-family: var(--font-display); font-size: 0.9rem; }
-.author-info p { font-size: 0.72rem; color: var(--muted); font-family: var(--font-mono); }
-
 /* ── PRODUCTS ── */
-#products { background: var(--navy); }
+#products { background: var(--navy2); }
 .products-list { margin-top: 4rem; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
 .product-row {
-  background: var(--navy);
+  background: var(--navy2);
   padding: 2.5rem 3rem;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
@@ -662,54 +488,229 @@ h2 {
 }
 .product-link:hover { gap: 0.7rem; }
 
+/* ── HOW IT WORKS ── */
+#how {  }
+.how-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  align-items: center;
+}
+.how-steps { display: flex; flex-direction: column; gap: 0; }
+.how-step {
+  display: flex; gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.how-step:last-child { border-bottom: none; }
+.step-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: rgba(0,194,212,0.15);
+  line-height: 1;
+  min-width: 3rem;
+  transition: color 0.3s;
+}
+.how-step:hover .step-num { color: var(--accent); }
+.step-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+.step-content p { font-size: 0.88rem; color: rgba(240,244,255,0.5); }
+.how-visual {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 2;
+}
+.arch-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-radius: 3px; margin-bottom: 0.5rem; }
+.arch-row:hover { background: rgba(255,255,255,0.03); }
+.arch-label { color: var(--muted); min-width: 160px; }
+.arch-arrow { color: rgba(0,194,212,0.4); }
+.arch-val { color: var(--green); }
+.arch-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+/* ── ABOUT ── */
+#about { background: var(--navy2); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  align-items: start;
+}
+.founder-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.founder-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--blue2));
+}
+.founder-avatar {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, var(--blue2), var(--accent));
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 1.5rem;
+}
+.founder-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.2rem;
+}
+.founder-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+.founder-bio {
+  font-size: 0.88rem;
+  color: rgba(240,244,255,0.55);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.founder-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.founder-link {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(0,194,212,0.2);
+  padding: 0.3rem 0.75rem;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.founder-link:hover { background: rgba(0,194,212,0.1); border-color: var(--accent); }
+.about-content h2 { margin-bottom: 1.5rem; }
+.about-content p {
+  font-size: 0.95rem;
+  color: rgba(240,244,255,0.6);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+.about-content p strong { color: var(--white); font-weight: 500; }
+.values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.value-item {
+  padding: 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 0.85rem;
+}
+.value-item strong { display: block; font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--white); }
+.value-item span { color: rgba(240,244,255,0.45); font-size: 0.82rem; }
+
+/* ── CONTACT ── */
+#contact { }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  align-items: start;
+}
+.contact-info h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.contact-info p { font-size: 0.9rem; color: rgba(240,244,255,0.5); margin-bottom: 2rem; line-height: 1.7; }
+.contact-detail {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.contact-detail:last-of-type { border-bottom: none; }
+.contact-icon { font-size: 1.1rem; margin-top: 0.1rem; }
+.contact-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.2rem; }
+.contact-value { font-size: 0.9rem; color: var(--white); }
+.contact-value a { color: var(--accent); text-decoration: none; }
+.contact-value a:hover { text-decoration: underline; }
+
+/* ── FORM ── */
+.contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.85rem 1rem;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  transition: border-color 0.2s;
+  outline: none;
+  width: 100%;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: rgba(0,194,212,0.4); background: rgba(0,194,212,0.03); }
+.form-group select option { background: var(--navy2); }
+.form-group textarea { min-height: 130px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.btn-submit {
+  background: var(--accent);
+  color: var(--navy);
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 3px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+.btn-submit:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,194,212,0.25); }
+
 /* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 5rem 4rem 2rem;
-  background: var(--navy);
+  padding: 2rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-  gap: 4rem;
-  margin-bottom: 4rem;
-}
-.footer-brand .footer-logo {
+.footer-logo {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 800;
-  color: var(--white);
+  color: rgba(240,244,255,0.4);
   text-decoration: none;
-  margin-bottom: 1.5rem;
-  display: block;
 }
-.footer-brand .footer-logo span { color: var(--accent); }
-.footer-brand p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
-.footer-col h4 {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--white);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-.footer-col ul { list-style: none; }
-.footer-col ul li { margin-bottom: 0.75rem; }
-.footer-col ul li a {
-  font-size: 0.85rem;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.footer-col ul li a:hover { color: var(--accent); }
-.footer-bottom {
-  border-top: 1px solid var(--border);
-  padding-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+.footer-logo span { color: var(--accent); }
 .footer-copy { font-size: 0.78rem; color: var(--muted); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 0.78rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
@@ -730,40 +731,19 @@ footer {
 @media (max-width: 1100px) {
   .hero-terminal { display: none; }
   h1 { font-size: 3.5rem; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
-  nav { padding: 1rem 20px; }
-  .hamburger { display: flex; }
-  .nav-links {
-    position: fixed;
-    top: 0; right: -100%;
-    width: 100%; height: 100vh;
-    background: var(--navy);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: 0.4s;
-    z-index: 100;
-    gap: 3rem;
-  }
-  .nav-links.active { right: 0; }
-  
-  section { padding: 4rem 20px; }
-  #hero { padding: 7rem 20px 4rem; }
-  .hero-content { max-width: 100%; }
-  h1 { font-size: 2.5rem; }
-  .hero-sub { max-width: 100%; }
-  
-  .problem-grid, .services-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
-  .product-row { grid-template-columns: 1fr; gap: 1.5rem; text-align: left; padding: 2rem; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 4rem 1.5rem; }
+  #hero { padding: 7rem 1.5rem 4rem; }
+  .problem-grid, .services-grid { grid-template-columns: 1fr; }
+  .how-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+  .product-row { grid-template-columns: 1fr; gap: 1rem; }
   .product-meta { text-align: left; }
-  
-  .logo-bar { gap: 2rem; justify-content: center; }
-  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
-  
-  .hero-stats { flex-direction: column; gap: 2rem; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
+  .form-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -776,8 +756,8 @@ footer {
 <nav>
   <a href="#" class="nav-logo">VK<span>at</span>OS</a>
   <ul class="nav-links">
-    <li><a href="#solutions">Solutions</a></li>
-    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#problem">Problems</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#products">Products</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact" class="nav-cta">Get In Touch</a></li>
@@ -799,16 +779,20 @@ footer {
     </div>
     <div class="hero-stats">
       <div class="stat-item">
-        <div class="stat-num">43<span>/43</span></div>
+        <div class="stat-num">33<span>/33</span></div>
         <div class="stat-label">Tests passing — Aether2</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">500<span>/500</span></div>
+        <div class="stat-num">469<span>/469</span></div>
         <div class="stat-label">Tests passing — DCSP</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">2<span>wk</span></div>
         <div class="stat-label">Average deployment time</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">₹0</div>
+        <div class="stat-label">Data leaves your network</div>
       </div>
     </div>
   </div>
@@ -816,13 +800,13 @@ footer {
   <div class="hero-terminal">
     <div class="terminal-bar">
       <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-      <span class="terminal-title">vkatos-monitor — pipeline.watch</span>
+      <span class="terminal-title">axium-monitor — pipeline.watch</span>
     </div>
     <div class="terminal-body">
       <div><span class="t-muted">$</span> <span class="t-accent">vkatos</span> <span class="t-white">monitor --live</span></div>
       <div class="t-muted">─────────────────────────────</div>
       <div><span class="t-green">✓</span> <span class="t-white">Pipeline connected</span></div>
-      <div><span class="t-green">✓</span> <span class="t-white">43 stages monitored</span></div>
+      <div><span class="t-green">✓</span> <span class="t-white">33 stages monitored</span></div>
       <div><span class="t-green">✓</span> <span class="t-white">DCSP watchdog active</span></div>
       <div class="t-muted">─────────────────────────────</div>
       <div><span class="t-amber">⚠</span> <span class="t-white">STALL DETECTED</span></div>
@@ -833,194 +817,84 @@ footer {
       <div><span class="t-green">→</span> <span class="t-white">Recruiter notified</span></div>
       <div><span class="t-green">→</span> <span class="t-white">Candidate reassured</span></div>
       <div><span class="t-green">→</span> <span class="t-white">Escalation queued</span></div>
+      <div><span class="t-green">→</span> <span class="t-white">Audit log: AUD-0042</span></div>
       <div class="t-muted">─────────────────────────────</div>
       <div><span class="t-muted">$</span> <span class="cursor-blink"></span></div>
     </div>
   </div>
 </section>
 
-<!-- TRUSTED BY -->
-<div class="trusted-by">
-  <span class="trusted-label">Trusted by industry leaders</span>
-  <div class="logo-bar">
-    <div class="logo-item">ACME CORP</div>
-    <div class="logo-item">GLOBAL LOGISTICS</div>
-    <div class="logo-item">EDUTECH SOLUTIONS</div>
-    <div class="logo-item">FINTECH GLOBAL</div>
-    <div class="logo-item">HEALTHCORE</div>
-  </div>
-</div>
-
 <!-- PROBLEM -->
 <section id="problem">
   <div class="reveal">
     <div class="section-label">// the problem</div>
-    <h2>Enterprise pipelines fail silently. We built the system that catches them first.</h2>
-    <p class="section-sub">Every industry has processes that stall without warning, consume manual effort, and cost money nobody can see clearly on a balance sheet.</p>
+    <h2>Enterprise pipelines<br>break silently.</h2>
+    <p class="section-sub">Every industry has processes that stall without warning, consume manual effort, and cost money nobody can see clearly on a balance sheet — until it's too late.</p>
   </div>
   <div class="problem-grid reveal">
     <div class="problem-card">
-      <div class="problem-industry">Enterprise HR</div>
-      <h3>Candidates lost to silence.</h3>
-      <p>Post-selection CAF documents submitted — then nothing. Hiring cycles extend 30+ days. Nobody built the watchdog.</p>
+      <div class="problem-industry">Enterprise HR / ATS</div>
+      <h3>Candidates selected. Then silence.</h3>
+      <p>Post-selection CAF documents submitted — then nothing. No status update. No follow-up. Candidates accept competing offers. Hiring cycles extend 32–68 days. Nobody built the watchdog.</p>
       <div class="problem-stat">40%</div>
       <div class="problem-stat-label">recruiter time lost to manual follow-up</div>
     </div>
     <div class="problem-card">
       <div class="problem-industry">Recruitment Agencies</div>
-      <h3>Placements falling through.</h3>
-      <p>Candidate at offer stage for 4 days — nobody noticed they received a competing offer. Placement fee lost.</p>
+      <h3>Placements falling through cracks.</h3>
+      <p>Candidate at offer stage for 4 days — nobody noticed they received a competing offer. Placement fee lost. Client relationship strained. No system was watching the pipeline.</p>
       <div class="problem-stat">₹1.5L</div>
       <div class="problem-stat-label">average placement fee at risk per stall</div>
     </div>
     <div class="problem-card">
-      <div class="problem-industry">Education Consultancies</div>
-      <h3>Deadlines missed.</h3>
-      <p>Student missing 2 documents. Deadline in 11 days. Counsellor following up manually. One slip and 6 months are lost.</p>
+      <div class="problem-industry">Study Abroad Consultancies</div>
+      <h3>Deadlines missed. Intakes lost.</h3>
+      <p>Student missing 2 documents. University deadline in 11 days. Counsellor following up manually via WhatsApp. One slip and the student waits 6 months for the next intake.</p>
       <div class="problem-stat">6 mo</div>
       <div class="problem-stat-label">lost per missed university intake deadline</div>
     </div>
   </div>
 </section>
 
-<!-- SOLUTIONS -->
-<section id="solutions">
+<!-- SERVICES -->
+<section id="services">
   <div class="reveal">
-    <div class="section-label">// our solutions</div>
-    <h2>The VKatOS Suite</h2>
-    <p class="section-sub">Autonomous operating systems designed to eliminate manual overhead and ensure zero-failure pipelines.</p>
+    <div class="section-label">// services</div>
+    <h2>Three products.<br>Any industry.</h2>
+    <p class="section-sub">We start with HR, recruitment, and education — and expand into any vertical where broken processes cost enterprises money.</p>
   </div>
   <div class="services-grid reveal">
     <div class="service-card">
       <div class="service-icon">⚡</div>
-      <h3>VKatOS Recruit</h3>
-      <p>End-to-end ATS pipeline automation. Resume parsing with RAG, candidate scoring with MoE agents, and automated CAF tracking.</p>
+      <h3>Axium Recruit</h3>
+      <p>End-to-end ATS pipeline automation. Resume parsing with RAG, candidate scoring with MoE agents, CAF tracking, offer generation. Built for enterprise hiring at scale.</p>
       <div>
         <span class="service-tag">RAG parsing</span>
         <span class="service-tag">MoE scoring</span>
+        <span class="service-tag">CAF tracking</span>
         <span class="service-tag">Offer gen</span>
       </div>
     </div>
     <div class="service-card">
       <div class="service-icon">🎓</div>
-      <h3>VKatOS Study</h3>
-      <p>Autonomous student pipeline for study abroad consultancies. Document automation, deadline intelligence, and visa tracking.</p>
+      <h3>Axium Study</h3>
+      <p>Autonomous student pipeline for study abroad consultancies. Document automation, deadline intelligence, counsellor handover, visa tracking — from inquiry to departure.</p>
       <div>
+        <span class="service-tag">650+ universities</span>
         <span class="service-tag">Deadline AI</span>
         <span class="service-tag">Doc tracking</span>
         <span class="service-tag">Visa pipeline</span>
       </div>
     </div>
     <div class="service-card">
-      <div class="service-icon">📊</div>
-      <h3>VKatOS Velaris</h3>
-      <p>Enterprise intelligence dashboard. Real-time visibility across all pipeline stages, documents, and system health.</p>
-      <div>
-        <span class="service-tag">Live tracking</span>
-        <span class="service-tag">UI layer</span>
-        <span class="service-tag">Analytics</span>
-      </div>
-    </div>
-    <div class="service-card">
       <div class="service-icon">🔧</div>
-      <h3>VKatOS Enterprise</h3>
-      <p>Custom autonomous operating systems for any enterprise domain. We build the self-healing engine your specific process needs.</p>
+      <h3>Axium Enterprise</h3>
+      <p>Custom autonomous operating systems for any enterprise domain. If your process has stages, documents, approvals, and humans losing time to follow-up — we automate it.</p>
       <div>
         <span class="service-tag">Any domain</span>
         <span class="service-tag">2-week deploy</span>
         <span class="service-tag">Self-healing</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="reveal">
-    <div class="section-label">// pricing</div>
-    <h2>Predictable costs.<br>Enterprise value.</h2>
-    <p class="section-sub">Simple monthly plans with no hidden fees. All data stays within your network by design.</p>
-  </div>
-  <div class="pricing-grid reveal">
-    <div class="price-card">
-      <div class="price-tier">Starter</div>
-      <div class="price-amount">₹49,999<span>/mo</span></div>
-      <p class="price-desc">Perfect for small teams and single-pipeline automation.</p>
-      <ul class="price-features">
-        <li>1 Pipeline automated</li>
-        <li>Standard RAG indexing</li>
-        <li>Email/SMS notifications</li>
-        <li>99.9% Watchdog uptime</li>
-      </ul>
-      <a href="#contact" class="btn-price btn-price-ghost">Start with Starter</a>
-    </div>
-    <div class="price-card popular">
-      <div class="price-tier">Professional</div>
-      <div class="price-amount">₹1,49,999<span>/mo</span></div>
-      <p class="price-desc">The industry standard for scaling enterprises.</p>
-      <ul class="price-features">
-        <li>Up to 5 Pipelines</li>
-        <li>Advanced MoE routing</li>
-        <li>Full Velaris Dashboard</li>
-        <li>Priority escalation logic</li>
-        <li>2-week deployment guarantee</li>
-      </ul>
-      <a href="#contact" class="btn-price btn-price-primary">Go Professional</a>
-    </div>
-    <div class="price-card">
-      <div class="price-tier">Enterprise</div>
-      <div class="price-amount">Custom</div>
-      <p class="price-desc">Bespoke autonomous systems for global scale.</p>
-      <ul class="price-features">
-        <li>Unlimited Pipelines</li>
-        <li>Custom agent development</li>
-        <li>On-premise LLM support</li>
-        <li>Dedicated system architect</li>
-        <li>Custom audit trails</li>
-      </ul>
-      <a href="#contact" class="btn-price btn-price-ghost">Contact Sales</a>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section id="testimonials">
-  <div class="reveal">
-    <div class="section-label">// validation</div>
-    <h2>What leaders say.</h2>
-  </div>
-  <div class="testimonials-grid reveal">
-    <div class="testimonial-card">
-      <div class="quote-icon">“</div>
-      <p class="testimonial-text">VKatOS transformed our recruitment pipeline. We stopped losing candidates to silence, and our deployment was ready in exactly 12 days.</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">RK</div>
-        <div class="author-info">
-          <h4>Rajesh Kumar</h4>
-          <p>Head of Talent, Global Logistics</p>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="quote-icon">“</div>
-      <p class="testimonial-text">The self-healing aspect isn't just a marketing buzzword. It actually detects stalls and acts on them before our team even realizes there's a problem.</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">AS</div>
-        <div class="author-info">
-          <h4>Anita Sharma</h4>
-          <p>CTO, EduTech Solutions</p>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="quote-icon">“</div>
-      <p class="testimonial-text">Finally, a system that respects our network security. Knowing no PII leaves our servers makes compliance a non-issue.</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">MV</div>
-        <div class="author-info">
-          <h4>Michael Vance</h4>
-          <p>Compliance Director, Fintech Global</p>
-        </div>
+        <span class="service-tag">Zero PII risk</span>
       </div>
     </div>
   </div>
@@ -1030,8 +904,8 @@ footer {
 <section id="products">
   <div class="reveal">
     <div class="section-label">// open systems</div>
-    <h2>Production-grade.</h2>
-    <p class="section-sub">The underlying tech powering every VKatOS deployment.</p>
+    <h2>Production-grade.<br>Tested. Deployed.</h2>
+    <p class="section-sub">Real systems with real test suites. Not prototypes. Not proof-of-concepts. Production-ready autonomous systems built to enterprise standards.</p>
   </div>
   <div class="products-list reveal">
     <div class="product-row">
@@ -1039,10 +913,10 @@ footer {
         <div class="product-name">Aether<span>2</span></div>
         <div class="product-version">v2.0 — stable</div>
       </div>
-      <div class="product-desc">AI-powered pipeline builder. Multi-step autonomous workflow engine with RAG indexing and MoE agent routing.</div>
+      <div class="product-desc">AI-powered pipeline builder. Multi-step autonomous workflow engine with RAG indexing, MoE agent routing, and self-repair capability. The engine underneath every VKatOS deployment.</div>
       <div class="product-meta">
-        <div class="product-tests">✓ 43/43 tests passing</div>
-        <a href="#contact" class="product-link">Request Demo →</a>
+        <div class="product-tests">✓ 33/33 tests passing</div>
+        <a href="https://github.com/Vk-AtOS/aether2" target="_blank" class="product-link">github.com/Vk-AtOS/aether2 →</a>
       </div>
     </div>
     <div class="product-row">
@@ -1050,21 +924,152 @@ footer {
         <div class="product-name">DC<span>SP</span></div>
         <div class="product-version">v1.0 — stable</div>
       </div>
-      <div class="product-desc">Distributed Control and Self-healing Platform. Watchdog system that monitors every pipeline stage and detects stalls.</div>
+      <div class="product-desc">Distributed Control and Self-healing Platform. Watchdog system that monitors every pipeline stage, detects stalls in real time, fires auto-alerts, escalates to humans, and logs a tamper-proof audit trail.</div>
       <div class="product-meta">
-        <div class="product-tests">✓ 500/500 tests passing</div>
-        <a href="#contact" class="product-link">Request Demo →</a>
+        <div class="product-tests">✓ 469/469 tests passing</div>
+        <a href="https://github.com/Vk-AtOS/DSCP" target="_blank" class="product-link">github.com/Vk-AtOS/DSCP →</a>
       </div>
     </div>
     <div class="product-row">
       <div>
         <div class="product-name">Vel<span>aris</span></div>
-        <div class="product-version">v1.0 — stable</div>
+        <div class="product-version">v1.0 — in development</div>
       </div>
-      <div class="product-desc">Enterprise intelligence dashboard. Real-time visibility across all pipeline stages, candidates, and documents.</div>
+      <div class="product-desc">Enterprise intelligence dashboard. Real-time visibility across all pipeline stages, candidates, documents, and deadlines. Single screen showing everything your team needs — without opening a spreadsheet.</div>
       <div class="product-meta">
-        <div class="product-tests">✓ Active deployment</div>
-        <a href="#contact" class="product-link">Request Demo →</a>
+        <div class="product-tests" style="color: var(--amber);">⚡ Active development</div>
+        <a href="https://github.com/Vk-AtOS" target="_blank" class="product-link">github.com/Vk-AtOS →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="reveal">
+    <div class="section-label">// architecture</div>
+    <h2>Your data stays<br>in your network.</h2>
+    <p class="section-sub">Connector-based architecture. We never touch your data. Your IT team installs a lightweight connector — that's the only access we need.</p>
+  </div>
+  <div class="how-grid reveal">
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Connector installed on your server</h3>
+          <p>Lightweight Python package. Your IT team installs it inside your network. Source code available for security review. Takes 30 minutes.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Connector strips all PII locally</h3>
+          <p>Before any signal leaves your network, PII is removed. Only structured data — stage, score, action-needed — is transmitted. Nothing sensitive ever leaves.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Axium platform processes and acts</h3>
+          <p>Our platform receives the signal, runs the AI scoring and routing, detects stalls, generates actions, and sends them back to your connector.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Actions execute inside your network</h3>
+          <p>Notifications, alerts, document requests, offer generation — all execute within your infrastructure. Full audit trail. Tamper-proof log. Zero external data exposure.</p>
+        </div>
+      </div>
+    </div>
+    <div class="how-visual">
+      <div style="color:var(--muted);margin-bottom:1rem;font-size:0.68rem;letter-spacing:0.15em;">ARCHITECTURE OVERVIEW</div>
+      <div class="arch-row">
+        <span class="arch-label">Your database</span>
+        <span class="arch-arrow">──┐</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">Your email / SMS</span>
+        <span class="arch-arrow">──┤ Connector</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">Your calendar</span>
+        <span class="arch-arrow">──┤ (your server)</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">Your CRM / ATS</span>
+        <span class="arch-arrow">──┘</span>
+      </div>
+      <hr class="arch-divider"/>
+      <div class="arch-row">
+        <span class="arch-label" style="color:var(--accent);">PII stripped locally</span>
+        <span class="arch-arrow">→</span>
+        <span class="arch-val">signals only</span>
+      </div>
+      <hr class="arch-divider"/>
+      <div class="arch-row">
+        <span class="arch-label">RAG engine</span>
+        <span class="arch-arrow">←→</span>
+        <span class="arch-val">VKatOS platform</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">MoE scoring</span>
+        <span class="arch-arrow">←→</span>
+        <span class="arch-val">VKatOS platform</span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-label">DCSP watchdog</span>
+        <span class="arch-arrow">←→</span>
+        <span class="arch-val">VKatOS platform</span>
+      </div>
+      <hr class="arch-divider"/>
+      <div class="arch-row">
+        <span class="arch-label" style="color:var(--green);">Zero PII transmitted</span>
+        <span class="arch-arrow">✓</span>
+        <span class="arch-val">DPDP Act compliant</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid reveal">
+    <div class="founder-card">
+      <div class="founder-avatar">TV</div>
+      <div class="founder-name">Thulasi Velan Rajamanickam</div>
+      <div class="founder-title">Founder & Technical Architect</div>
+      <p class="founder-bio">Technical Product Architect based in Chennai. Built two production-grade autonomous systems — DCSP (469 tests) and Aether2 (33 tests) — from scratch. Specialises in enterprise pipeline automation, self-healing systems, and AI-powered workflow engines.</p>
+      <p class="founder-bio">Previously: enterprise system design, distributed architecture, and AI pipeline engineering across multiple domains.</p>
+      <div class="founder-links">
+        <a href="https://github.com/Vk-AtOS" target="_blank" class="founder-link">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" class="founder-link">LinkedIn</a>
+        <a href="mailto:Velan317@gmail.com" class="founder-link">Email</a>
+      </div>
+    </div>
+    <div class="about-content">
+      <div class="section-label">// about vkatos</div>
+      <h2>Built by someone who solves the problem, not describes it.</h2>
+      <p>VKatOS is an enterprise automation company founded in Chennai. We build autonomous operating systems — production-grade, battle-tested, deployed in two weeks — for industries where broken processes cost real money every day.</p>
+      <p><strong>We are not a consulting firm.</strong> We don't produce reports or recommendations. We build systems that run. Every engagement ends with working software in your infrastructure, not a slide deck on your desk.</p>
+      <p><strong>We start with three markets</strong> — enterprise HR, recruitment agencies, and study abroad consultancies — because we've documented the exact problems and built the exact solutions. We expand into any domain where the same pattern exists: a pipeline, documents, humans losing time, money leaking silently.</p>
+      <div class="values-grid">
+        <div class="value-item">
+          <strong>Ship first</strong>
+          <span>Working systems over perfect plans. We deploy, measure, and improve.</span>
+        </div>
+        <div class="value-item">
+          <strong>Zero trust required</strong>
+          <span>Your data stays in your network. Always. By architecture, not by promise.</span>
+        </div>
+        <div class="value-item">
+          <strong>Fixed price</strong>
+          <span>No surprise invoices. Scope agreed upfront. Price locked. Delivered.</span>
+        </div>
+        <div class="value-item">
+          <strong>Self-healing default</strong>
+          <span>Systems that fix themselves are better than systems that need fixing.</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1075,11 +1080,12 @@ footer {
   <div class="reveal">
     <div class="section-label">// get in touch</div>
     <h2>Ready to eliminate<br>a broken process?</h2>
+    <p class="section-sub">Tell us what's breaking. We'll tell you if we can fix it — and exactly how long it will take.</p>
   </div>
   <div class="contact-grid reveal">
     <div class="contact-info">
       <h3>Let's talk about your pipeline.</h3>
-      <p>Tell us what's breaking. We'll tell you if we can fix it — and exactly how long it will take.</p>
+      <p>Whether you're in HR, recruitment, education, or any other enterprise domain — if you have a process that stalls, we want to hear about it.</p>
       <div class="contact-detail">
         <div class="contact-icon">📧</div>
         <div>
@@ -1090,8 +1096,22 @@ footer {
       <div class="contact-detail">
         <div class="contact-icon">📱</div>
         <div>
-          <div class="contact-label">WhatsApp</div>
+          <div class="contact-label">Phone / WhatsApp</div>
           <div class="contact-value"><a href="tel:+918056238628">+91 80562 38628</a></div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Location</div>
+          <div class="contact-value">Chennai, Tamil Nadu, India</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">⏱</div>
+        <div>
+          <div class="contact-label">Response time</div>
+          <div class="contact-value">Within 4 hours on business days</div>
         </div>
       </div>
     </div>
@@ -1107,70 +1127,40 @@ footer {
         </div>
       </div>
       <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="rajesh@acmecorp.com" required/>
+      </div>
+      <div class="form-group">
         <label>Industry</label>
         <select>
           <option value="">Select your industry</option>
-          <option>Enterprise HR</option>
+          <option>Enterprise HR / Talent Acquisition</option>
           <option>Recruitment Agency</option>
           <option>Study Abroad Consultancy</option>
-          <option>Fintech / Banking</option>
+          <option>Banking / Financial Services</option>
+          <option>Healthcare</option>
+          <option>Manufacturing</option>
           <option>Other Enterprise</option>
         </select>
       </div>
       <div class="form-group">
         <label>Describe the broken process</label>
-        <textarea placeholder="What's taking too long? What's costing you time?"></textarea>
+        <textarea placeholder="Tell us what's taking too long, what your team is doing manually, what's costing you money or time..."></textarea>
       </div>
       <button type="submit" class="btn-submit">Send message →</button>
-      <div id="form-success" style="display:none;color:var(--green);font-size:0.85rem;font-family:var(--font-mono);margin-top:1rem;">✓ Message sent. We'll respond within 4 hours.</div>
+      <div id="form-success" style="display:none;color:var(--green);font-size:0.85rem;font-family:var(--font-mono);">✓ Message sent. We'll respond within 4 hours.</div>
     </form>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="#" class="footer-logo">VK<span>at</span>OS</a>
-      <p>Autonomous operating systems for enterprise pipelines. Self-healing, secure, and production-ready.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Products</h4>
-      <ul>
-        <li><a href="#products">Aether2</a></li>
-        <li><a href="#products">DCSP</a></li>
-        <li><a href="#solutions">Velaris</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Solutions</h4>
-      <ul>
-        <li><a href="#solutions">Recruit</a></li>
-        <li><a href="#solutions">Study</a></li>
-        <li><a href="#solutions">Enterprise</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#">Blog</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Portal</h4>
-      <ul>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#">Login</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2026 VKatOS. Chennai, India. DPDP Act Compliant.</div>
-    <div class="footer-links">
-      <a href="https://github.com/Vk-AtOS" target="_blank" style="color:var(--muted);text-decoration:none;font-size:0.8rem;">GitHub</a>
-    </div>
+  <a href="#" class="footer-logo">VK<span>at</span>OS</a>
+  <div class="footer-copy">© 2026 VKatOS. Chennai, India. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="https://github.com/Vk-AtOS" target="_blank">GitHub</a>
+    <a href="mailto:Velan317@gmail.com">Email</a>
+    <a href="#contact">Contact</a>
   </div>
 </footer>
 
@@ -1212,29 +1202,6 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 reveals.forEach(el => observer.observe(el));
-
-// Hamburger Toggle
-const hamburger = document.getElementById('hamburger');
-const navList = document.querySelector('.nav-links');
-
-if (hamburger && navList) {
-  hamburger.addEventListener('click', () => {
-    navList.classList.toggle('active');
-    hamburger.classList.toggle('active');
-    
-    // Animate hamburger to X
-    const spans = hamburger.querySelectorAll('span');
-    if (hamburger.classList.contains('active')) {
-      spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-      spans[1].style.opacity = '0';
-      spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-    } else {
-      spans[0].style.transform = 'none';
-      spans[1].style.opacity = '1';
-      spans[2].style.transform = 'none';
-    }
-  });
-}
 
 // Form
 function handleSubmit(e) {
