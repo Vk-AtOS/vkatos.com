@@ -32,7 +32,7 @@ FOOTER (identical across all pages):
 - Products: DCSP, Aether2, Velaris, VKatOS Platform
 - Solutions: Enterprise HR, Recruitment, Study Abroad, Custom
 - Company: About, Blog, Pricing, Careers, Contact
-- Connect: GitHub (github.com/Vk-AtOS), Email (velan317@gmail.com), 
+- Connect: GitHub (github.com/Vk-AtOS), Email (velan@vkatos.com), 
            Phone (+91-8056238628), Location (Chennai, Tamil Nadu)
 - Bottom bar: © 2026 VKatOS. All rights reserved. | Privacy | Terms
 - Same dark style as index.html
@@ -399,10 +399,10 @@ Content:
 - Email input
 - Password input
 - "Sign In" button (no backend — shows "Access request pending" on submit)
-- "Request Access" link → mailto:velan317@gmail.com
+- "Request Access" link → mailto:velan@vkatos.com
 - "Forgot password? Contact support" link
 - Note at bottom: "Portal access is provisioned per contract.
-                   Contact velan317@gmail.com to request access."
+                   Contact velan@vkatos.com to request access."
 - Clean, minimal, professional
 
 Save as: login/index.html
@@ -421,7 +421,7 @@ Content:
     - "How did you hear about us?" dropdown
     - Submit button (mailto: fallback)
   Right: Direct contact info
-    - Email: velan317@gmail.com
+    - Email: velan@vkatos.com
     - Phone: +91-8056238628
     - Location: Chennai, Tamil Nadu, India
     - Response time: "We respond within 4 business hours"

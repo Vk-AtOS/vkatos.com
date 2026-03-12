@@ -91,9 +91,55 @@
   .nav-cta { padding: 10px 24px !important; background: transparent !important; border: 1px solid var(--border) !important; color: var(--cyan) !important; border-radius: 4px !important; transition: all 0.2s !important; }
   .nav-cta:hover { background: rgba(0,194,212,0.08) !important; border-color: var(--cyan) !important; color: var(--white) !important; }
 
-  section { position: relative; z-index: 10; }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 101;
+  }
+  .hamburger span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--white);
+    transition: 0.3s;
+  }
 
-  /* HERO */
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .pgrid, .igrid, .hsteps, .prodgrid, .pgrid2 { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .stats-row { flex-wrap: wrap; }
+    .stat { border-bottom: 1px solid var(--border); }
+    .stat:nth-child(2) { border-right: none; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hamburger { display: flex; }
+    .nav-links {
+      position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+      background: var(--bg); flex-direction: column; justify-content: center;
+      transition: 0.4s; gap: 32px;
+    }
+    .nav-links.active { right: 0; }
+    
+    .hero { padding: 120px 24px 60px; }
+    .hero h1 { font-size: 42px; }
+    .stats-row { flex-direction: column; }
+    .stat { border-right: none; }
+    
+    .pgrid, .igrid, .hsteps, .prodgrid, .pgrid2 { grid-template-columns: 1fr; }
+    .hsteps::before { display: none; }
+    
+    .cbox { padding: 40px 24px; }
+    .crow { grid-template-columns: 1fr; }
+    
+    footer { flex-direction: column; text-align: center; padding: 40px 24px; }
+    .flinks { flex-direction: column; gap: 16px; }
+  }
+
+  /* ANIMATIONS */
   .hero {
     min-height: 100vh;
     display: flex; flex-direction: column;
@@ -377,7 +423,8 @@
   }
   .pricecard:hover { transform: translateY(-5px); }
   .planname { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
-  .planprice { font-family: var(--font-display); font-size: 46px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+  .planprice { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+  .plansetup { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
   .planperiod { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
   .plandiv { height: 1px; background: var(--border); margin-bottom: 28px; }
   .planfeat { list-style: none; }
@@ -458,7 +505,10 @@
 
 <nav id="nav">
   <a href="#" class="nav-logo"><div class="logo-dot"></div>VKat<span>OS</span></a>
-  <ul class="nav-links">
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#industries">Industries</a></li>
     <li><a href="#products">Products</a></li>
     <li><a href="#how">How It Works</a></li>
@@ -670,45 +720,48 @@
     <div class="pgrid2">
       <div class="pricecard reveal">
         <div class="planname">Starter</div>
-        <div class="planprice">₹49,999</div>
-        <div class="planperiod">per month · single pipeline</div>
+        <div class="planprice">₹25,000</div>
+        <div class="plansetup">Setup: ₹75,000 (one time)</div>
+        <div class="planperiod">per month · 3 pipelines</div>
         <div class="plandiv"></div>
         <ul class="planfeat">
-          <li>1 pipeline automated end-to-end</li>
-          <li>DCSP watchdog monitoring</li>
+          <li>Annual: ₹2,40,000/yr (save ₹60k)</li>
+          <li>DCSP + Aether2 included</li>
           <li>Email + SMS stall alerts</li>
           <li>Velaris dashboard access</li>
-          <li>99.9% uptime SLA</li>
+          <li>2-week deployment</li>
         </ul>
         <a href="#contact" class="plancta">Get Started</a>
       </div>
       <div class="pricecard hot reveal d1">
         <div class="planname">Professional</div>
-        <div class="planprice">₹1,49,999</div>
-        <div class="planperiod">per month · up to 5 pipelines</div>
+        <div class="planprice">₹40,000</div>
+        <div class="plansetup">Setup: ₹2,00,000 (one time)</div>
+        <div class="planperiod">per month · unlimited pipelines</div>
         <div class="plandiv"></div>
         <ul class="planfeat">
-          <li>Up to 5 pipelines automated</li>
-          <li>Advanced predictive failure engine</li>
-          <li>Full Velaris enterprise dashboard</li>
-          <li>Priority escalation logic</li>
-          <li>2-week deployment guarantee</li>
+          <li>Annual: ₹4,00,000/yr (save ₹80k)</li>
+          <li>Full platform + AuditTrail</li>
+          <li>Priority support + DPDP reports</li>
+          <li>Monthly review calls</li>
+          <li>DataReady included</li>
           <li>Dedicated onboarding engineer</li>
         </ul>
         <a href="#contact" class="plancta">Go Professional</a>
       </div>
       <div class="pricecard reveal d2">
         <div class="planname">Enterprise</div>
-        <div class="planprice">Custom</div>
-        <div class="planperiod">bespoke · unlimited scale</div>
+        <div class="planprice">₹75,000</div>
+        <div class="plansetup">Setup: ₹5,00,000 (one time)</div>
+        <div class="planperiod">per month · custom scale</div>
         <div class="plandiv"></div>
         <ul class="planfeat">
-          <li>Unlimited pipelines</li>
-          <li>Custom agent development</li>
-          <li>On-premise LLM deployment</li>
+          <li>Annual: ₹7,50,000/yr (save ₹1.5L)</li>
+          <li>All products + AgentOS</li>
+          <li>Velaris Q2 2026 early access</li>
           <li>Dedicated system architect</li>
-          <li>Custom audit trails</li>
-          <li>DPDP Act compliance built-in</li>
+          <li>99.5% SLA guarantee</li>
+          <li>On-site deployment</li>
         </ul>
         <a href="#contact" class="plancta">Contact Sales</a>
       </div>
@@ -786,6 +839,35 @@
   // Nav
   const nav=document.getElementById('nav');
   window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+  // Hamburger Toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      const spans = hamburger.querySelectorAll('span');
+      if (navLinks.classList.contains('active')) {
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+      } else {
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      }
+    });
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      });
+    });
+  }
 
   // Reveal
   const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
