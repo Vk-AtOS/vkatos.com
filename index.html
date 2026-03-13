@@ -83,7 +83,8 @@
     color: var(--white); text-decoration: none;
     display: flex; align-items: center; gap: 10px;
   }
-  .nav-logo span { color: var(--cyan); }
+  .nav-logo .logo-text { letter-spacing: -0.5px; }
+  .nav-logo .logo-accent { color: var(--cyan); }
   .logo-dot { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; }
   .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
   .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
@@ -115,7 +116,7 @@
   }
 
   @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
+    nav { padding: 16px 20px; }
     .hamburger { display: flex; }
     .nav-links {
       position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
@@ -124,19 +125,42 @@
     }
     .nav-links.active { right: 0; }
     
-    .hero { padding: 120px 24px 60px; }
-    .hero h1 { font-size: 42px; }
-    .stats-row { flex-direction: column; }
-    .stat { border-right: none; }
+    .hero { padding: 100px 20px 60px; }
+    .hero h1 { font-size: clamp(36px, 10vw, 56px); word-break: break-word; }
+    .hero-sub { font-size: 15px; padding: 0 4px; }
+    .hero-actions { flex-direction: column; width: 100%; }
+    .hero-actions a { width: 100%; text-align: center; }
+    .stats-row { flex-direction: column; margin-top: 48px; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat:last-child { border-bottom: none; }
     
+    .problem { padding: 80px 20px; }
+    .industries { padding: 80px 20px; }
+    .how { padding: 80px 20px; }
+    .products { padding: 80px 20px; }
+    .vidwrap { padding: 60px 20px; }
+    .pricing { padding: 80px 20px; }
+    .contact { padding: 80px 20px; }
+
     .pgrid, .igrid, .hsteps, .prodgrid, .pgrid2 { grid-template-columns: 1fr; }
     .hsteps::before { display: none; }
     
-    .cbox { padding: 40px 24px; }
+    .pricecard { padding: 28px 24px; }
+    .planprice { font-size: clamp(24px, 8vw, 36px); }
+    
+    .cbox { padding: 32px 20px; }
     .crow { grid-template-columns: 1fr; }
     
-    footer { flex-direction: column; text-align: center; padding: 40px 24px; }
+    .terminal-wrap { padding: 40px 20px; }
+    .terminal { font-size: 11px; }
+    .t-body { padding: 18px; }
+    
+    footer { flex-direction: column; text-align: center; padding: 40px 20px; }
     .flinks { flex-direction: column; gap: 16px; }
+
+    .pcard { padding: 32px 24px; }
+    .prodcard .prodhead { padding: 24px 24px 20px; }
+    .prodcard .prodbody { padding: 20px 24px 24px; }
   }
 
   /* ANIMATIONS */
@@ -347,9 +371,17 @@
   .products { padding: 120px 48px; background: var(--bg2); }
   .prods-inner { max-width: 1200px; margin: 0 auto; }
   .prodgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
+  .pipeline-note {
+    margin-top: 40px; text-align: center;
+    font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+    letter-spacing: 0.08em; padding: 18px;
+    border: 1px dashed rgba(0,194,212,0.15); border-radius: 8px;
+  }
+  .pipeline-note span { color: var(--cyan); }
   .prodcard {
     background: var(--bg); border: 1px solid var(--border);
     border-radius: 12px; overflow: hidden; transition: all 0.3s;
+    min-width: 0;
   }
   .prodcard:hover { border-color: rgba(0,194,212,0.3); transform: translateY(-6px); box-shadow: 0 28px 64px rgba(0,0,0,0.45); }
   .prodhead {
@@ -362,7 +394,7 @@
     display: flex; align-items: center; gap: 8px;
   }
   .tdot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-  .pname { font-family: var(--font-display); font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .pname { font-family: var(--font-display); font-size: clamp(20px, 2.5vw, 28px); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; word-break: break-word; }
   .ptag2 { font-size: 14px; color: var(--muted); line-height: 1.65; }
   .prodbody { padding: 28px 32px 32px; }
   .pfeats { list-style: none; }
@@ -423,7 +455,7 @@
   }
   .pricecard:hover { transform: translateY(-5px); }
   .planname { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
-  .planprice { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+  .planprice { font-family: var(--font-display); font-size: clamp(22px, 3vw, 32px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
   .plansetup { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
   .planperiod { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
   .plandiv { height: 1px; background: var(--border); margin-bottom: 28px; }
@@ -504,7 +536,7 @@
 <div class="mesh"></div>
 
 <nav id="nav">
-  <a href="#" class="nav-logo"><div class="logo-dot"></div>VKat<span>OS</span></a>
+  <a href="#" class="nav-logo"><div class="logo-dot"></div><span class="logo-text">VKat<span class="logo-accent">OS</span></span></a>
   <div class="hamburger" id="hamburger">
     <span></span><span></span><span></span>
   </div>
@@ -692,11 +724,63 @@
           <div class="tbadge">✓ Production deployed — active monitoring live</div>
         </div>
       </div>
+      <div class="prodcard reveal d3">
+        <div class="prodhead">
+          <div class="ptag"><span class="tdot" style="background:var(--cyan)"></span>READY TO DEPLOY</div>
+          <div class="pname">DataReady</div>
+          <div class="ptag2">Intelligent data preparation and validation engine. Ensures every pipeline receives clean, structured, compliant data before processing begins.</div>
+        </div>
+        <div class="prodbody">
+          <ul class="pfeats">
+            <li>Automated schema validation</li>
+            <li>Pre-pipeline data cleansing</li>
+            <li>DPDP Act compliance checks</li>
+            <li>Multi-source data normalization</li>
+            <li>Audit-ready data lineage logs</li>
+          </ul>
+          <div class="tbadge" style="border-color:rgba(0,194,212,0.25);background:rgba(0,194,212,0.06);color:var(--cyan)">⚡ Ready to deploy — awaiting client onboarding</div>
+        </div>
+      </div>
+      <div class="prodcard reveal">
+        <div class="prodhead">
+          <div class="ptag"><span class="tdot" style="background:var(--cyan)"></span>READY TO DEPLOY</div>
+          <div class="pname">AuditTrail</div>
+          <div class="ptag2">Immutable compliance and audit logging layer. Every pipeline action, decision, and anomaly recorded with full tamper-proof traceability.</div>
+        </div>
+        <div class="prodbody">
+          <ul class="pfeats">
+            <li>Tamper-proof event ledger</li>
+            <li>DPDP & regulatory export reports</li>
+            <li>Real-time audit query engine</li>
+            <li>Role-based log access controls</li>
+            <li>Automated compliance summaries</li>
+          </ul>
+          <div class="tbadge" style="border-color:rgba(0,194,212,0.25);background:rgba(0,194,212,0.06);color:var(--cyan)">⚡ Ready to deploy — awaiting client onboarding</div>
+        </div>
+      </div>
+      <div class="prodcard reveal d1">
+        <div class="prodhead">
+          <div class="ptag"><span class="tdot" style="background:var(--cyan)"></span>READY TO DEPLOY</div>
+          <div class="pname">AgentOS</div>
+          <div class="ptag2">Autonomous AI agent runtime for enterprise workflows. Deploys task-aware agents that execute, monitor, and self-correct across any process layer.</div>
+        </div>
+        <div class="prodbody">
+          <ul class="pfeats">
+            <li>Multi-agent task orchestration</li>
+            <li>LLM-agnostic agent runtime</li>
+            <li>Persistent agent memory + context</li>
+            <li>Human-in-the-loop escalation</li>
+            <li>Fully air-gapped deployment</li>
+          </ul>
+          <div class="tbadge" style="border-color:rgba(0,194,212,0.25);background:rgba(0,194,212,0.06);color:var(--cyan)">⚡ Ready to deploy — awaiting client onboarding</div>
+        </div>
+      </div>
+    </div>
+    <div class="pipeline-note reveal">
+      <span>6 products live and ready.</span> &nbsp;·&nbsp; More in the pipeline — DataReady v2, AgentOS Pro, and Velaris Enterprise coming Q3 2026.
     </div>
   </div>
 </section>
-
-<!-- VIDEO -->
 <section class="vidwrap">
   <div class="slabel reveal" style="justify-content:center">Getting Started</div>
   <h2 class="stitle reveal d1" style="margin:0 auto;text-align:center">Up and running<br><em>in under 20 minutes.</em></h2>
@@ -775,14 +859,14 @@
   <h2 class="stitle reveal d1" style="margin:0 auto;text-align:center">Tell us what's<br><em>breaking.</em></h2>
   <div class="cbox reveal d2">
     <p style="color:var(--muted);font-size:15px;line-height:1.75">Describe the pipeline. We'll tell you if we can make it self-healing — and exactly how long it will take to deploy.</p>
-    <form class="cform" onsubmit="handleSubmit(event)">
+    <form class="cform" action="https://formspree.io/f/xyknjvol" method="POST" id="contactForm">
       <div class="crow">
-        <input type="text" class="finput" placeholder="Your name" required>
-        <input type="text" class="finput" placeholder="Company" required>
+        <input type="text" name="name" class="finput" placeholder="Your name" required>
+        <input type="text" name="company" class="finput" placeholder="Company" required>
       </div>
       <div class="crow">
-        <input type="email" class="finput" placeholder="Email address" required>
-        <select class="finput">
+        <input type="email" name="email" class="finput" placeholder="Email address" required>
+        <select name="industry" class="finput">
           <option value="" disabled selected>Industry</option>
           <option>Manufacturing</option>
           <option>Logistics & Supply Chain</option>
@@ -795,8 +879,8 @@
           <option>Other Enterprise</option>
         </select>
       </div>
-      <textarea class="finput" placeholder="Describe the process that's breaking. What stalls? How often? What does it cost?"></textarea>
-      <button type="submit" class="fsub">Send — We respond within 4 hours →</button>
+      <textarea name="message" class="finput" placeholder="Describe the process that's breaking. What stalls? How often? What does it cost?"></textarea>
+      <button type="submit" class="fsub" id="submitBtn">Send — We respond within 4 hours →</button>
     </form>
     <div class="calt">
       <div class="ci">📧 <a href="mailto:velan@vkatos.com">velan@vkatos.com</a></div>
@@ -817,7 +901,7 @@
   <div class="fcopy">© 2026 VKATOS · CHENNAI · DPDP COMPLIANT</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Cursor
   const cur = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
@@ -883,13 +967,36 @@
   }),{threshold:0.5});
   document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
 
-  // Form
-  function handleSubmit(e){
-    e.preventDefault();
-    const btn=e.target.querySelector('.fsub');
-    btn.textContent='✓ Sent — we\'ll be in touch within 4 hours';
-    btn.style.background='var(--green)';
-    btn.style.color='#04080F';
+  // Form — Formspree
+  const contactForm = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.7';
+      try {
+        const res = await fetch('https://formspree.io/f/xyknjvol', {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          submitBtn.textContent = '✓ Sent — we\'ll be in touch within 4 hours';
+          submitBtn.style.background = 'var(--green)';
+          submitBtn.style.opacity = '1';
+          contactForm.reset();
+        } else {
+          throw new Error('Failed');
+        }
+      } catch(err) {
+        submitBtn.textContent = 'Failed to send — email velan@vkatos.com directly';
+        submitBtn.style.background = 'var(--red)';
+        submitBtn.style.opacity = '1';
+        submitBtn.disabled = false;
+      }
+    });
   }
 </script>
 </body>
