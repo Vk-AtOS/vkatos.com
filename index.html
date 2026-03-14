@@ -569,10 +569,10 @@
     <a href="#how" class="btn-ghost">See How It Works</a>
   </div>
   <div class="stats-row">
-    <div class="stat"><div class="stat-n" data-count="500">0</div><div class="stat-l">Automated Tests</div></div>
-    <div class="stat"><div class="stat-n">2wk</div><div class="stat-l">Avg. Deployment</div></div>
-    <div class="stat"><div class="stat-n">84%</div><div class="stat-l">Stall Reduction</div></div>
-    <div class="stat"><div class="stat-n">0</div><div class="stat-l">Data Leaves Network</div></div>
+    <div class="stat"><div class="stat-n" data-count="502">0</div><div class="stat-l">Automated Tests</div></div>
+    <div class="stat"><div class="stat-n" data-count="2" data-suffix="wk">0</div><div class="stat-l">Avg. Deployment</div></div>
+    <div class="stat"><div class="stat-n" data-count="84" data-suffix="%">0</div><div class="stat-l">Stall Reduction</div></div>
+    <div class="stat"><div class="stat-n" data-count="0">0</div><div class="stat-l">Zero Data Leaves Network</div></div>
   </div>
   <div class="scroll-cue"><span>SCROLL</span><div class="scroll-line"></div></div>
 </section>
@@ -640,6 +640,8 @@
       <div class="icard reveal d1"><div class="iicon">⚙️</div><div class="iname">SaaS & Technology</div><div class="idesc">Deployment pipeline self-healing, CI/CD stall detection, incident auto-resolution.</div></div>
       <div class="icard reveal d2"><div class="iicon">🎓</div><div class="iname">Education</div><div class="idesc">Student enrollment pipeline, document deadline tracking, intake automation.</div></div>
       <div class="icard reveal d3"><div class="iicon">👥</div><div class="iname">Human Resources</div><div class="idesc">End-to-end hiring pipeline, offer management, onboarding automation.</div></div>
+      <div class="icard reveal"><div class="iicon">🛒</div><div class="iname">E-Commerce</div><div class="idesc">Order pipeline automation, inventory management, payment gateway monitoring, fulfilment tracking.</div></div>
+      <div class="icard reveal d1"><div class="iicon">🎯</div><div class="iname">Recruitment</div><div class="idesc">End-to-end hiring pipeline monitoring, candidate tracking, client review automation, offer management.</div></div>
     </div>
   </div>
 </section>
@@ -704,13 +706,14 @@
             <li>Multi-tenant isolation architecture</li>
             <li>REST API + live monitoring dashboard</li>
           </ul>
-          <div class="tbadge">✓ 500/500 tests passing — zero known failure modes</div>
+          <div class="tbadge">✓ 469/469 tests passing — zero known failure modes</div>
         </div>
       </div>
       <div class="prodcard reveal d2">
         <div class="prodhead">
-          <div class="ptag"><span class="tdot"></span>ACTIVE DEPLOYMENT</div>
+          <div class="ptag"><span class="tdot"></span>ACTIVE DEPLOYMENT — Private Beta</div>
           <div class="pname">Velaris</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--cyan); margin-bottom: 12px;">Full platform launch Q3 2026</div>
           <div class="ptag2">Enterprise intelligence dashboard. Real-time visibility across all pipeline stages, health metrics, predictive scores, and system status.</div>
         </div>
         <div class="prodbody">
@@ -876,6 +879,8 @@
           <option>SaaS & Technology</option>
           <option>Education</option>
           <option>Human Resources</option>
+          <option>E-Commerce</option>
+          <option>Recruitment</option>
           <option>Other Enterprise</option>
         </select>
       </div>
@@ -961,10 +966,28 @@
   const cobs=new IntersectionObserver(entries=>entries.forEach(e=>{
     if(e.isIntersecting){
       const t=parseInt(e.target.dataset.count);
-      if(t){let c=0;const s=t/50;const ti=setInterval(()=>{c+=s;if(c>=t){e.target.textContent=t;clearInterval(ti);}else{e.target.textContent=Math.floor(c);}},20);}
+      const suffix = e.target.dataset.suffix || '';
+      if(t > 0){
+        let c=0;
+        const steps = 50;
+        const s=t/steps;
+        let iteration = 0;
+        const ti=setInterval(()=>{
+          iteration++;
+          c+=s;
+          if(iteration >= steps){
+            e.target.textContent=t + suffix;
+            clearInterval(ti);
+          }else{
+            e.target.textContent=Math.floor(c) + suffix;
+          }
+        },30);
+      } else {
+        e.target.textContent="0" + suffix;
+      }
       cobs.unobserve(e.target);
     }
-  }),{threshold:0.5});
+  }),{threshold:0.1});
   document.querySelectorAll('[data-count]').forEach(el=>cobs.observe(el));
 
   // Form — Formspree

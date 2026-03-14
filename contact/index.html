@@ -328,34 +328,34 @@ footer {
 </section>
 
 <div class="contact-grid">
-  <form class="contact-form reveal" onsubmit="event.preventDefault(); alert('Message sent! Fallback to mailto:velan@vkatos.com');">
+  <form class="contact-form reveal" action="https://formspree.io/f/xyknjvol" method="POST">
     <div class="form-row">
       <div class="form-group">
         <label>Your Name</label>
-        <input type="text" placeholder="Thulasi Velan" required/>
+        <input type="text" name="name" placeholder="Thulasi Velan" required/>
       </div>
       <div class="form-group">
         <label>Company</label>
-        <input type="text" placeholder="Acme Corp" required/>
+        <input type="text" name="company" placeholder="Acme Corp" required/>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
         <label>Email Address</label>
-        <input type="email" placeholder="name@company.com" required/>
+        <input type="email" name="email" placeholder="name@company.com" required/>
       </div>
       <div class="form-group">
         <label>Phone Number (Optional)</label>
-        <input type="tel" placeholder="+91 ..."/>
+        <input type="tel" name="phone" placeholder="+91 ..."/>
       </div>
     </div>
     <div class="form-group">
       <label>What are you trying to automate?</label>
-      <textarea placeholder="Describe the pipeline, the stalls, and the manual overhead..."></textarea>
+      <textarea name="message" placeholder="Describe the pipeline, the stalls, and the manual overhead..."></textarea>
     </div>
     <div class="form-group">
       <label>How did you hear about us?</label>
-      <select>
+      <select name="source">
         <option>Google Search</option>
         <option>LinkedIn</option>
         <option>GitHub</option>
