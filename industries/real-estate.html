@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VKatOS for Real Estate — Every lead followed up. Every deal tracked.</title>
+  <meta name="description" content="VKatOS automates lead follow-up, site visit tracking, and deal management for real estate firms across India.">
+  <link rel="stylesheet" href="../assets/css/main.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    .ind-hero { min-height:80vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:120px 24px 80px; position:relative; overflow:hidden; }
+    .ind-hero::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:800px; height:400px; background:radial-gradient(ellipse at center, rgba(0,194,212,0.12) 0%, transparent 70%); pointer-events:none; }
+    .pain-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; margin-top:40px; }
+    .pain-card { background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); border-radius:16px; padding:28px; }
+    .pain-icon { font-size:28px; margin-bottom:12px; }
+    .pain-card h3 { font-size:17px; font-weight:700; color:#fff; margin-bottom:8px; }
+    .pain-card p { font-size:14px; color:#64748B; line-height:1.6; }
+    .pipeline-flow { display:flex; align-items:center; flex-wrap:wrap; justify-content:center; gap:0; margin:48px 0; }
+    .pipeline-stage { background:#0A1628; border:1px solid #1E2D40; border-radius:12px; padding:16px 20px; text-align:center; min-width:100px; animation:stagePulse 3s ease-in-out infinite; }
+    .pipeline-stage:nth-child(odd){animation-delay:0.5s;}
+    .pipeline-stage .s-name { font-size:13px; font-weight:700; color:#fff; }
+    .pipeline-stage .s-time { font-size:11px; color:#64748B; margin-top:4px; }
+    .pipeline-arrow { color:#00C2D4; font-size:20px; padding:0 8px; flex-shrink:0; }
+    @keyframes stagePulse { 0%,100%{border-color:#1E2D40;} 50%{border-color:#00C2D4; box-shadow:0 0 12px rgba(0,194,212,0.2);} }
+    .feat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; margin-top:40px; }
+    .feat-item { background:#0A1628; border:1px solid #1E2D40; border-radius:14px; padding:24px; }
+    .feat-item .fi { font-size:24px; margin-bottom:12px; }
+    .feat-item h4 { font-size:16px; font-weight:700; color:#fff; margin-bottom:6px; }
+    .feat-item p { font-size:13px; color:#64748B; line-height:1.6; }
+    .roi-box { background:rgba(0,194,212,0.06); border:1px solid rgba(0,194,212,0.25); border-radius:20px; padding:40px; margin-top:40px; max-width:640px; }
+    .roi-box h3 { font-size:20px; font-weight:800; color:#fff; margin-bottom:24px; }
+    .roi-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #1E2D40; }
+    .roi-row:last-child { border-bottom:none; }
+    .roi-label { font-size:14px; color:#64748B; }
+    .roi-value { font-size:18px; font-weight:800; color:#00C2D4; }
+    .roi-savings { font-size:28px; font-weight:900; color:#10B981; margin-top:16px; }
+    .ind-cta { text-align:center; padding:96px 24px; background:linear-gradient(180deg,#04080F 0%,#0A1628 50%,#04080F 100%); }
+    .ind-cta h2 { font-size:clamp(28px,4vw,48px); font-weight:900; color:#fff; margin-bottom:16px; }
+    .ind-cta p { font-size:18px; color:#64748B; margin-bottom:40px; }
+    @media(max-width:768px){ nav{padding:16px 20px;} .nav-links{display:none;} }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">VKat<span>OS</span></a>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="education-consultancy.html">Education</a>
+    <a href="legal.html">Legal</a>
+    <a href="../pricing.html">Pricing</a>
+    <a href="../demo.html">Demo</a>
+  </div>
+  <a href="../demo.html" class="nav-cta">Get Started →</a>
+</nav>
+
+<div class="ind-hero">
+  <div>
+    <div class="hero-badge">⚡ Real Estate</div>
+    <h1>VKatOS for<br/><span>Real Estate</span></h1>
+    <p class="hero-sub">Every lead followed up. Every deal tracked.</p>
+    <p style="font-size:16px; color:#64748B; max-width:560px; margin:0 auto 40px;">From first enquiry to registration — every buyer at the right stage, every agent accountable, every deal closed faster.</p>
+    <div class="hero-actions">
+      <a href="../demo.html" class="btn-primary">Book a Demo for Real Estate →</a>
+      <a href="../pricing.html" class="btn-secondary">View Pricing</a>
+    </div>
+  </div>
+</div>
+
+<section style="background:#0A1628; max-width:100%; padding:96px 24px;">
+<div style="max-width:1100px; margin:0 auto;">
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title">Why real estate firms<br/>lose deals they should close</h2>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">📞</div>
+      <h3>Leads go cold in 24 hours</h3>
+      <p>A buyer enquires at 11pm. Nobody follows up until 10am next day. They've already booked a site visit with your competitor. Speed of response decides who gets the deal.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🏗️</div>
+      <h3>Site visits don't convert</h3>
+      <p>50 site visits last month. 8 converted. Nobody knows what happened to the other 42 — no systematic follow-up, no tracking, no data, no second chance.</p>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📝</div>
+      <h3>Documentation delays kill deals</h3>
+      <p>Sale agreement, NOC, registration documents — chased manually by agents who should be selling, not doing paperwork. Delays lose buyers to other projects.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section style="max-width:1100px; margin:0 auto; padding:96px 24px;">
+  <div class="section-label">The Solution</div>
+  <h2 class="section-title">How VKatOS manages your<br/>sales pipeline</h2>
+  <p class="section-sub">Every lead captured, every stage tracked, every follow-up automated.</p>
+  <div class="pipeline-flow">
+    <div class="pipeline-stage"><div class="s-name">Enquiry</div><div class="s-time">60-sec response</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="s-name">Site Visit</div><div class="s-time">3–7 days</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="s-name">Negotiation</div><div class="s-time">1–2 weeks</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="s-name">Agreement</div><div class="s-time">Deadline-driven</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="s-name">Loan / KYC</div><div class="s-time">2–4 weeks</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="s-name">Registration</div><div class="s-time">Final</div></div>
+  </div>
+  <p style="text-align:center; color:#64748B; font-size:14px; margin-top:8px;">⚡ Every lead from 99acres, MagicBricks, website, or walk-in captured and tracked in one pipeline.</p>
+</section>
+
+<section style="background:#0A1628; max-width:100%; padding:96px 24px;">
+<div style="max-width:1100px; margin:0 auto;">
+  <div class="section-label">Built for Real Estate Teams</div>
+  <h2 class="section-title">Features built for<br/>property sales teams</h2>
+  <div class="feat-grid">
+    <div class="feat-item">
+      <div class="fi">⚡</div>
+      <h4>Instant lead response</h4>
+      <p>New enquiry from any source gets an automated WhatsApp response within 60 seconds. Brochure sent, site visit link shared, agent assigned. Before the competition wakes up.</p>
+    </div>
+    <div class="feat-item">
+      <div class="fi">📊</div>
+      <h4>Agent performance dashboard</h4>
+      <p>See every agent's pipeline: how many leads, at what stage, conversion rate, average deal time. Know who is performing before the month-end review.</p>
+    </div>
+    <div class="feat-item">
+      <div class="fi">📋</div>
+      <h4>Document checklist automation</h4>
+      <p>Buyer's KYC, loan documents, and registration papers tracked stage by stage with automatic reminders to buyers and agents. Zero manual coordination.</p>
+    </div>
+    <div class="feat-item">
+      <div class="fi">🔄</div>
+      <h4>Lost lead re-engagement</h4>
+      <p>Leads marked as cold automatically receive re-engagement messages at 7, 30, and 90 days. Price drops, new inventory, project updates — sent automatically.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section style="max-width:1100px; margin:0 auto; padding:96px 24px;">
+  <div class="section-label">The Numbers Don't Lie</div>
+  <h2 class="section-title">Your ROI from day one</h2>
+  <div class="roi-box">
+    <h3>Real Estate Firm (50 site visits/month)</h3>
+    <div class="roi-row">
+      <span class="roi-label">Site visits per month</span>
+      <span class="roi-value">50 visits</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">Current conversion rate</span>
+      <span class="roi-value">8 deals (16%)</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">Lost visits with no follow-up</span>
+      <span class="roi-value">42 leads</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">10% recovery via automated follow-up</span>
+      <span class="roi-value">4 extra deals</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">Average commission per deal</span>
+      <span class="roi-value">₹30,000–₹80,000</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label" style="font-weight:700; color:#10B981;">Monthly revenue recovered</span>
+      <span class="roi-value" style="color:#10B981;">₹1,20,000–₹3,20,000</span>
+    </div>
+    <div class="roi-savings">VKatOS cost: ₹40,000/month</div>
+    <p style="font-size:12px; color:#64748B; margin-top:12px;">Even recovering 1 extra deal per month typically covers VKatOS 2–3× over. Every site visit that doesn't convert is recoverable revenue.</p>
+  </div>
+</section>
+
+<div class="ind-cta">
+  <h2>Ready to stop losing deals<br/>to poor follow-up?</h2>
+  <p>See VKatOS live with your actual property sales workflow in a 30-minute demo.</p>
+  <a href="../demo.html" class="btn-primary">Book a Demo for Real Estate →</a>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="../pricing.html">Pricing</a>
+    <a href="../demo.html">Demo</a>
+    <a href="../status.html">System Status</a>
+    <a href="../blog/index.html">Blog</a>
+    <a href="mailto:velan@vkatos.com">velan@vkatos.com</a>
+    <a href="tel:+918056238628">+91 80562 38628</a>
+  </div>
+  <p>© 2026 VKatOS. All rights reserved. &nbsp;|&nbsp; Built in India 🇮🇳 &nbsp;|&nbsp; ⚡ Powered by VKatOS</p>
+</footer>
+
+</body>
+</html>

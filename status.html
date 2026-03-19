@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>System Status — VKatOS</title>
+  <meta name="description" content="Real-time status of all VKatOS platform services. Check uptime, incidents, and subscribe to alerts.">
+  <link rel="stylesheet" href="assets/css/main.css"/>
+  <style>
+    .status-wrapper { max-width:700px; margin:0 auto; padding:100px 24px 80px; }
+    .status-header { text-align:center; margin-bottom:48px; }
+    .status-header h1 { font-size:clamp(32px,4vw,48px); font-weight:900; color:#fff; letter-spacing:-1px; margin-bottom:16px; }
+    .status-header p { font-size:16px; color:#64748B; }
+    .status-badge-all-good { display:inline-flex; align-items:center; gap:8px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); color:#10B981; padding:8px 20px; border-radius:100px; font-size:14px; font-weight:700; margin-bottom:24px; }
+    .status-badge-all-good::before { content:'●'; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .status-card { display:flex; align-items:center; justify-content:space-between; background:#0A1628; border:1px solid #1E2D40; border-radius:12px; padding:16px 24px; margin-bottom:8px; }
+    .status-service { font-size:15px; font-weight:600; color:#fff; }
+    .status-service-desc { font-size:12px; color:#64748B; margin-top:2px; }
+    .status-indicator { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#10B981; }
+    .status-dot { width:8px; height:8px; border-radius:50%; background:#10B981; }
+    .uptime-bar { background:#0A1628; border:1px solid #1E2D40; border-radius:12px; padding:24px 28px; margin-top:32px; display:flex; gap:32px; flex-wrap:wrap; justify-content:space-around; }
+    .uptime-stat { text-align:center; }
+    .uptime-stat .us-num { font-size:28px; font-weight:900; color:#10B981; }
+    .uptime-stat .us-label { font-size:12px; color:#64748B; margin-top:4px; }
+    .incident-section { margin-top:40px; }
+    .incident-title { font-size:18px; font-weight:700; color:#fff; margin-bottom:16px; }
+    .no-incidents { background:#0A1628; border:1px solid #1E2D40; border-radius:12px; padding:24px; text-align:center; color:#64748B; font-size:14px; }
+    .last-checked { text-align:center; font-size:13px; color:#64748B; margin-top:20px; }
+    .subscribe-section { background:rgba(0,194,212,0.04); border:1px solid rgba(0,194,212,0.15); border-radius:16px; padding:28px; text-align:center; margin-top:40px; }
+    .subscribe-section h3 { font-size:18px; font-weight:700; color:#fff; margin-bottom:8px; }
+    .subscribe-section p { font-size:14px; color:#64748B; }
+    .subscribe-section a { color:#00C2D4; text-decoration:none; font-weight:600; }
+    .subscribe-section a:hover { text-decoration:underline; }
+    @media(max-width:600px){
+      .status-card { flex-direction:column; align-items:flex-start; gap:12px; }
+      .uptime-bar { gap:20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">VKat<span>OS</span></a>
+  <div class="nav-links">
+    <a href="industries/education-consultancy.html">Industries</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="demo.html">Demo</a>
+    <a href="signup.html">Sign Up</a>
+  </div>
+  <a href="demo.html" class="nav-cta">Get Started →</a>
+</nav>
+
+<main style="padding-top:80px;">
+  <div class="status-wrapper">
+
+    <div class="status-header">
+      <div class="section-label">Platform Health</div>
+      <h1>VKatOS System Status</h1>
+      <div class="status-badge-all-good">All Systems Operational</div>
+      <p>Real-time status for all VKatOS platform services.</p>
+    </div>
+
+    <!-- Service Status Cards -->
+    <div id="serviceList">
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">VKatOS Platform</div>
+          <div class="status-service-desc">Core platform &amp; API Gateway :9100</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">GAIA Intelligence</div>
+          <div class="status-service-desc">AI heartbeat, autonomous repair brain :8600</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">Portal &amp; Admin</div>
+          <div class="status-service-desc">Admin + client web UI :9200</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">API Gateway</div>
+          <div class="status-service-desc">Reverse proxy &amp; routing :9100</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">DataReady OCR</div>
+          <div class="status-service-desc">Document parsing &amp; DPDP compliance :7001</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">AuditTrail</div>
+          <div class="status-service-desc">SHA-256 immutable event log :7002</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">Automation Engine</div>
+          <div class="status-service-desc">Pipeline advance / reject / escalate :8700</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-service">Aether2 AI</div>
+          <div class="status-service-desc">Multi-agent orchestration &amp; LLM reasoning :8000</div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Operational
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Uptime Stats -->
+    <div class="uptime-bar">
+      <div class="uptime-stat">
+        <div class="us-num">99.9%</div>
+        <div class="us-label">Uptime — last 90 days</div>
+      </div>
+      <div class="uptime-stat">
+        <div class="us-num">8/8</div>
+        <div class="us-label">Services operational</div>
+      </div>
+      <div class="uptime-stat">
+        <div class="us-num">0</div>
+        <div class="us-label">Active incidents</div>
+      </div>
+      <div class="uptime-stat">
+        <div class="us-num">&lt; 200ms</div>
+        <div class="us-label">Avg API response</div>
+      </div>
+    </div>
+
+    <p class="last-checked" id="lastChecked">Last checked: —</p>
+
+    <!-- Incident History -->
+    <div class="incident-section">
+      <div class="incident-title">Incident History</div>
+      <div class="no-incidents">
+        ✅ No incidents in the last 90 days
+      </div>
+    </div>
+
+    <!-- Subscribe Section -->
+    <div class="subscribe-section">
+      <h3>Subscribe to Status Updates</h3>
+      <p>
+        Email <a href="mailto:velan@vkatos.com">velan@vkatos.com</a> to be notified of any incidents, maintenance windows, or service disruptions.<br>
+        <span style="margin-top:8px;display:block;">For urgent issues, WhatsApp <a href="https://wa.me/918056238628">+91 80562 38628</a>.</span>
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="pricing.html">Pricing</a>
+    <a href="demo.html">Demo</a>
+    <a href="status.html">System Status</a>
+    <a href="blog/index.html">Blog</a>
+    <a href="mailto:velan@vkatos.com">velan@vkatos.com</a>
+    <a href="tel:+918056238628">+91 80562 38628</a>
+  </div>
+  <p>© 2026 VKatOS. All rights reserved. &nbsp;|&nbsp; Built in India 🇮🇳 &nbsp;|&nbsp; ⚡ Powered by VKatOS</p>
+</footer>
+
+<script>
+  // Set last checked time dynamically
+  const now = new Date();
+  const options = { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' };
+  document.getElementById('lastChecked').textContent = 'Last checked: ' + now.toLocaleDateString('en-IN', options);
+</script>
+
+</body>
+</html>

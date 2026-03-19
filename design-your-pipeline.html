@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Design Your Pipeline — VKatOS</title>
+  <meta name="description" content="Design your business pipeline and see how VKatOS would automate it.">
+  <link rel="stylesheet" href="assets/css/main.css"/>
+  <style>
+    .builder-hero { text-align:center; padding: 60px 24px 40px; max-width:700px; margin:0 auto; }
+    .builder-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1200px; margin:0 auto; padding:0 24px 60px; }
+    @media(max-width:768px){.builder-layout{grid-template-columns:1fr;}}
+    .builder-panel,.preview-panel { background:#0A1628; border:1px solid #1E2D40; border-radius:20px; padding:28px; }
+    .panel-header h2 { font-size:18px; font-weight:700; color:#fff; margin-bottom:4px; }
+    .panel-header p { font-size:13px; color:#64748B; margin-bottom:24px; }
+    .stage-card { background:#04080F; border:1px solid #1E2D40; border-radius:12px; padding:16px; margin-bottom:12px; position:relative; cursor:grab; }
+    .stage-card:active{cursor:grabbing;}
+    .drag-handle { color:#64748B; font-size:16px; margin-right:8px; cursor:grab; }
+    .stage-card input[type="text"] { background:#0A1628; border:1px solid #1E2D40; border-radius:8px; padding:8px 12px; color:#E2E8F0; font-size:14px; width:100%; margin-bottom:10px; outline:none; box-sizing:border-box; }
+    .stage-card input[type="text"]:focus { border-color:#00C2D4; }
+    .stage-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+    .stage-label { font-size:12px; color:#64748B; min-width:60px; }
+    .stage-card input[type="range"] { flex:1; accent-color:#00C2D4; }
+    .day-val { font-size:13px; color:#00C2D4; font-weight:700; min-width:40px; }
+    .owner-select { background:#0A1628; border:1px solid #1E2D40; border-radius:6px; padding:6px 10px; color:#E2E8F0; font-size:13px; outline:none; }
+    .delete-btn { position:absolute; top:12px; right:12px; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#EF4444; border-radius:6px; padding:4px 8px; cursor:pointer; font-size:12px; }
+    .delete-btn:hover{background:rgba(239,68,68,0.2);}
+    .add-stage-btn { width:100%; background:rgba(0,194,212,0.08); border:1px dashed rgba(0,194,212,0.3); color:#00C2D4; border-radius:12px; padding:14px; font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .add-stage-btn:hover{background:rgba(0,194,212,0.15); border-style:solid;}
+    .add-stage-btn:disabled{opacity:0.4;cursor:not-allowed;}
+    .preview-empty { text-align:center; color:#64748B; padding:40px 20px; font-size:14px; }
+    .flow-node { background:#04080F; border:1px solid #1E2D40; border-radius:10px; padding:12px 18px; text-align:center; margin-bottom:8px; transition:all .3s; }
+    .flow-node .fn-name { font-size:13px; font-weight:700; color:#fff; }
+    .flow-node .fn-meta { font-size:11px; color:#64748B; margin-top:3px; }
+    .flow-arrow { text-align:center; color:#00C2D4; font-size:18px; margin:2px 0; }
+    .flow-node.monitored { border-color:#00C2D4; background:rgba(0,194,212,0.06); }
+    .flow-node.monitored .fn-badge { font-size:10px; color:#00C2D4; margin-top:4px; }
+    .automation-hint { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:10px; padding:12px 16px; margin-bottom:8px; font-size:13px; color:#E2E8F0; }
+    .automation-hint .hint-icon { color:#10B981; margin-right:6px; }
+    .contact-section { max-width:600px; margin:0 auto; padding:0 24px 80px; text-align:center; }
+    .contact-section h2 { font-size:28px; font-weight:800; color:#fff; margin-bottom:8px; }
+    .contact-section p { font-size:15px; color:#64748B; margin-bottom:32px; }
+    .contact-form { display:flex; flex-direction:column; gap:12px; text-align:left; }
+    .contact-form input,.contact-form select { background:#0A1628; border:1px solid #1E2D40; border-radius:10px; padding:14px 16px; color:#E2E8F0; font-size:15px; outline:none; }
+    .contact-form input:focus,.contact-form select:focus{border-color:#00C2D4;}
+    .contact-form select option { background:#0A1628; }
+    .loading-state { text-align:center; padding:80px 24px; }
+    .gaia-spinner { width:60px;height:60px;border:3px solid #1E2D40;border-top-color:#00C2D4;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px; }
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .loading-state h3 { font-size:24px; font-weight:800; color:#fff; margin-bottom:8px; }
+    .loading-state p { color:#64748B; }
+    .results-section { max-width:800px; margin:0 auto; padding:0 24px 80px; }
+    .result-card { background:#0A1628; border:1px solid #1E2D40; border-radius:16px; padding:28px; margin-bottom:20px; }
+    .result-card h3 { font-size:18px; font-weight:700; color:#fff; margin-bottom:16px; }
+    .result-card .rc-label { font-size:12px; font-weight:700; color:#00C2D4; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+    .wa-sample { background:#0F2018; border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:14px; font-size:13px; color:#E2E8F0; font-family:monospace; white-space:pre-wrap; }
+    .briefing-sample { background:#04080F; border:1px solid #1E2D40; border-radius:10px; padding:16px; font-size:13px; color:#E2E8F0; }
+    .lead-capture { background:rgba(0,194,212,0.06); border:1px solid rgba(0,194,212,0.25); border-radius:16px; padding:32px; text-align:center; margin-top:32px; }
+    .lead-capture h3 { font-size:22px; font-weight:800; color:#fff; margin-bottom:8px; }
+    .lead-capture p { color:#64748B; margin-bottom:24px; }
+    .lead-form { display:flex; flex-direction:column; gap:10px; max-width:400px; margin:0 auto; }
+    .lead-form input { background:#0A1628; border:1px solid #1E2D40; border-radius:10px; padding:12px 16px; color:#E2E8F0; font-size:14px; outline:none; }
+    .lead-form input:focus{border-color:#00C2D4;}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">VKat<span>OS</span></a>
+  <div class="nav-links">
+    <a href="industries/education-consultancy.html">Industries</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="demo.html">Demo</a>
+    <a href="signup.html">Sign Up</a>
+  </div>
+  <a href="demo.html" class="nav-cta">Get Started →</a>
+</nav>
+
+<main style="padding-top:80px;">
+
+  <!-- HERO -->
+  <div class="builder-hero">
+    <div class="section-label">Pipeline Builder</div>
+    <h1>Design Your <span>Automation</span></h1>
+    <p>Map your business stages below. We'll show you exactly how VKatOS would automate each one.</p>
+  </div>
+
+  <!-- BUILDER LAYOUT -->
+  <div class="builder-layout">
+    <!-- LEFT: Stage Builder -->
+    <div class="builder-panel">
+      <div class="panel-header">
+        <h2>Your Pipeline Stages</h2>
+        <p>Add up to 12 stages. Drag to reorder.</p>
+      </div>
+      <div id="stageList"><!-- stages added here --></div>
+      <button class="add-stage-btn" onclick="addStage()" id="addBtn">+ Add Stage</button>
+    </div>
+
+    <!-- RIGHT: Live Preview -->
+    <div class="preview-panel">
+      <div class="panel-header">
+        <h2>Live Pipeline Preview</h2>
+        <p>Updates as you build</p>
+      </div>
+      <div id="pipelinePreview">
+        <div class="preview-empty">Add your first stage to see the pipeline →</div>
+      </div>
+      <div id="automationHints" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <div class="contact-section" id="contactSection">
+    <h2>Generate Your Automation Preview</h2>
+    <p>We'll show you exactly which stages GAIA will monitor and what your morning briefing will look like.</p>
+    <div class="contact-form">
+      <input type="text" id="companyName" placeholder="Company name" />
+      <select id="industry">
+        <option value="">Select your industry</option>
+        <option value="education">Education Consultancy</option>
+        <option value="recruitment">Recruitment</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="legal">Legal / Law Firm</option>
+        <option value="real-estate">Real Estate</option>
+        <option value="manufacturing">Manufacturing</option>
+        <option value="other">Other</option>
+      </select>
+      <input type="text" id="contactInfo" placeholder="WhatsApp number or email" />
+      <button class="btn-primary" onclick="submitPipeline()" style="width:100%;padding:16px;font-size:16px;">Generate My Automation Preview →</button>
+    </div>
+  </div>
+
+  <!-- LOADING STATE (hidden) -->
+  <div id="loadingState" style="display:none;" class="loading-state">
+    <div class="gaia-spinner"></div>
+    <h3>GAIA is analysing your pipeline...</h3>
+    <p>Mapping automation opportunities across your <span id="stageCount">0</span> stages</p>
+  </div>
+
+  <!-- RESULTS (hidden) -->
+  <div id="resultsSection" style="display:none;" class="results-section">
+    <!-- populated by JS -->
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="pricing.html">Pricing</a>
+    <a href="demo.html">Demo</a>
+    <a href="status.html">System Status</a>
+    <a href="blog/index.html">Blog</a>
+    <a href="mailto:velan@vkatos.com">velan@vkatos.com</a>
+    <a href="tel:+918056238628">+91 80562 38628</a>
+  </div>
+  <p>© 2026 VKatOS. All rights reserved. &nbsp;|&nbsp; Built in India 🇮🇳 &nbsp;|&nbsp; ⚡ Powered by VKatOS</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+let stages = [];
+let stageCounter = 0;
+const MAX_STAGES = 12;
+
+function addStage(name='', days=7, owner='Staff') {
+  if(stages.length >= MAX_STAGES) return;
+  stageCounter++;
+  const id = 'stage_' + stageCounter;
+  stages.push({id, name, days, owner, docs:''});
+  renderStageList();
+  updatePreview();
+  if(stages.length >= MAX_STAGES) {
+    document.getElementById('addBtn').disabled = true;
+  }
+}
+
+function renderStageList() {
+  const list = document.getElementById('stageList');
+  list.innerHTML = stages.map((s, i) => `
+    <div class="stage-card" data-id="${s.id}">
+      <span class="drag-handle">⠿</span>
+      <button class="delete-btn" onclick="deleteStage('${s.id}')">✕</button>
+      <input type="text" placeholder="Stage name (e.g. Enquiry, Interview, Filing...)"
+             value="${escHtml(s.name)}" oninput="updateStage('${s.id}','name',this.value)" />
+      <div class="stage-row">
+        <span class="stage-label">Duration</span>
+        <input type="range" min="1" max="30" value="${s.days}"
+               oninput="updateStage('${s.id}','days',this.value);this.nextElementSibling.textContent=this.value+'d'" />
+        <span class="day-val">${s.days}d</span>
+      </div>
+      <div class="stage-row">
+        <span class="stage-label">Owner</span>
+        <select class="owner-select" onchange="updateStage('${s.id}','owner',this.value)">
+          <option${s.owner==='Staff'?' selected':''}>Staff</option>
+          <option${s.owner==='Manager'?' selected':''}>Manager</option>
+          <option${s.owner==='Both'?' selected':''}>Both</option>
+        </select>
+      </div>
+      <div class="stage-row">
+        <span class="stage-label">Docs</span>
+        <input type="text" placeholder="Documents needed (optional)"
+               value="${escHtml(s.docs)}" oninput="updateStage('${s.id}','docs',this.value)"
+               style="margin-bottom:0;" />
+      </div>
+    </div>
+  `).join('');
+
+  if(typeof Sortable !== 'undefined') {
+    new Sortable(list, {
+      animation:150,
+      handle:'.drag-handle',
+      onEnd: function(evt) {
+        const moved = stages.splice(evt.oldIndex, 1)[0];
+        stages.splice(evt.newIndex, 0, moved);
+        updatePreview();
+      }
+    });
+  }
+}
+
+function updateStage(id, field, value) {
+  const s = stages.find(x=>x.id===id);
+  if(s) { s[field] = field==='days'?parseInt(value):value; }
+  updatePreview();
+}
+
+function deleteStage(id) {
+  stages = stages.filter(x=>x.id!==id);
+  document.getElementById('addBtn').disabled = false;
+  renderStageList();
+  updatePreview();
+}
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+}
+
+function updatePreview() {
+  const preview = document.getElementById('pipelinePreview');
+  const hints = document.getElementById('automationHints');
+
+  if(stages.length === 0) {
+    preview.innerHTML = '<div class="preview-empty">Add your first stage to see the pipeline →</div>';
+    hints.style.display = 'none';
+    return;
+  }
+
+  const named = stages.filter(s=>s.name.trim());
+  if(named.length === 0) {
+    preview.innerHTML = '<div class="preview-empty">Name your stages to see the preview →</div>';
+    hints.style.display = 'none';
+    return;
+  }
+
+  preview.innerHTML = named.map((s,i) => `
+    <div class="flow-node monitored">
+      <div class="fn-name">${escHtml(s.name)}</div>
+      <div class="fn-meta">${s.days} day${s.days>1?'s':''} · ${s.owner}</div>
+      <div class="fn-badge">⚡ GAIA monitoring</div>
+    </div>
+    ${i < named.length-1 ? '<div class="flow-arrow">↓</div>' : ''}
+  `).join('');
+
+  const hintList = [
+    `⚡ <strong>Auto-advance</strong>: GAIA will move cases between stages based on your rules`,
+    `📱 <strong>WhatsApp alerts</strong>: Your team gets notified when a case enters each stage`,
+    `⏰ <strong>SLA monitoring</strong>: If any stage exceeds ${Math.max(...named.map(s=>s.days))} days, GAIA auto-escalates`,
+    named.some(s=>s.docs) ? `📄 <strong>Document tracking</strong>: DataReady OCR verifies documents at each stage` : null,
+    `🧠 <strong>Morning briefings</strong>: GAIA reports on all ${named.length} stages every morning at 7am`,
+  ].filter(Boolean);
+
+  hints.style.display = 'block';
+  hints.innerHTML = '<div class="panel-header" style="margin-top:24px;"><h2>Automation opportunities</h2><p>What GAIA would do with your pipeline</p></div>' +
+    hintList.map(h=>`<div class="automation-hint"><span class="hint-icon">›</span>${h}</div>`).join('');
+}
+
+async function submitPipeline() {
+  const company = document.getElementById('companyName').value.trim();
+  const industry = document.getElementById('industry').value;
+  const contact = document.getElementById('contactInfo').value.trim();
+  const named = stages.filter(s=>s.name.trim());
+
+  if(named.length < 2) { alert('Please add at least 2 stages.'); return; }
+  if(!company) { alert('Please enter your company name.'); return; }
+  if(!contact) { alert('Please enter your WhatsApp number or email.'); return; }
+
+  document.getElementById('contactSection').style.display = 'none';
+  document.getElementById('loadingState').style.display = 'block';
+  document.getElementById('stageCount').textContent = named.length;
+  window.scrollTo({top: document.getElementById('loadingState').offsetTop - 100, behavior:'smooth'});
+
+  const payload = { stages: named, company_name: company, industry, contact };
+
+  let apiSuccess = false;
+  try {
+    const res = await Promise.race([
+      fetch('https://api.vkatos.com/api/demo/preview', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      }),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),3000))
+    ]);
+    if(res.ok) apiSuccess = true;
+  } catch(e) { /* fallback */ }
+
+  await new Promise(r=>setTimeout(r,2500));
+  document.getElementById('loadingState').style.display = 'none';
+  showResults(payload, apiSuccess);
+}
+
+function showResults(payload, apiSuccess) {
+  const {stages: s, company_name, industry, contact} = payload;
+  const firstStage = s[0]?.name || 'Intake';
+  const lastStage = s[s.length-1]?.name || 'Completion';
+  const midStage = s[Math.floor(s.length/2)]?.name || 'Processing';
+
+  const waMsg = `🔔 VKatOS Update\n─────────────\nCase: ${company_name} — New Intake\nStage: ${firstStage}\nStatus: ✅ Received & logged\nNext: ${s[1]?.name||'Review'} within ${s[0]?.days||7} days\n\nTrack: vkatos.com/track/DEMO-001`;
+
+  const briefing = `☀️ GAIA Morning Briefing — ${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}\n\n📊 ${company_name} Pipeline Status\n✅ On track: ${Math.max(0,s.length-1)} cases\n⚠️ Needs attention: 1 case\n❌ Overdue: 0 cases\n\n🔴 Action needed:\n• 1 case in "${midStage}" for ${s[Math.floor(s.length/2)]?.days||7}+ days\n\n📈 This week: 3 cases advanced to ${lastStage}`;
+
+  const resultsSection = document.getElementById('resultsSection');
+  resultsSection.style.display = 'block';
+  resultsSection.innerHTML = `
+    <div style="text-align:center;margin-bottom:40px;">
+      <div class="section-label">Your Automation Preview</div>
+      <h2 style="font-size:32px;font-weight:900;color:#fff;margin-bottom:8px;">Here's what VKatOS would do</h2>
+      <p style="color:#64748B;">Based on your ${s.length}-stage pipeline for ${escHtml(company_name)}</p>
+    </div>
+
+    <div class="result-card">
+      <div class="rc-label">Your Automated Pipeline</div>
+      <h3>${s.map(st=>escHtml(st.name)).join(' → ')}</h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+        <span style="background:rgba(0,194,212,0.1);border:1px solid rgba(0,194,212,0.3);color:#00C2D4;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">⚡ ${s.length} stages automated</span>
+        <span style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">🧠 GAIA monitoring all stages</span>
+        <span style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:#F59E0B;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">⏱️ Setup time: 48 hours</span>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="rc-label">Sample WhatsApp notification your customers would receive</div>
+      <h3>Customer Update Message</h3>
+      <div class="wa-sample">${escHtml(waMsg)}</div>
+    </div>
+
+    <div class="result-card">
+      <div class="rc-label">Your morning briefing from GAIA</div>
+      <h3>Daily 7am Briefing Sample</h3>
+      <div class="briefing-sample" style="white-space:pre-line;">${escHtml(briefing)}</div>
+    </div>
+
+    <div class="lead-capture">
+      <h3>Get This Built for Your Business</h3>
+      <p>Our team will set up your exact pipeline within 48 hours. Book a call to confirm the details.</p>
+      <form action="https://formsubmit.co/velan@vkatos.com" method="POST" class="lead-form">
+        <input type="hidden" name="subject" value="New Pipeline Builder Lead: ${escHtml(company_name)}" />
+        <input type="hidden" name="_next" value="https://vkatos.com/thank-you.html" />
+        <input type="hidden" name="pipeline" value="${s.map(st=>st.name).join(' → ')}" />
+        <input type="hidden" name="industry" value="${industry}" />
+        <input type="hidden" name="stages_count" value="${s.length}" />
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="text" name="company" value="${escHtml(company_name)}" placeholder="Company name" required />
+        <input type="text" name="phone" value="${escHtml(contact)}" placeholder="WhatsApp number" required />
+        <button type="submit" class="btn-primary" style="padding:16px;font-size:16px;width:100%;cursor:pointer;">Get This Built for My Business →</button>
+      </form>
+      <p style="font-size:12px;color:#64748B;margin-top:16px;">No commitment. Free consultation. Setup in 48 hours.</p>
+    </div>
+  `;
+  window.scrollTo({top: resultsSection.offsetTop - 100, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
