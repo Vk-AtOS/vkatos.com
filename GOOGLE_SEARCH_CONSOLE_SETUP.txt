@@ -1,0 +1,35 @@
+GOOGLE SEARCH CONSOLE SETUP — DO THIS ONCE
+Takes 15 minutes. Do it as soon as the website is live.
+
+STEP 1: Go to https://search.google.com/search-console
+  - Sign in with your Google account
+  - Click "Add Property"
+  - Select "Domain" and enter: vkatos.com
+  - Click Continue
+
+STEP 2: Verify domain ownership via Namecheap DNS
+  - Google shows you a TXT record value like:
+    google-site-verification=xxxxxxxxxxxxxxxxxxxxxxx
+  - Log in to Namecheap at namecheap.com
+  - Go to Domain List → vkatos.com → Manage
+  - Click "Advanced DNS" tab
+  - Click "Add New Record"
+  - Type: TXT Record
+  - Host: @
+  - Value: paste the google-site-verification value here
+  - TTL: Automatic
+  - Click the green checkmark to save
+  - Go back to Google Search Console and click "Verify"
+
+STEP 3: Submit your sitemap
+  - In Search Console left menu: Sitemaps
+  - Enter: sitemap.xml
+  - Click Submit
+
+STEP 4: Request indexing for homepage
+  - In Search Console: URL Inspection at top
+  - Enter: https://vkatos.com
+  - Click "Request Indexing"
+
+STEP 5: Add meta verification tag to index.html
+  - Replace PASTE_YOUR_CODE_HERE in index.html with your actual code

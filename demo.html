@@ -1,218 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book a Demo — VKatOS</title>
-  <meta name="description" content="Book a 30-minute live demo of VKatOS. See your business process automated in real-time.">
-  <link rel="stylesheet" href="assets/css/main.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <meta charset='UTF-8'>
+  <title>See VKatOS in 10 minutes</title>
   <style>
-    .demo-form {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 20px; padding: 48px;
-      max-width: 600px; margin: 0 auto;
-    }
-    .form-group { margin-bottom: 24px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%; background: var(--bg3); border: 1px solid var(--border);
-      color: var(--text); font-size: 15px; padding: 12px 16px;
-      border-radius: 10px; outline: none; font-family: inherit;
-      transition: border-color .2s;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: var(--accent);
-    }
-    .form-group select option { background: var(--bg); }
-    .form-group textarea { resize: vertical; min-height: 100px; }
-    .submit-btn {
-      width: 100%; background: var(--accent); color: #000; font-weight: 700;
-      padding: 16px; border-radius: 10px; font-size: 16px; border: none;
-      cursor: pointer; transition: opacity .2s; margin-top: 8px;
-    }
-    .submit-btn:hover { opacity: 0.9; }
-    .success-msg {
-      display: none; text-align: center; padding: 40px;
-    }
-    .success-msg .checkmark { font-size: 56px; margin-bottom: 16px; }
-    .success-msg h3 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-    .success-msg p { color: var(--muted); }
-    .demo-benefits { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
-    .benefit { display: flex; gap: 16px; align-items: flex-start; }
-    .benefit-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
-    .benefit h4 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-    .benefit p { font-size: 14px; color: var(--muted); }
+    body { background: #04080F; color: #F1F5F9; font-family: system-ui; padding: 40px; }
+    .container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    h1 { color: #00C2D4; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; color: #94A3B8; }
+    input, select { width: 100%; padding: 12px; background: #0A1628; border: 1px solid #1E2D40; color: white; border-radius: 8px; box-sizing: border-box;}
+    button { width: 100%; padding: 14px; background: #00C2D4; color: #04080F; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
-
-<nav>
-  <a href="/" class="nav-logo">VKat<span>OS</span></a>
-  <div class="nav-links">
-    <a href="/#how-it-works">How It Works</a>
-    <a href="/#features">Features</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="demo.html">Demo</a>
-  </div>
-  <a href="mailto:velan@vkatos.com" class="nav-cta">Email Us →</a>
-</nav>
-
-<section style="padding-top: 120px; padding-bottom: 80px;">
-  <div style="text-align: center; margin-bottom: 64px;">
-    <div class="section-label">Book a Demo</div>
-    <h1 style="font-size: clamp(32px, 5vw, 56px); color: #fff; font-weight: 900; letter-spacing: -1px; margin-bottom: 16px;">
-      See your business<br/>automated. Live.
-    </h1>
-    <p style="font-size: 18px; color: var(--muted);">
-      30 minutes. No sales pitch. Just your actual process — running itself.
-    </p>
-  </div>
-
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; max-width: 1100px; margin: 0 auto; align-items: start;">
-
-    <!-- LEFT: what to expect -->
+  <div class='container'>
     <div>
-      <h2 style="font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 24px;">What to expect</h2>
-      <div class="demo-benefits">
-        <div class="benefit">
-          <div class="benefit-icon">🎯</div>
-          <div>
-            <h4>Your pipeline, not a generic demo</h4>
-            <p>We'll configure a live connector matching your actual business before the demo. You'll see your stages, your logic, your data.</p>
-          </div>
-        </div>
-        <div class="benefit">
-          <div class="benefit-icon">⚡</div>
-          <div>
-            <h4>Live automation in real-time</h4>
-            <p>Submit a test case and watch it go through your pipeline automatically — scored, routed, notified, logged — in front of you.</p>
-          </div>
-        </div>
-        <div class="benefit">
-          <div class="benefit-icon">📱</div>
-          <div>
-            <h4>WhatsApp + tracker demo</h4>
-            <p>You'll receive a real WhatsApp update to your phone and see the magic link case tracker in action.</p>
-          </div>
-        </div>
-        <div class="benefit">
-          <div class="benefit-icon">🧠</div>
-          <div>
-            <h4>GAIA briefing</h4>
-            <p>See the AI generate a plain-English briefing about what's happening in your business — like a morning report from a very attentive operations manager.</p>
-          </div>
-        </div>
-        <div class="benefit">
-          <div class="benefit-icon">💰</div>
-          <div>
-            <h4>No commitment needed</h4>
-            <p>The demo is free. We'll answer every question. You decide if VKatOS is right for your business.</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
-        <div style="font-size: 13px; color: var(--accent); font-weight: 700; margin-bottom: 8px;">REACH US DIRECTLY</div>
-        <p style="color: var(--text); margin-bottom: 4px;"><strong>Thulasi Velan</strong></p>
-        <p style="color: var(--muted); font-size: 14px;">velan@vkatos.com</p>
-        <p style="color: var(--muted); font-size: 14px;">+91 80562 38628</p>
-        <p style="color: var(--muted); font-size: 14px; margin-top: 8px;">WhatsApp preferred for faster response.</p>
-      </div>
+      <h1>See VKatOS in 10 minutes</h1>
+      <p>No slides. No sales pitch. A live demo of your pipeline.</p>
+      <ul>
+        <li>Your morning briefing</li>
+        <li>Case advancing demo</li>
+        <li>GAIA auto-chasing</li>
+        <li>WhatsApp updates</li>
+      </ul>
     </div>
-
-    <!-- RIGHT: form -->
     <div>
-      <div class="demo-form" id="formContainer">
-        <h2 style="font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Book your demo</h2>
-        <p style="color: var(--muted); font-size: 14px; margin-bottom: 32px;">We'll reply within 2 hours.</p>
-
-        <form id="demoForm" onsubmit="submitDemo(event)">
-          <div class="form-group">
-            <label>Your Name</label>
-            <input type="text" id="f_name" placeholder="Ravi Kumar" required />
-          </div>
-          <div class="form-group">
-            <label>Company Name</label>
-            <input type="text" id="f_company" placeholder="Acme Education Pvt Ltd" required />
-          </div>
-          <div class="form-group">
-            <label>WhatsApp Number</label>
-            <input type="tel" id="f_phone" placeholder="+91 98765 43210" required />
-          </div>
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="f_email" placeholder="ravi@acmeedu.com" required />
-          </div>
-          <div class="form-group">
-            <label>Industry / Business Type</label>
-            <select id="f_industry">
-              <option value="">Select your industry</option>
-              <option>Study Abroad / Education Consultancy</option>
-              <option>Recruitment / Staffing</option>
-              <option>Logistics / Freight</option>
-              <option>Healthcare / Clinic</option>
-              <option>Legal / CA / Compliance</option>
-              <option>Real Estate</option>
-              <option>Finance / Loans / Insurance</option>
-              <option>Manufacturing / Retail</option>
-              <option>SaaS / Technology</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>What is your biggest pipeline problem?</label>
-            <textarea id="f_problem" placeholder="e.g. Students drop off after enquiry. We don't know who is stuck where. Follow-ups are manual and missed."></textarea>
-          </div>
-          <button type="submit" class="submit-btn">Book My Demo →</button>
-        </form>
-
-        <div class="success-msg" id="successMsg">
-          <div class="checkmark">✅</div>
-          <h3>We'll be in touch!</h3>
-          <p>Velan will WhatsApp or email you within 2 hours to confirm your demo time.<br/><br/>In the meantime, reply to this page or WhatsApp <strong>+91 80562 38628</strong> directly.</p>
+      <form id='demoForm'>
+        <div class='form-group'><label>Name</label><input type='text' id='name' required></div>
+        <div class='form-group'><label>Company</label><input type='text' id='company' required></div>
+        <div class='form-group'><label>WhatsApp Number</label><input type='text' id='phone' required pattern='[0-9]{10}'></div>
+        <div class='form-group'><label>Industry</label>
+          <select id='industry'><option>Education Consultancy</option><option>Education Finance</option><option>Other</option></select>
         </div>
-      </div>
+        <button type='submit'>Request Demo</button>
+      </form>
     </div>
-
   </div>
-</section>
-
-<footer>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="blog/index.html">Blog</a>
-    <a href="status.html">System Status</a>
-    <a href="mailto:velan@vkatos.com">velan@vkatos.com</a>
-    <a href="tel:+918056238628">+91 80562 38628</a>
-  </div>
-  <p>© 2026 VKatOS. All rights reserved. &nbsp;|&nbsp; ⚡ Powered by VKatOS</p>
-</footer>
-
-<script>
-function submitDemo(e) {
-  e.preventDefault();
-  const name = document.getElementById('f_name').value;
-  const company = document.getElementById('f_company').value;
-  const phone = document.getElementById('f_phone').value;
-  const email = document.getElementById('f_email').value;
-  const industry = document.getElementById('f_industry').value;
-  const problem = document.getElementById('f_problem').value;
-
-  // Send WhatsApp to Velan via wa.me link (fallback: mailto)
-  const msg = encodeURIComponent(
-    `New Demo Request from vkatos.com\n\nName: ${name}\nCompany: ${company}\nPhone: ${phone}\nEmail: ${email}\nIndustry: ${industry}\nProblem: ${problem}`
-  );
-
-  // Open WhatsApp
-  window.open(`https://wa.me/918056238628?text=${msg}`, '_blank');
-
-  // Show success
-  document.getElementById('demoForm').style.display = 'none';
-  document.getElementById('successMsg').style.display = 'block';
-}
-</script>
-
+  <script>
+    document.getElementById('demoForm').onsubmit = (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const company = document.getElementById('company').value;
+      const phone = document.getElementById('phone').value;
+      const url = 'https://wa.me/918056238628?text=' + encodeURIComponent('Hi Velan, I want to book a VKatOS demo. Name: ' + name + ', Company: ' + company + ', WhatsApp: ' + phone);
+      window.open(url, '_blank');
+      alert('Thank you! Opening WhatsApp to connect with Velan.');
+    };
+  </script>
 </body>
 </html>
