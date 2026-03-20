@@ -3,18 +3,18 @@
 <head>
   <meta charset='UTF-8' />
   <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <title>VKatOS — We Run Your Business While You Sleep</title>
+  <title>VKatOS — Your business, running itself.</title>
 
   <!-- SEO -->
   <meta name='description' content="VKatOS — Chennai's first AI-native autonomous business platform. GAIA manages your operations, monitors pipelines, chases documents, and delivers morning briefings automatically. Built for overseas education consultancies." />
   <meta name='keywords' content='AI automation Chennai, education consultancy automation India, overseas education platform, student pipeline management, GAIA AI, VKatOS' />
   <meta name='robots' content='index, follow' />
   <meta name='author' content='Velan Thulasirajan' />
-  <link rel='canonical' href='https://vkatos.com/' />
-  <meta name='google-site-verification' content='PASTE_YOUR_CODE_HERE' />
+  <link rel='canonical' href='https://vkatos.com' />
+  <meta name='google-site-verification' content='VKatOS_Verification' />
 
   <!-- Open Graph -->
-  <meta property='og:title' content='VKatOS — We Run Your Business While You Sleep' />
+  <meta property='og:title' content='VKatOS — Your business, running itself.' />
   <meta property='og:description' content="Chennai's first AI-native autonomous platform. GAIA handles your operations automatically." />
   <meta property='og:type' content='website' />
   <meta property='og:url' content='https://vkatos.com' />
@@ -25,11 +25,13 @@
   <meta name='twitter:title' content='VKatOS — AI-Native Operations Platform' />
   <meta name='twitter:description' content='We run your consultancy while you sleep.' />
 
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
   <style>
     :root {
       --bg: #04080F;
       --surface: #0A1628;
-      --accent: #00C2D4;
+      --accent: #7B61FF;
       --text: #F1F5F9;
       --muted: #94A3B8;
     }
@@ -53,7 +55,6 @@
 
     section { padding: 100px 40px; }
     .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .hero iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; pointer-events: none; opacity: 0.6; }
     .hero-content { position: relative; z-index: 10; text-align: center; max-width: 800px; }
     h1 { font-size: clamp(32px, 5vw, 64px); line-height: 1.1; margin-bottom: 24px; }
     .accent { color: var(--accent); }
@@ -94,10 +95,10 @@
 </nav>
 
 <section class='hero'>
-  <iframe src='hero.html' title='VKatOS GAIA Agent Network' loading='eager'></iframe>
+  <div id="tsparticles" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;"></div>
   <div class='hero-content'>
-    <h1>Chennai's first<br /><span class='accent'>AI-native company</span></h1>
-    <p class='hero-sub'>We run your business while you sleep.</p>
+    <h1>Your business,<br><span style="color:#7B61FF">running itself.</span></h1>
+    <p class="hero-sub">VKatOS monitors every pipeline, detects failures before they happen, and fixes them automatically. Your team focuses on what humans do best. GAIA handles everything else.</p>
     <div style='display:flex; justify-content:center;'>
       <a href='/demo.html' class='btn-primary'>Book a Demo</a>
       <a href='#pricing' class='btn-secondary'>View Pricing</a>
@@ -205,6 +206,48 @@
     © 2026 VKatOS. All rights reserved.
   </div>
 </footer>
+
+<script>
+tsParticles.load("tsparticles", {
+  background: { color: { value: "#0A0A0F" } },
+  fpsLimit: 60,
+  interactivity: {
+    events: {
+      onHover: { enable: true, mode: "repulse" },
+      resize: true
+    },
+    modes: {
+      repulse: { distance: 100, duration: 0.4 }
+    }
+  },
+  particles: {
+    color: { value: "#7B61FF" },
+    links: {
+      color: "#7B61FF",
+      distance: 150,
+      enable: true,
+      opacity: 0.2,
+      width: 1
+    },
+    move: {
+      direction: "none",
+      enable: true,
+      outModes: { default: "bounce" },
+      random: false,
+      speed: 0.8,
+      straight: false
+    },
+    number: {
+      density: { enable: true, area: 900 },
+      value: 60
+    },
+    opacity: { value: 0.4 },
+    shape: { type: "circle" },
+    size: { value: { min: 1, max: 3 } }
+  },
+  detectRetina: true
+});
+</script>
 
 </body>
 </html>
