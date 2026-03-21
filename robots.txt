@@ -3,4 +3,5 @@ Allow: /
 Disallow: /admin
 Disallow: /api
 Disallow: /track
+
 Sitemap: https://vkatos.com/sitemap.xml

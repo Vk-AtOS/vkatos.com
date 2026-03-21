@@ -1,13 +1,215 @@
 <!DOCTYPE html>
-<html lang='en'>
-<head><meta charset='UTF-8'><title>Privacy Policy | VKatOS</title>
-<style>body { background: #04080F; color: #F1F5F9; font-family: system-ui; padding: 40px; max-width: 800px; margin: 0 auto; line-height: 1.6; }</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy & Terms — VKatOS</title>
+    <style>
+        :root {
+            --bg-primary: #0A0A0F;
+            --bg-surface: #12121A;
+            --bg-card: #1A1A26;
+            --accent-primary: #7B61FF;
+            --accent-glow: #9D8FFF;
+            --text-primary: #F0F0FF;
+            --text-secondary: #8888AA;
+            --text-muted: #555570;
+            --border: rgba(123, 97, 255, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        nav {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wordmark {
+            font-size: 20px;
+            font-weight: 700;
+            color: #F0F0FF;
+            text-decoration: none;
+        }
+
+        .wordmark span {
+            color: #7B61FF;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 48px;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin: 48px 0 24px;
+            color: var(--accent-primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        ul {
+            margin-bottom: 24px;
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .terms-section {
+            margin-top: 80px;
+            padding-top: 80px;
+            border-top: 1px solid var(--border);
+        }
+
+        footer {
+            padding: 48px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 80px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-<h1>Privacy Policy</h1>
-<p>This policy is compliant with the DPDP Act 2023.</p>
-<h2>1. Data Collection</h2><p>We collect names, phone numbers, and documents for application processing.</p>
-<h2>2. Data Storage</h2><p>All data is stored on servers in India and encrypted with AES-256 at rest.</p>
-<h2>3. AI Usage</h2><p>Anonymised data is processed to generate recommendations. No sensitive PII is shared with cloud AI.</p>
-<h2>4. Contact</h2><p>velan@vkatos.com for all data requests.</p>
-</body></html>
+    <nav>
+        <div class="nav-inner">
+            <a href="/" class="wordmark">VKat<span>OS</span></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <a href="/" class="back-link">← Back to home</a>
+        <h1>Privacy Policy</h1>
+        
+        <p>Last updated: March 22, 2026</p>
+
+        <h2>1. What data we collect</h2>
+        <p>We collect information necessary to automate your business pipelines, which may include:</p>
+        <ul>
+            <li>Contact information (Names, email addresses, phone numbers) of your team and clients.</li>
+            <li>Operational data (Pipeline stages, case details, deadlines).</li>
+            <li>Documents uploaded to the platform for processing (Passports, bank statements, etc.).</li>
+            <li>Communication logs between your team and your clients.</li>
+        </ul>
+
+        <h2>2. How we use it</h2>
+        <p>Your data is used exclusively to:</p>
+        <ul>
+            <li>Provide the VKatOS automation services.</li>
+            <li>Generate GAIA morning briefings.</li>
+            <li>Trigger automated notifications and communications.</li>
+            <li>Improve the accuracy of our AI models (anonymised only).</li>
+        </ul>
+
+        <h2>3. Data storage</h2>
+        <p>All data is stored on secure servers located within India. We employ industry-standard AES-256 encryption for data at rest and TLS for data in transit. Access to production data is strictly controlled and audited.</p>
+
+        <h2>4. Data retention</h2>
+        <p>We retain operational data as long as your account is active. Specifically, case-related documents and sensitive data are purged 90 days after case closure to ensure minimal data footprint while maintaining auditability.</p>
+
+        <h2>5. Your rights under DPDP Act 2023</h2>
+        <p>As a data fiduciary/processor operating in India, we strictly adhere to the Digital Personal Data Protection Act 2023. You have the right to:</p>
+        <ul>
+            <li>Access your data.</li>
+            <li>Correct or erase your data.</li>
+            <li>Withdraw consent at any time.</li>
+            <li>Appoint a Data Manager for your organisation.</li>
+        </ul>
+
+        <h2>6. AI usage</h2>
+        <p>VKatOS uses GAIA, our proprietary AI engine, to process your data. All prompts sent to GAIA are anonymised. Your sensitive business data is never used to train models for other clients without explicit, aggregated anonymisation.</p>
+
+        <h2>7. Contact</h2>
+        <p>For any privacy-related queries, please contact our Data Protection Officer at <a href="mailto:velan@vkatos.com">velan@vkatos.com</a>.</p>
+
+        <div id="terms" class="terms-section">
+            <h1>Terms of Service</h1>
+            
+            <h2>Services Provided</h2>
+            <p>VKatOS provides an autonomous operations platform as described on our website. We provide the infrastructure, AI logic, and maintenance for your business pipelines.</p>
+
+            <h2>Payment Terms</h2>
+            <p>Services are billed as a one-time setup fee followed by a recurring monthly subscription fee based on your chosen plan. All fees are non-refundable once the service deployment has commenced. Prices are subject to applicable GST.</p>
+
+            <h2>99.9% Uptime SLA</h2>
+            <p>We guarantee 99.9% uptime. If VKatOS experiences more than 4 hours of downtime in any calendar month, we will credit your next month of subscription free of charge.</p>
+
+            <h2>Data Ownership</h2>
+            <p>The client retains full ownership of all data uploaded to VKatOS. VKatOS retains ownership of the underlying software, GAIA engine, and proprietary automation logic.</p>
+
+            <h2>Governing Law</h2>
+            <p>These terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Chennai, Tamil Nadu, India.</p>
+
+            <h2>Contact for Disputes</h2>
+            <p>For any legal or billing disputes, please reach out to <a href="mailto:velan@vkatos.com">velan@vkatos.com</a>.</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container" style="padding: 0;">
+            © 2026 VKatOS. Chennai's first AI-native company.
+        </div>
+    </footer>
+</body>
+</html>
